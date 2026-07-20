@@ -1,0 +1,6 @@
+﻿Title,Status,Priority,Type,Related Requirement,Assignee
+[STORY] تسجيل الدخول,Ready,High,Story,FR-01,
+[STORY] إنشاء مهمة,Ready,High,Story,FR-02,
+[STORY] تعديل مهمة,Backlog,Medium,Story,FR-03,
+[STORY] حذف مهمة,Backlog,Medium,Story,FR-04,
+[STORY] تغيير حالة المهمة,Backlog,Medium,Story,FR-05,
