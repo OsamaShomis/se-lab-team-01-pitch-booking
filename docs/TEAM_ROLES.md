@@ -1,17 +1,16 @@
-# Team Roles
+# Team Roles — أدوار الفريق
 
-| الدور | اسم الطالب | المسؤوليات | الدليل المطلوب |
-|---|---|---|---|
-| Team Coordinator | [الاسم] | تنظيم الفريق، متابعة اللوحة، إزالة العوائق | تحديث Project Board |
-| Requirements Owner | [الاسم] | إعداد SRS، مراجعة User Stories وAcceptance Criteria | تحديث `docs/SRS.md` |
-| Repository Maintainer | [الاسم] | إعداد المستودع والقوالب والفروع | ضبط المستودع |
-| Developer | [الاسم] | تنفيذ Issues عبر Branches وCommits | Pull Request |
-| Reviewer | [الاسم] | مراجعة PR وطلب التعديلات أو الموافقة | Review Comment |
+| الدور | اسم الطالب | حساب GitHub | المسؤوليات | الدليل المطلوب |
+|---|---|---|---|---|
+| **Team Coordinator & Requirements Owner** | أسامة الشميس | `OsamaShomis` | تنظيم الفريق، إعداد وثيقة SRS، متابعة لوحة المشروع | تحديث `docs/SRS.md` و Project Board |
+| **Repository Maintainer & Developer** | محمد الإدريسي | `Mo-ra778` | إعداد المستودع، ضبط الفروع، تنفيذ المهام البرمجية | ضبط المستودع وفتح Pull Request |
+| **Developer & Quality Reviewer** | أسامة العقاب | `osalokab` | مراجعة الكود، اختبار الحالات الاستثنائية، توثيق الذكاء الاصطناعي | كتابة Review Comments وتحديث `AI_Log.md` |
 
 ## قواعد الفريق
 
 - لا يراجع الطالب Pull Request الخاصة به.
-- لا يعمل عضوان على Issue نفسها دون تنسيق.
+- لا يعمل عضوان على Issue نفسها دون تنسيق مسبق.
 - كل مهمة لها Assignee واحد واضح.
-- كل Pull Request ترتبط بـIssue.
-- يمكن تدوير الأدوار في المحاضرات القادمة.
+- كل Pull Request ترتبط بـ Issue محددة.
+- يمكن تدوير الأدوار بين الأعضاء في المحاضرات والمراحل القادمة.
+
