@@ -256,3 +256,60 @@ Establish a robust, shared technical baseline for the Development Phase so all t
 ### Final Result
 Baseline branch `setup/laravel-baseline` fully implemented, verified, committed, and ready for PR merge into `main`.
 
+---
+
+### Entry 05: Authentication & Role-Based Access Control (FR-01 / US-01)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Shamis (`OsamaShomis` — Team Coordinator)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement Feature 1 (**FR-01 / US-01: Authentication & Role Management**) on branch `feature/auth`, including dual-role interactive registration (Player & Pitch Owner), unified smart login with automatic role-based redirection, Bcrypt password hashing, session management, route protection middleware, and automated test suite.
+
+### Purpose
+Fulfill requirements `FR-01`, `NFR-02` (Security), and `US-01` Acceptance Criteria, establishing the foundational identity layer for players and pitch owners.
+
+### Files Affected
+- `app/Http/Controllers/AuthController.php`
+- `app/Http/Middleware/RoleMiddleware.php`
+- `bootstrap/app.php`
+- `routes/web.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/auth/register.blade.php`
+- `resources/views/auth/login.blade.php`
+- `resources/views/welcome.blade.php`
+- `resources/views/pitches/index.blade.php`
+- `resources/views/owner/dashboard.blade.php`
+- `tests/Feature/AuthTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Implement an interactive role selector in the registration view allowing players and owners to select their persona with visual cards.
+- Support pre-selection of roles via query parameters (`?role=player` and `?role=owner`) linked directly from Landing Page CTAs.
+- Keep login unified with automatic server-side redirection based on the user's persisted role (Owner -> `/owner/dashboard`, Player -> `/pitches`).
+- Apply the Pitch Green visual design system (`#354C2B`, Cairo font, RTL layout) across all auth views and the base layout.
+- Write 12 comprehensive automated feature tests covering happy paths, edge cases (duplicate email, unconfirmed password), and role authorization.
+
+### Accepted Suggestions
+- All suggestions accepted and approved by Osama Al-Shamis.
+
+### Rejected Suggestions
+- Requiring role selection at login was rejected in favor of seamless automated role redirection based on authenticated database records.
+
+### Human Decisions & Approval
+- Explicit approval by Osama Al-Shamis to implement the unified smart login and dual-role registration architecture.
+
+### Testing & Verification
+- `php artisan test tests/Feature/AuthTest.php` executed with 12 passed tests and 46 assertions.
+- Overall test suite passed: 18 tests, 62 assertions, 0 failures.
+
+### Final Result
+`feature/auth` completely implemented, thoroughly tested, and ready for commit and pull request creation.
+
+
