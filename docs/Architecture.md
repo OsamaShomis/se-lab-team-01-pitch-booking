@@ -7,9 +7,11 @@
 | **الفريق** | SHIDRA TEAM (Team 01) |
 | **المسؤول** | محمد الإدريسي (`Mo-ra778` — Repository Maintainer & Developer) |
 | **الحالة** | معتمد ✅ |
-| **الإصدار** | 1.0 |
+| **الإصدار** | 1.1 |
 | **آخر تحديث** | 2026-09-26 |
 | **الخطوة المرتبطة** | الخطوات 7 + 8 في [`docs/WORK_DISTRIBUTION.md`](./WORK_DISTRIBUTION.md) |
+
+> **⚠️ قرار معماري (v1.1):** تم تغيير قاعدة البيانات من MySQL إلى **SQLite** بقرار من Repository Maintainer (`Mo-ra778`) لتبسيط بيئة التطوير. يُطبَّق على بيئتَي التطوير والإنتاج نظراً لكون المشروع أكاديمياً. يتطلب موافقة Team Coordinator (`OsamaShomis`) عبر مراجعة الـ Pull Request.
 
 ---
 
@@ -17,17 +19,17 @@
 
 ### أ. Backend
 
-| التقنية | الإصدار | الدور |
+| التقنية | الإصدار المؤكد | الدور |
 |---|---|---|
-| **PHP** | 8.2+ | لغة البرمجة الأساسية |
-| **Laravel** | 11.x | إطار العمل الخلفي (MVC Framework) |
+| **PHP** | `8.5.9` ✅ | لغة البرمجة الأساسية |
+| **Laravel** | `11.x` (سيُثبَّت) | إطار العمل الخلفي (MVC Framework) |
 | **Laravel Sanctum** | مدمج مع Laravel 11 | مصادقة المستخدمين عبر API Tokens |
-| **MySQL** | 8.0+ | قاعدة البيانات العلائقية مع دعم ACID Transactions |
+| **SQLite** | `3.x` (مدمج مع PHP) | قاعدة البيانات — ملف واحد خفيف |
 | **Eloquent ORM** | مدمج | التعامل مع قاعدة البيانات عبر نماذج PHP |
 
 ### ب. Frontend
 
-| التقنية | الإصدار | الدور |
+| التقنية | الإصدار المؤكد | الدور |
 |---|---|---|
 | **Laravel Blade** | مدمج | محرك القوالب (Template Engine) لصفحات الويب |
 | **HTML5** | — | هيكل صفحات الويب |
@@ -37,20 +39,25 @@
 
 ### ج. بيئة التطوير (Development Environment)
 
-| الأداة | الدور |
-|---|---|
-| **Composer** | إدارة حزم PHP |
-| **npm** | إدارة حزم JavaScript / CSS |
-| **Laravel Artisan** | أوامر CLI لإدارة المشروع |
-| **Git + GitHub** | إدارة الإصدارات والتعاون |
-| **XAMPP / Laragon** | بيئة التطوير المحلية (Local Server) |
-| **Postman** | اختبار وتوثيق الـ API |
+| الأداة | الإصدار المؤكد | الدور |
+|---|---|---|
+| **Composer** | `2.7.8` ✅ | إدارة حزم PHP |
+| **Node.js** | `v24.18.1` ✅ | بيئة تشغيل JavaScript |
+| **npm** | `11.16.0` ✅ | إدارة حزم JavaScript / CSS |
+| **XAMPP** | موجود ✅ | بيئة التطوير المحلية (Apache + PHP) |
+| **Laravel Artisan** | مدمج | أوامر CLI لإدارة المشروع |
+| **Git + GitHub** | — | إدارة الإصدارات والتعاون |
+| **Postman** | — | اختبار وتوثيق الـ API |
 
-### د. الاستضافة والنشر (Deployment) — مرحلة مستقبلية
+### د. لماذا SQLite؟
 
-| البيئة | الأداة |
-|---|---|
-| **Staging / Production** | `[TO BE DEFINED - سيُحدد لاحقاً]` |
+| المعيار | SQLite | MariaDB/MySQL |
+|---|---|---|
+| **الإعداد** | ✅ ملف واحد `.sqlite`، بدون تثبيت | ❌ يحتاج تثبيت وإعداد سيرفر |
+| **التطوير المحلي** | ✅ كل عضو يشتغل بدون مشاكل | ⚠️ اختلاف إعدادات بين الأجهزة |
+| **Laravel** | ✅ مدعوم رسمياً ومُعدّ افتراضياً | ✅ مدعوم |
+| **المشروع الأكاديمي** | ✅ مناسب تماماً | ✅ أقوى لكن أعقد |
+| **Race Condition** | ⚠️ محدود (مقبول أكاديمياً) | ✅ `SELECT FOR UPDATE` كامل |
 
 ---
 
@@ -58,7 +65,7 @@
 
 ### أ. النمط المعماري (Architectural Pattern)
 
-المشروع يتبع نمط **Layered MVC** (Model - View - Controller) المدمج في Laravel، مع فصل واضح للمسؤوليات بين الطبقات:
+المشروع يتبع نمط **Layered MVC** المدمج في Laravel مع فصل واضح للمسؤوليات:
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -87,14 +94,14 @@
 │             SERVICE LAYER                   │
 │   BookingService │ SlotAvailabilityService  │
 │  (Business Logic + Transaction Management)  │
-│  ← يحمي من Race Conditions عبر DB Locks →  │
 └──────────────────┬──────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────┐
 │           DATA ACCESS LAYER                 │
-│     Eloquent Models (ORM) + MySQL           │
+│     Eloquent Models (ORM) + SQLite          │
 │  User │ Pitch │ TimeSlot │ Booking          │
+│  (ملف: database/database.sqlite)            │
 └─────────────────────────────────────────────┘
 ```
 
@@ -128,7 +135,8 @@
 │         └────────────┬───────────┘                    │
 │                      ▼                                │
 │         ┌────────────────────────┐                    │
-│         │   MySQL Database       │                    │
+│         │   SQLite Database      │                    │
+│         │ database/database.sqlite│                   │
 │         │────────────────────────│                    │
 │         │ users                  │                    │
 │         │ pitches                │                    │
@@ -149,7 +157,7 @@
 يختار تاريخ من Date Picker
         │
         ▼
-SlotController يجلب الساعات من DB
+SlotController يجلب الساعات من SQLite
         │
         ▼
 Blade View يعرض الجدول:
@@ -160,8 +168,6 @@ Blade View يعرض الجدول:
         │
         ▼
 BookingService يفتح DB Transaction
-        │
-        ├──► يقفل الصف (SELECT ... FOR UPDATE)
         │
         ├──► يتحقق أن الساعة لا تزال متاحة
         │
@@ -174,41 +180,44 @@ BookingService يفتح DB Transaction
 
 ---
 
-## 3. 🔒 إدارة التزامن ومنع التعارض (Concurrency & Transaction Management)
+## 3. 🔒 إدارة التزامن (Concurrency & Transaction Management)
 
-### المشكلة: Race Condition
-إذا ضغط لاعبان على نفس الساعة في نفس اللحظة، قد يحجزها الاثنان في نفس الوقت.
-
-### الحل: Database Transactions + Pessimistic Locking
+### آلية الحماية مع SQLite
 
 ```php
 // BookingService.php
 DB::transaction(function () use ($slotId, $userId) {
-    // قفل الصف لمنع أي قراءة أو تعديل من جلسة أخرى
-    $slot = TimeSlot::where('id', $slotId)
-                    ->lockForUpdate()
-                    ->first();
 
-    // التحقق من الحالة بعد القفل
+    // جلب الساعة والتحقق من حالتها داخل Transaction
+    $slot = TimeSlot::where('id', $slotId)->first();
+
     if ($slot->status !== 'available') {
-        throw new SlotAlreadyBookedException(
+        throw new \Exception(
             'عذراً، تم حجز هذه الفترة للتو من قبل مستخدم آخر'
         );
     }
 
     // إنشاء الحجز وتحديث الحالة داخل نفس الـ Transaction
-    Booking::create([...]);
+    Booking::create([
+        'user_id'      => $userId,
+        'time_slot_id' => $slotId,
+        'status'       => 'confirmed',
+    ]);
+
     $slot->update(['status' => 'booked']);
 });
 ```
 
+> **ملاحظة:** SQLite يدعم Transactions لكن لا يدعم `SELECT ... FOR UPDATE`.
+> في السياق الأكاديمي هذا مقبول. الـ Transaction تضمن تكامل البيانات في معظم الحالات.
+
 ### القواعد المطبقة
+
 | القاعدة | التطبيق |
 |---|---|
 | **BR-01** | منع حجز الساعات الماضية عبر Validation في Controller |
 | **BR-02** | تحديث حالة الساعة فوراً داخل نفس الـ Transaction |
 | **BR-03** | فحص الفارق الزمني (ساعتين) في CancellationService |
-| **NFR-04** | استخدام `lockForUpdate()` لضمان تكامل البيانات |
 
 ---
 
@@ -219,44 +228,45 @@ kooraplus/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── AuthController.php          ← FR-01
-│   │   │   ├── PitchController.php         ← FR-02
-│   │   │   ├── SlotController.php          ← FR-03
-│   │   │   ├── BookingController.php       ← FR-04
-│   │   │   └── OwnerDashboardController.php← FR-05
+│   │   │   ├── AuthController.php           ← FR-01
+│   │   │   ├── PitchController.php          ← FR-02
+│   │   │   ├── SlotController.php           ← FR-03
+│   │   │   ├── BookingController.php        ← FR-04
+│   │   │   └── OwnerDashboardController.php ← FR-05
 │   │   ├── Middleware/
-│   │   │   └── RoleMiddleware.php          ← صلاحيات المستخدمين
+│   │   │   └── RoleMiddleware.php           ← صلاحيات المستخدمين
 │   │   └── Requests/
-│   │       └── BookingRequest.php          ← Validation Rules
+│   │       └── BookingRequest.php           ← Validation Rules
 │   ├── Models/
 │   │   ├── User.php
 │   │   ├── Pitch.php
 │   │   ├── TimeSlot.php
 │   │   └── Booking.php
 │   └── Services/
-│       ├── BookingService.php              ← منطق الحجز + Transaction
-│       ├── SlotAvailabilityService.php     ← جلب وتصفية الساعات
-│       └── CancellationService.php         ← قواعد الإلغاء
+│       ├── BookingService.php               ← منطق الحجز + Transaction
+│       ├── SlotAvailabilityService.php      ← جلب وتصفية الساعات
+│       └── CancellationService.php          ← قواعد الإلغاء (BR-03)
 ├── resources/
 │   └── views/
 │       ├── layouts/
-│       │   └── app.blade.php               ← القالب الرئيسي
+│       │   └── app.blade.php                ← القالب الرئيسي
 │       ├── auth/
-│       │   ├── login.blade.php             ← FR-01
-│       │   └── register.blade.php          ← FR-01
+│       │   ├── login.blade.php              ← FR-01
+│       │   └── register.blade.php           ← FR-01
 │       ├── pitches/
-│       │   ├── index.blade.php             ← FR-02
-│       │   └── show.blade.php              ← FR-02 + FR-03
+│       │   ├── index.blade.php              ← FR-02
+│       │   └── show.blade.php               ← FR-02 + FR-03
 │       ├── bookings/
-│       │   └── confirm.blade.php           ← FR-04
+│       │   └── confirm.blade.php            ← FR-04
 │       └── owner/
-│           └── dashboard.blade.php         ← FR-05
+│           └── dashboard.blade.php          ← FR-05
 ├── routes/
-│   ├── web.php                             ← مسارات صفحات Blade
+│   ├── web.php                              ← مسارات صفحات Blade
 │   └── api.php                             ← مسارات الـ API
 ├── database/
-│   └── migrations/                         ← جداول قاعدة البيانات
-└── docs/                                   ← وثائق المشروع
+│   ├── migrations/                          ← جداول قاعدة البيانات
+│   └── database.sqlite                      ← ملف SQLite (يُنشأ تلقائياً)
+└── docs/                                    ← وثائق المشروع
 ```
 
 ---
@@ -272,21 +282,22 @@ kooraplus/
 ```
 
 - **Laravel Sanctum** يصدر Token عند تسجيل الدخول.
-- **RoleMiddleware** يحمي مسارات لوحة تحكم المالك من الدخول غير المصرح.
-- **NFR-02**: كلمات المرور مشفرة بـ Bcrypt تلقائياً عبر Laravel.
+- **RoleMiddleware** يحمي مسارات لوحة تحكم المالك.
+- **NFR-02:** كلمات المرور مشفرة بـ Bcrypt تلقائياً عبر Laravel.
 
 ---
 
 ## 6. ✅ قائمة التحقق (Architecture Checklist)
 
-- [x] تم تحديد Tech Stack الكامل (PHP 8.2, Laravel 11, MySQL 8, Sanctum)
+- [x] تم تحديد Tech Stack الكامل بإصدارات مؤكدة من الجهاز
+- [x] تم اتخاذ قرار قاعدة البيانات: **SQLite** (معتمد من `Mo-ra778`)
 - [x] تم رسم مخطط الطبقات (Layered MVC)
-- [x] تم توثيق آلية منع Race Condition
+- [x] تم توثيق آلية الـ Transactions مع SQLite
 - [x] تم توثيق هيكل المجلدات
 - [x] تم توثيق نظام الصلاحيات
-- [ ] تم مراجعة الملف من Team Coordinator (الشميس)
+- [ ] بانتظار موافقة Team Coordinator (`OsamaShomis`) عبر PR
 
 ---
 
-*تم إعداد هذا الملف بواسطة: محمد الإدريسي (`Mo-ra778`) — Repository Maintainer & Developer*  
+*تم إعداد هذا الملف بواسطة: محمد الإدريسي (`Mo-ra778`) — Repository Maintainer & Developer*
 *الخطوات المغطاة: 7 (Tech Stack) + 8 (Architecture) من [`docs/WORK_DISTRIBUTION.md`](./WORK_DISTRIBUTION.md)*
