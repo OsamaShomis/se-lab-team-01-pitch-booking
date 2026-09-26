@@ -7,7 +7,6 @@ use App\Models\Pitch;
 use App\Models\TimeSlot;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,12 +21,6 @@ class DatabaseSeeder extends Seeder
         $owner1 = User::firstOrCreate(
             ['email' => 'owner@kooraplus.com'],
             [
-                'name' => 'الكابتن صالح الشميري',
-                'phone' => '777123456',
-        // 1. Create an Owner User
-        $owner = User::firstOrCreate(
-            ['email' => 'owner@kooraplus.com'],
-            [
                 'name' => 'الكابتن علي الأهدل',
                 'phone' => '0501234567',
                 'password' => Hash::make('password123'),
@@ -39,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'owner2@kooraplus.com'],
             [
                 'name' => 'الكابتن فهد المقطري',
-                'phone' => '771987654',
+                'phone' => '0509876543',
                 'password' => Hash::make('password123'),
                 'role' => 'owner',
             ]
@@ -47,103 +40,6 @@ class DatabaseSeeder extends Seeder
 
         // 2. Create Players
         $player1 = User::firstOrCreate(
-            ['email' => 'player1@kooraplus.com'],
-            [
-                'name' => 'أحمد المهاجم',
-                'phone' => '773112233',
-                'password' => Hash::make('password123'),
-                'role' => 'player',
-            ]
-        );
-
-        $player2 = User::firstOrCreate(
-            ['email' => 'player2@kooraplus.com'],
-            [
-                'name' => 'عمر صانع الألعاب',
-                'phone' => '775445566',
-                'password' => Hash::make('password123'),
-                'role' => 'player',
-            ]
-        );
-
-        $player3 = User::firstOrCreate(
-            ['email' => 'player3@kooraplus.com'],
-            [
-                'name' => 'ياسر الكابتن',
-                'phone' => '779889900',
-                'password' => Hash::make('password123'),
-                'role' => 'player',
-            ]
-        );
-
-        // 3. Create Pitches
-        $pitch1 = Pitch::firstOrCreate(
-            ['name' => 'ملعب الأساطير الدولي'],
-            [
-                'owner_id' => $owner1->id,
-                'location' => 'صنعاء — حي حدة خلف مجمع الكميم',
-                'turf_type' => 'artificial',
-                'hourly_rate' => 12000.00,
-                'contact_phone' => '777123456',
-                'description' => 'ملعب سباعي مجهز بأحدث كشافات الإنارة الليلية، مواقف سيارات خاصة، وغرف تبديل ملابس واستراحة مكيفة.',
-                'is_active' => true,
-            ]
-        );
-
-        $pitch2 = Pitch::firstOrCreate(
-            ['name' => 'ملعب قمة النجوم'],
-            [
-                'owner_id' => $owner1->id,
-                'location' => 'صنعاء — شارع الستين الغربي جوار جسر مذبح',
-                'turf_type' => 'artificial',
-                'hourly_rate' => 10000.00,
-                'contact_phone' => '777123456',
-                'description' => 'ملعب خماسي متميز، كافيه ومشروبات، أرضية معشبة حديثة وشباك حماية.',
-                'is_active' => true,
-            ]
-        );
-
-        // 4. Create Today's Time Slots for Pitch 1
-        $today = Carbon::today()->format('Y-m-d');
-
-        $slotsData = [
-            ['start' => '16:00:00', 'end' => '17:00:00', 'status' => 'booked', 'booked_by' => $player1, 'b_status' => 'completed'],
-            ['start' => '17:00:00', 'end' => '18:00:00', 'status' => 'booked', 'booked_by' => $player2, 'b_status' => 'confirmed'],
-            ['start' => '18:00:00', 'end' => '19:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '19:00:00', 'end' => '20:00:00', 'status' => 'booked', 'booked_by' => $player3, 'b_status' => 'confirmed'],
-            ['start' => '20:00:00', 'end' => '21:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '21:00:00', 'end' => '22:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '22:00:00', 'end' => '23:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-        ];
-
-        foreach ($slotsData as $index => $slotInfo) {
-            $slot = TimeSlot::firstOrCreate(
-                [
-                    'pitch_id' => $pitch1->id,
-                    'date' => $today,
-                    'start_time' => $slotInfo['start'],
-                ],
-                [
-                    'end_time' => $slotInfo['end'],
-                    'price' => $pitch1->hourly_rate,
-                    'status' => $slotInfo['status'],
-                ]
-            );
-
-            if ($slotInfo['booked_by']) {
-                Booking::firstOrCreate(
-                    ['time_slot_id' => $slot->id],
-                    [
-                        'booking_reference' => 'KP-' . strtoupper(substr(md5(uniqid()), 0, 6)),
-                        'user_id' => $slotInfo['booked_by']->id,
-                        'total_price' => $pitch1->hourly_rate,
-                        'status' => $slotInfo['b_status'],
-                        'notes' => 'حجز تجريبي مباشر من منصة كورة بلص',
-                    ]
-                );
-
-        // 2. Create a Player User
-        $player = User::firstOrCreate(
             ['email' => 'player@kooraplus.com'],
             [
                 'name' => 'محمد الإدريسي',
@@ -153,10 +49,31 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Create Sample Pitches
+        $player2 = User::firstOrCreate(
+            ['email' => 'player2@kooraplus.com'],
+            [
+                'name' => 'عمر صانع الألعاب',
+                'phone' => '0505445566',
+                'password' => Hash::make('password123'),
+                'role' => 'player',
+            ]
+        );
+
+        $player3 = User::firstOrCreate(
+            ['email' => 'player3@kooraplus.com'],
+            [
+                'name' => 'ياسر الكابتن',
+                'phone' => '0507988990',
+                'password' => Hash::make('password123'),
+                'role' => 'player',
+            ]
+        );
+
+        // 3. Create Pitches
         $pitchesData = [
             [
                 'name' => 'ملعب الأساطير الدولي',
+                'owner_id' => $owner1->id,
                 'location' => 'صنعاء - حدة - بالقرب من جولة الرويشان',
                 'turf_type' => 'artificial',
                 'hourly_rate' => 150.00,
@@ -165,7 +82,8 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name' => 'ملعب ويمبلي الملكي',
+                'name' => 'ملعب قمة النجوم الملكي',
+                'owner_id' => $owner1->id,
                 'location' => 'عدن - خور مكسر - ساحل أبين',
                 'turf_type' => 'natural',
                 'hourly_rate' => 200.00,
@@ -175,6 +93,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'ملعب الكلاسيكو الخماسي',
+                'owner_id' => $owner2->id,
                 'location' => 'تعز - المسبح - الشارع العام',
                 'turf_type' => 'hybrid',
                 'hourly_rate' => 120.00,
@@ -184,7 +103,7 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        // Slot schedule templates (90 minutes each):
+        // 90-minute match slot templates:
         $slotTemplates = [
             ['start' => '16:00:00', 'end' => '17:30:00'], // عصر
             ['start' => '17:30:00', 'end' => '19:00:00'], // مغرب
@@ -195,7 +114,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($pitchesData as $data) {
             $pitch = Pitch::firstOrCreate(
-                ['name' => $data['name'], 'owner_id' => $owner->id],
+                ['name' => $data['name']],
                 $data
             );
 
@@ -204,15 +123,14 @@ class DatabaseSeeder extends Seeder
                 $currentDate = Carbon::today()->addDays($dayOffset)->toDateString();
 
                 foreach ($slotTemplates as $index => $slot) {
-                    // For demonstration: simulate that 1 slot on each day is already booked
-                    $status = ($dayOffset === 0 && $index === 2) || ($dayOffset === 1 && $index === 3)
-                        ? 'booked'
-                        : 'available';
+                    // For demonstration: simulate booked slots
+                    $isBooked = ($dayOffset === 0 && in_array($index, [1, 3])) || ($dayOffset === 1 && $index === 2);
+                    $status = $isBooked ? 'booked' : 'available';
 
                     // 90 minutes price = 1.5 * hourly_rate
                     $slotPrice = $pitch->hourly_rate * 1.5;
 
-                    TimeSlot::firstOrCreate(
+                    $timeSlot = TimeSlot::firstOrCreate(
                         [
                             'pitch_id' => $pitch->id,
                             'date' => $currentDate,
@@ -224,6 +142,26 @@ class DatabaseSeeder extends Seeder
                             'status' => $status,
                         ]
                     );
+
+                    // Create real booking records for booked slots to support My Bookings (FR-06) and Dashboard (FR-05)
+                    if ($isBooked) {
+                        $bookedPlayer = match($index) {
+                            1 => $player1,
+                            2 => $player2,
+                            default => $player3,
+                        };
+
+                        Booking::firstOrCreate(
+                            ['time_slot_id' => $timeSlot->id],
+                            [
+                                'booking_reference' => 'KP-' . strtoupper(substr(md5(uniqid()), 0, 6)),
+                                'user_id' => $bookedPlayer->id,
+                                'total_price' => $slotPrice,
+                                'status' => 'confirmed',
+                                'notes' => 'حجز تجريبي مؤكد من منصة كورة بلص',
+                            ]
+                        );
+                    }
                 }
             }
         }

@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingCancellationController;
+use App\Http\Controllers\OwnerDashboardController;
+use App\Http\Controllers\TimeSlotController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes — مسارات منصة كورة بلص
+| Web Routes — مسارات منصة كورة بلص (KooraPlus)
 |--------------------------------------------------------------------------
 */
 
@@ -19,6 +21,12 @@ Route::get('/', function () {
 Route::get('/pitches', function () {
     return view('pitches.index');
 })->name('pitches.index');
+
+// FR-03: Time-Slot Availability Grid (Publicly accessible)
+Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');
+
+// API endpoint matching docs/API.md Endpoint 7
+Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
 
 // مسارات الزوار غير المسجلين (Guest Routes)
 Route::middleware('guest')->group(function () {
@@ -33,33 +41,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // مسارات خاصة بأصحاب الملاعب فقط (Owner-Only Protected Area)
+    // FR-06: Reservation Cancellation & Player Bookings
+    Route::get('/my-bookings', [BookingCancellationController::class, 'index'])->name('bookings.my');
+    Route::delete('/bookings/{booking}/cancel', [BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
+    // مسارات خاصة بأصحاب الملاعب فقط (Owner-Only Protected Area - FR-05)
     Route::middleware('role:owner')->prefix('owner')->name('owner.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('owner.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('pitches.show');
+        Route::patch('/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('bookings.status');
     });
-use App\Http\Controllers\TimeSlotController;
-use Illuminate\Support\Facades\Route;
-
-// Redirect root to Pitch 1 Slots Grid for immediate demonstration of FR-03
-Route::get('/', function () {
-    return redirect()->route('pitches.slots', ['pitch' => 1]);
 });
-
-// Pitch Owner Dashboard Routes (FR-05)
-Route::middleware(['web'])->group(function () {
-    Route::get('/owner/dashboard', [OwnerDashboardController::class, 'index'])->name('owner.dashboard');
-    Route::get('/owner/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('owner.pitches.show');
-    Route::patch('/owner/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('owner.bookings.status');
-});
-// FR-03: Time-Slot Availability Grid (Publicly accessible)
-Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');
-
-// API endpoint matching docs/API.md Endpoint 7
-Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
-
-// FR-06: Reservation Cancellation & Player Bookings
-Route::get('/my-bookings', [\App\Http\Controllers\BookingCancellationController::class, 'index'])->name('bookings.my');
-Route::delete('/bookings/{booking}/cancel', [\App\Http\Controllers\BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
-Route::delete('/api/bookings/{booking}', [\App\Http\Controllers\BookingCancellationController::class, 'cancel']);
