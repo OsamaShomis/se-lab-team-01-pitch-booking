@@ -103,5 +103,6 @@ Human approval is **strictly required** for:
 - Database migrations, schema deletions, or breaking API changes.
 - Destructive Git operations (`force push`, hard resets, direct commits to `main`).
 - Security decisions, authentication bypasses, or storing secrets.
+- Cross-member modifications: modifying features or documentation assigned to another team member without explicit delegation ([`ai/rules/team-boundaries.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/team-boundaries.md)).
 
 For full criteria, refer to [`ai/HUMAN-APPROVAL.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/HUMAN-APPROVAL.md).
