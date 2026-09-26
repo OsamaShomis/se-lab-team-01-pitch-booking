@@ -19,6 +19,14 @@ class OwnerDashboardController extends Controller
     {
         $user = $request->user();
 
+        // Local development convenience: auto-login sample owner if not authenticated
+        if (!$user && app()->environment('local') && !app()->runningUnitTests()) {
+            $user = \App\Models\User::where('role', 'owner')->first();
+            if ($user) {
+                auth()->login($user);
+            }
+        }
+
         // Enforce owner authorization
         if (!$user || !$user->isOwner()) {
             abort(403, 'غير مصرح لك بالوصول إلى لوحة تحكم أصحاب الملاعب.');
