@@ -103,3 +103,50 @@ Establish a centralized, tool-agnostic governance model so that any AI assistant
 
 ### Final Result
 Universal AI governance system established and verified. Repository is fully prepared for multi-tool AI collaboration.
+
+---
+
+### Entry 02: Testing Strategy & Edge Cases Worksheet
+
+### Date
+`2026-09-26`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Author comprehensive Testing Strategy (`docs/Testing.md`) and Edge Cases Worksheet (`docs/EDGE_CASES_WORKSHEET.md`).
+
+### Purpose
+Establish automated and manual quality assurance standards, test levels (Unit, Feature, Concurrency, E2E), and systematic handling of edge cases for the KooraPlus platform.
+
+### Files Affected
+- `docs/Testing.md`
+- `docs/EDGE_CASES_WORKSHEET.md`
+- `docs/OSAMA_ALOKAB_ROLE.md`
+- `AI_Log.md`
+
+### AI Suggestions
+- Defined 3 testing levels: Unit Testing for calculation & helper rules, Feature Testing for endpoints & database transactions, and Concurrency Testing with Pessimistic Locking (`lockForUpdate`) for double-booking defense.
+- Mapped explicit edge cases to business rules (`BR-01`, `BR-02`, `BR-03`) and functional requirements (`FR-01` to `FR-06`).
+- Added Mermaid sequence/flowchart diagrams for booking race condition handling and test pyramid hierarchy.
+
+### Accepted Suggestions
+- Adopted the full Test Pyramid structure and traceability matrix.
+- Adopted the structured category-based Edge Cases Matrix with clear HTTP status codes (`409`, `422`, `401`, `403`).
+
+### Rejected Suggestions
+- None. All specifications adhere to the approved `docs/SRS.md` and `docs/WORK_DISTRIBUTION.md`.
+
+### Human Decisions & Approval
+- Confirmed SQLite and PHPUnit/Pest as the testing execution environment.
+- Formulated testing DoD: 100% test pass rate required prior to merging PRs.
+
+### Testing & Verification
+- Validated markdown formatting, Mermaid diagram rendering, and cross-document links.
+
+### Final Result
+`docs/Testing.md` and `docs/EDGE_CASES_WORKSHEET.md` fully authored, structured, and aligned with project governance.
