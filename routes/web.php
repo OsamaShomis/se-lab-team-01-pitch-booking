@@ -23,6 +23,7 @@ Route::get('/pitches', function () {
 })->name('pitches.index');
 
 // FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid - Publicly accessible)
+// FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid)
 Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');
 Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
 
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // مسارات خاصة بأصحاب الملاعب فقط (Owner-Only Protected Area - FR-05)
+// FR-05: لوحة تحكم صاحب الملعب (Owner Dashboard)
 Route::middleware('role:owner')->prefix('owner')->name('owner.')->group(function () {
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('pitches.show');
