@@ -448,3 +448,54 @@ Enable registered players to cancel their bookings and automatically free up tim
 ### Final Result
 Feature `FR-06` fully implemented, tested, and ready for Pull Request and review by Maintainer (`Mo-ra778`) closing Issue #22.
 
+---
+
+### Entry 07: Global Layout Consolidation, Design Tokens Alignment & AJAX Dynamic Slots Updating (FR-03 / US-03)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Repository Maintainer & Developer)
+
+### Agent / Tool
+Gemini (Antigravity AI Senior Coding Assistant)
+
+### Task
+Consolidate duplicated base layout, enforce Design System tokens (`Pitch Natural Olive`), and implement real-time AJAX dynamic slot updates satisfying US-03 Acceptance Criteria 5.
+
+### Purpose
+Resolve critical HTML/CSS corruption in `resources/views/layouts/app.blade.php` resulting from git merge duplications, align tokens with `docs/Design-System.md`, and enable zero-page-reload dynamic slot selection.
+
+### Files Affected
+- `resources/views/layouts/app.blade.php`
+- `resources/views/pitches/slots.blade.php`
+- `app/Http/Controllers/TimeSlotController.php`
+- `resources/views/pitches/index.blade.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Eliminate duplicate HTML skeletons, multiple `<head>`, `<body>`, and `<nav>` blocks in `layouts/app.blade.php`.
+- Consolidate color tokens from `docs/Design-System.md` (`#354C2B`, `#4E653D`, `#697E50`, `#859864`, `#A4B17B`, `#C3CA92`, `#F8FAF6`) and preserve backwards-compatible aliases.
+- Add client-side JavaScript in `slots.blade.php` utilizing `fetch` against `/api/pitches/{pitch}/slots` to dynamically re-render slots and counters upon date selection without full page reload.
+- Enhance `TimeSlotController.php` to include `available_count` and `booked_count` in the JSON response payload.
+- Update `pitches/index.blade.php` to use valid design tokens, explicit SVG vector attributes, and direct navigation to the slots grid.
+
+### Accepted Suggestions
+- All suggestions accepted and verified locally.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Human maintainer instructed fixing UI layout issues and updating GitHub repository.
+- Confirmed zero emojis policy and verified clean vector SVGs across all views.
+
+### Testing & Verification
+- `php artisan test` executed successfully (36 tests, 129 assertions, 0 errors, 100% pass).
+- Visual inspection on `http://localhost:8000/pitches` and `http://localhost:8000/pitches/1/slots` confirmed seamless layout, responsive design, and dynamic AJAX slot filtering.
+
+### Final Result
+Global layout consolidated and cleaned; US-03 acceptance criteria 100% verified and operational.
+
+
