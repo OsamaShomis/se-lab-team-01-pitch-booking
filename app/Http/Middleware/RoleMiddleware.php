@@ -16,13 +16,9 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (! Auth::check()) {
-            return redirect()->route('login')->with('error', 'يجب تسجيل الدخول أولاً للوصول إلى هذه الصفحة.');
-        }
-
         $user = Auth::user();
 
-        if ($user->role !== $role) {
+        if (! $user || $user->role !== $role) {
             abort(403, 'غير مصرح لك بالوصول إلى هذه الصفحة.');
         }
 

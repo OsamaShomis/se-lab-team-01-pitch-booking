@@ -29,6 +29,11 @@ Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name
 Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
 
 // مسارات الزوار غير المسجلين (Guest Routes)
+// FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid)
+Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');
+Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
+
+// مسارات الزوار غير المسجلين (Guest Routes - FR-01)
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
@@ -50,4 +55,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('pitches.show');
         Route::patch('/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('bookings.status');
     });
+});
+    // FR-06: حجوزاتي وإلغاء الحجز (Player Bookings & Cancellation)
+    Route::get('/my-bookings', [BookingCancellationController::class, 'index'])->name('bookings.my');
+    Route::delete('/bookings/{booking}/cancel', [BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
+    Route::delete('/api/bookings/{booking}', [BookingCancellationController::class, 'cancel']);
+});
+
+// FR-05: لوحة تحكم صاحب الملعب (Owner Dashboard)
+Route::prefix('owner')->name('owner.')->group(function () {
+    Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('pitches.show');
+    Route::patch('/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('bookings.status');
 });
