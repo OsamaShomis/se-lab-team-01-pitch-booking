@@ -2,16 +2,16 @@
 
 ## منصة كورة بلص (KooraPlus Pitch Booking Platform)
 
-| الحقل | القيمة |
-|---|---|
-| **اسم المشروع** | KooraPlus Pitch Booking Platform |
-| **الفريق** | SHIDRA TEAM (Team 01) |
-| **المسؤول** | محمد الإدريسي (`Mo-ra778` — Repository Maintainer & Developer) |
-| **محرك قاعدة البيانات** | **SQLite 3.x** (ملف: `database/database.sqlite`) |
-| **الحالة** | معتمد ومكتمل ✅ |
-| **الإصدار** | 1.0 |
-| **آخر تحديث** | 2026-09-26 |
-| **الخطوة المرتبطة** | الخطوة رقم 9 في [`docs/WORK_DISTRIBUTION.md`](./WORK_DISTRIBUTION.md) |
+| الحقل                                     | القيمة                                                                     |
+| ---------------------------------------------- | -------------------------------------------------------------------------------- |
+| **اسم المشروع**                | KooraPlus Pitch Booking Platform                                                 |
+| **الفريق**                         | SHIDRA TEAM (Team 01)                                                            |
+| **المسؤول**                       | محمد الإدريسي (`Mo-ra778` — Repository Maintainer & Developer)    |
+| **محرك قاعدة البيانات** | **SQLite 3.x** (ملف: `database/database.sqlite`)                      |
+| **الحالة**                         | معتمد ومكتمل ✅                                                       |
+| **الإصدار**                       | 1.0                                                                              |
+| **آخر تحديث**                    | 2026-09-26                                                                       |
+| **الخطوة المرتبطة**        | الخطوة رقم 9 في[`docs/WORK_DISTRIBUTION.md`](./WORK_DISTRIBUTION.md) |
 
 ---
 
@@ -20,12 +20,14 @@
 قاعدة بيانات منصة **KooraPlus** مصممة لتكون **بسيطة، سريعة، وعالية الموثوقية** لتلبية متطلبات النظام الأساسية (المتطلبات الوظيفية FR-01 إلى FR-06).
 
 ### القرارات المعمارية المعتمدة:
+
 1. **المحرك (Engine):** **SQLite 3.x** مدمج عبر امتداد `pdo_sqlite` في PHP.
    - لا حاجة لتثبيت خوادم قواعد بيانات خارجية (مثل MySQL أو MariaDB).
    - ملف قاعدة بيانات موحد (`database/database.sqlite`) يسهل تشغيله وتناقله بين أعضاء الفريق دون أي تضارب.
 2. **الترميز ومحارف اللغة (Encoding):** `UTF-8` كامل لضمان دعم وتخزين النصوص العربية وأسماء الملاعب واللاعبين بسلاسة.
 3. **سلامة المفاتيح الأجنبية (Foreign Keys):** تفعيل قيد المفاتيح الأجنبية إجبارياً في SQLite عبر تشغيل:
    ```sql
+
    PRAGMA foreign_keys = ON;
    ```
 4. **تكامل البيانات ومنع التضارب (ACID Transactions):**
@@ -94,6 +96,7 @@ erDiagram
 ```
 
 ### توصيف العلاقات بين الكيانات (Cardinality & Multiplicity):
+
 - **المستخدم والملاعب (`users` 1 ──< N `pitches`):** مستخدم واحد من نوع `owner` يمكن أن يمتلك ملعباً واحداً أو أكثر.
 - **الملعب والفترات الزمنية (`pitches` 1 ──< N `time_slots`):** كل ملعب يتفرع عنه جدول من الساعات والفترات اليومية.
 - **المستخدم والحجوزات (`users` 1 ──< N `bookings`):** كل لاعب يمكن أن يجري حجوزات متعددة على مدار فترات زمنية مختلفة.
@@ -104,21 +107,23 @@ erDiagram
 ## 3. 🗄️ قاموس البيانات وهيكل الجداول (Data Dictionary)
 
 ### أ. جدول المستخدمين (`users`)
+
 يخدم تسجيل الحسابات والمصادقة وإدارة الصلاحيات (المتطلب **FR-01**).
 
-| اسم الحقل | النوع | Nullable | الافتراضي | المفتاح والقيود | الوصف والدور |
-|---|---|:---:|---|---|---|
-| `id` | BIGINT UNSIGNED | ❌ | Auto Increment | **PK** | المعرف الرقمي الأساسي للمستخدم |
-| `name` | VARCHAR(100) | ❌ | — | — | الاسم الكامل للمستخدم |
-| `email` | VARCHAR(150) | ❌ | — | **UNIQUE** | البريد الإلكتروني (لتسجيل الدخول) |
-| `phone` | VARCHAR(20) | ❌ | — | **UNIQUE** | رقم الهاتف (للتواصل وتأكيد الحجز) |
-| `password` | VARCHAR(255) | ❌ | — | — | كلمة المرور مشفرة بـ Bcrypt (حسب NFR-02) |
-| `role` | VARCHAR(20) | ❌ | `'player'` | `CHECK(role IN ('player', 'owner'))` | دور المستخدم: لاعب أو صاحب ملعب |
-| `remember_token`| VARCHAR(100) | ✅ | NULL | — | رمز تذكر تسجيل الدخول (خاص بـ Laravel) |
-| `created_at` | TIMESTAMP | ✅ | NULL | — | تاريخ إنشاء الحساب |
-| `updated_at` | TIMESTAMP | ✅ | NULL | — | تاريخ آخر تعديل للحساب |
+| اسم الحقل  | النوع      | Nullable | الافتراضي | المفتاح والقيود          | الوصف والدور                                       |
+| ------------------ | --------------- | :------: | ------------------ | -------------------------------------- | ------------------------------------------------------------- |
+| `id`             | BIGINT UNSIGNED |    ❌    | Auto Increment     | **PK**                           | المعرف الرقمي الأساسي للمستخدم     |
+| `name`           | VARCHAR(100)    |    ❌    | —                 | —                                     | الاسم الكامل للمستخدم                      |
+| `email`          | VARCHAR(150)    |    ❌    | —                 | **UNIQUE**                       | البريد الإلكتروني (لتسجيل الدخول) |
+| `phone`          | VARCHAR(20)     |    ❌    | —                 | **UNIQUE**                       | رقم الهاتف (للتواصل وتأكيد الحجز)  |
+| `password`       | VARCHAR(255)    |    ❌    | —                 | —                                     | كلمة المرور مشفرة بـ Bcrypt (حسب NFR-02)  |
+| `role`           | VARCHAR(20)     |    ❌    | `'player'`       | `CHECK(role IN ('player', 'owner'))` | دور المستخدم: لاعب أو صاحب ملعب      |
+| `remember_token` | VARCHAR(100)    |    ✅    | NULL               | —                                     | رمز تذكر تسجيل الدخول (خاص بـ Laravel) |
+| `created_at`     | TIMESTAMP       |    ✅    | NULL               | —                                     | تاريخ إنشاء الحساب                            |
+| `updated_at`     | TIMESTAMP       |    ✅    | NULL               | —                                     | تاريخ آخر تعديل للحساب                     |
 
 **الفهارس (Indexes):**
+
 - `PRIMARY KEY (id)`
 - `UNIQUE INDEX idx_users_email (email)`
 - `UNIQUE INDEX idx_users_phone (phone)`
@@ -127,24 +132,26 @@ erDiagram
 ---
 
 ### ب. جدول الملاعب (`pitches`)
+
 يخدم استعراض قائمة الملاعب، البحث عنها، وعرض مواصفاتها وأسعارها (المتطلب **FR-02**).
 
-| اسم الحقل | النوع | Nullable | الافتراضي | المفتاح والقيود | الوصف والدور |
-|---|---|:---:|---|---|---|
-| `id` | BIGINT UNSIGNED | ❌ | Auto Increment | **PK** | المعرف الرقمي للملعب |
-| `owner_id` | BIGINT UNSIGNED | ❌ | — | **FK** (`users.id`) ON DELETE CASCADE | صاحب ومسؤول الملعب |
-| `name` | VARCHAR(150) | ❌ | — | — | اسم الملعب الرياضي |
-| `location` | VARCHAR(255) | ❌ | — | — | العنوان والمدينة والحي |
-| `turf_type` | VARCHAR(30) | ❌ | `'artificial'` | `CHECK(turf_type IN ('artificial', 'natural', 'hybrid'))` | نوع الأرضية: عشب صناعي، طبيعي، أو هجين |
-| `hourly_rate` | DECIMAL(8, 2) | ❌ | — | — | السعر الأساسي لحجز الساعة الواحدة (بالريال) |
-| `contact_phone`| VARCHAR(20) | ❌ | — | — | رقم هاتف إدارة الملعب للتواصل والاستفسار |
-| `image_url` | VARCHAR(255) | ✅ | NULL | — | رابط أو مسار الصورة الرئيسية للملعب |
-| `description` | TEXT | ✅ | NULL | — | تفاصيل المرافق (مواقف، كشافات، كرات، غرف تبديل) |
-| `is_active` | BOOLEAN | ❌ | `1` (True) | — | حالة الملعب (متاح للحجوزات أم مغلق مؤقتاً) |
-| `created_at` | TIMESTAMP | ✅ | NULL | — | تاريخ إضافة الملعب |
-| `updated_at` | TIMESTAMP | ✅ | NULL | — | تاريخ تحديث بيانات الملعب |
+| اسم الحقل | النوع      | Nullable | الافتراضي | المفتاح والقيود                               | الوصف والدور                                                                |
+| ----------------- | --------------- | :------: | ------------------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `id`            | BIGINT UNSIGNED |    ❌    | Auto Increment     | **PK**                                                | المعرف الرقمي للملعب                                                 |
+| `owner_id`      | BIGINT UNSIGNED |    ❌    | —                 | **FK** (`users.id`) ON DELETE CASCADE               | صاحب ومسؤول الملعب                                                     |
+| `name`          | VARCHAR(150)    |    ❌    | —                 | —                                                          | اسم الملعب الرياضي                                                     |
+| `location`      | VARCHAR(255)    |    ❌    | —                 | —                                                          | العنوان والمدينة والحي                                             |
+| `turf_type`     | VARCHAR(30)     |    ❌    | `'artificial'`   | `CHECK(turf_type IN ('artificial', 'natural', 'hybrid'))` | نوع الأرضية: عشب صناعي، طبيعي، أو هجين                  |
+| `hourly_rate`   | DECIMAL(8, 2)   |    ❌    | —                 | —                                                          | السعر الأساسي لحجز الساعة الواحدة (بالريال)        |
+| `contact_phone` | VARCHAR(20)     |    ❌    | —                 | —                                                          | رقم هاتف إدارة الملعب للتواصل والاستفسار            |
+| `image_url`     | VARCHAR(255)    |    ✅    | NULL               | —                                                          | رابط أو مسار الصورة الرئيسية للملعب                      |
+| `description`   | TEXT            |    ✅    | NULL               | —                                                          | تفاصيل المرافق (مواقف، كشافات، كرات، غرف تبديل) |
+| `is_active`     | BOOLEAN         |    ❌    | `1` (True)       | —                                                          | حالة الملعب (متاح للحجوزات أم مغلق مؤقتاً)           |
+| `created_at`    | TIMESTAMP       |    ✅    | NULL               | —                                                          | تاريخ إضافة الملعب                                                     |
+| `updated_at`    | TIMESTAMP       |    ✅    | NULL               | —                                                          | تاريخ تحديث بيانات الملعب                                        |
 
 **الفهارس (Indexes):**
+
 - `PRIMARY KEY (id)`
 - `INDEX idx_pitches_owner (owner_id)`
 - `INDEX idx_pitches_location (location)` (لتسريع تصفية الملاعب حسب المنطقة)
@@ -153,21 +160,23 @@ erDiagram
 ---
 
 ### ج. جدول الفترات الزمنية (`time_slots`)
+
 يخدم عرض الساعات اليومية المتاحة والمحجوزة لحظياً لكل ملعب (المتطلب **FR-03**).
 
-| اسم الحقل | النوع | Nullable | الافتراضي | المفتاح والقيود | الوصف والدور |
-|---|---|:---:|---|---|---|
-| `id` | BIGINT UNSIGNED | ❌ | Auto Increment | **PK** | المعرف الرقمي للفترة الزمنية |
-| `pitch_id` | BIGINT UNSIGNED | ❌ | — | **FK** (`pitches.id`) ON DELETE CASCADE | الملعب التابعة له هذه الفترة |
-| `date` | DATE | ❌ | — | — | تاريخ اليوم الخاص بالفترة (YYYY-MM-DD) |
-| `start_time` | TIME | ❌ | — | — | وقت بداية الفترة (مثلاً: `18:00:00`) |
-| `end_time` | TIME | ❌ | — | — | وقت نهاية الفترة (مثلاً: `19:00:00`) |
-| `price` | DECIMAL(8, 2) | ❌ | — | — | سعر هذه الفترة المحددة (يدعم اختلاف أوقات الذروة) |
-| `status` | VARCHAR(20) | ❌ | `'available'` | `CHECK(status IN ('available', 'booked', 'maintenance'))` | حالة الساعة: متاح بالأخضر، محجوز بالأحمر، صيانة |
-| `created_at` | TIMESTAMP | ✅ | NULL | — | تاريخ توليد الفترة |
-| `updated_at` | TIMESTAMP | ✅ | NULL | — | تاريخ تحديث الحالة |
+| اسم الحقل | النوع      | Nullable | الافتراضي | المفتاح والقيود                               | الوصف والدور                                                                   |
+| ----------------- | --------------- | :------: | ------------------ | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `id`            | BIGINT UNSIGNED |    ❌    | Auto Increment     | **PK**                                                | المعرف الرقمي للفترة الزمنية                                     |
+| `pitch_id`      | BIGINT UNSIGNED |    ❌    | —                 | **FK** (`pitches.id`) ON DELETE CASCADE             | الملعب التابعة له هذه الفترة                                      |
+| `date`          | DATE            |    ❌    | —                 | —                                                          | تاريخ اليوم الخاص بالفترة (YYYY-MM-DD)                              |
+| `start_time`    | TIME            |    ❌    | —                 | —                                                          | وقت بداية الفترة (مثلاً:`18:00:00`)                                  |
+| `end_time`      | TIME            |    ❌    | —                 | —                                                          | وقت نهاية الفترة (مثلاً:`19:00:00`)                                  |
+| `price`         | DECIMAL(8, 2)   |    ❌    | —                 | —                                                          | سعر هذه الفترة المحددة (يدعم اختلاف أوقات الذروة) |
+| `status`        | VARCHAR(20)     |    ❌    | `'available'`    | `CHECK(status IN ('available', 'booked', 'maintenance'))` | حالة الساعة: متاح بالأخضر، محجوز بالأحمر، صيانة   |
+| `created_at`    | TIMESTAMP       |    ✅    | NULL               | —                                                          | تاريخ توليد الفترة                                                        |
+| `updated_at`    | TIMESTAMP       |    ✅    | NULL               | —                                                          | تاريخ تحديث الحالة                                                        |
 
 **القيود والفهارس (Constraints & Indexes):**
+
 - `PRIMARY KEY (id)`
 - **`UNIQUE INDEX uq_pitch_date_start (pitch_id, date, start_time)`:** يضمن استحالة توليد فترتين لنفس الملعب بنفس الساعة والتاريخ.
 - **`INDEX idx_slots_lookup (pitch_id, date, status)`:** فهرس مركب فائق السرعة لجلب جدول الساعات المتاحة لتاريخ معين بأقل من 1.5 ثانية (حسب NFR-01).
@@ -175,21 +184,23 @@ erDiagram
 ---
 
 ### د. جدول الحجوزات (`bookings`)
+
 يخدم تأكيد الحجز وإدارته وإلغائه (المتطلبات **FR-04**, **FR-05**, **FR-06**).
 
-| اسم الحقل | النوع | Nullable | الافتراضي | المفتاح والقيود | الوصف والدور |
-|---|---|:---:|---|---|---|
-| `id` | BIGINT UNSIGNED | ❌ | Auto Increment | **PK** | المعرف الرقمي للحجز |
-| `booking_reference` | VARCHAR(30) | ❌ | — | **UNIQUE** | رمز مرجعي مميز (مثل: `KP-2026-A482`) لإثبات الحجز عند الدفع كاش |
-| `user_id` | BIGINT UNSIGNED | ❌ | — | **FK** (`users.id`) ON DELETE CASCADE | معرّف اللاعب الحاجز |
-| `time_slot_id` | BIGINT UNSIGNED | ❌ | — | **FK** (`time_slots.id`) ON DELETE RESTRICT, **UNIQUE** | معرّف الفترة المحجوزة (فريد لحماية منع الحجز المزدوج) |
-| `total_price` | DECIMAL(8, 2) | ❌ | — | — | إجمالي المبلغ المستحق (يُدفع نقداً كاش في مقر الملعب) |
-| `status` | VARCHAR(20) | ❌ | `'confirmed'` | `CHECK(status IN ('confirmed', 'completed', 'cancelled'))` | حالة الحجز: مؤكد، مكتمل، أو ملغي |
-| `notes` | TEXT | ✅ | NULL | — | ملاحظات اللاعب أو كابتن الفريق عند الحجز |
-| `created_at` | TIMESTAMP | ✅ | NULL | — | تاريخ ووقت إجراء الحجز |
-| `updated_at` | TIMESTAMP | ✅ | NULL | — | تاريخ تحديث حالة الحجز |
+| اسم الحقل     | النوع      | Nullable | الافتراضي | المفتاح والقيود                                         | الوصف والدور                                                                               |
+| --------------------- | --------------- | :------: | ------------------ | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `id`                | BIGINT UNSIGNED |    ❌    | Auto Increment     | **PK**                                                          | المعرف الرقمي للحجز                                                                  |
+| `booking_reference` | VARCHAR(30)     |    ❌    | —                 | **UNIQUE**                                                      | رمز مرجعي مميز (مثل:`KP-2026-A482`) لإثبات الحجز عند الدفع كاش |
+| `user_id`           | BIGINT UNSIGNED |    ❌    | —                 | **FK** (`users.id`) ON DELETE CASCADE                         | معرّف اللاعب الحاجز                                                                  |
+| `time_slot_id`      | BIGINT UNSIGNED |    ❌    | —                 | **FK** (`time_slots.id`) ON DELETE RESTRICT, **UNIQUE** | معرّف الفترة المحجوزة (فريد لحماية منع الحجز المزدوج)     |
+| `total_price`       | DECIMAL(8, 2)   |    ❌    | —                 | —                                                                    | إجمالي المبلغ المستحق (يُدفع نقداً كاش في مقر الملعب)      |
+| `status`            | VARCHAR(20)     |    ❌    | `'confirmed'`    | `CHECK(status IN ('confirmed', 'completed', 'cancelled'))`          | حالة الحجز: مؤكد، مكتمل، أو ملغي                                            |
+| `notes`             | TEXT            |    ✅    | NULL               | —                                                                    | ملاحظات اللاعب أو كابتن الفريق عند الحجز                            |
+| `created_at`        | TIMESTAMP       |    ✅    | NULL               | —                                                                    | تاريخ ووقت إجراء الحجز                                                             |
+| `updated_at`        | TIMESTAMP       |    ✅    | NULL               | —                                                                    | تاريخ تحديث حالة الحجز                                                             |
 
 **القيود والفهارس (Constraints & Indexes):**
+
 - `PRIMARY KEY (id)`
 - `UNIQUE INDEX idx_booking_reference (booking_reference)`
 - **`UNIQUE INDEX uq_slot_booking (time_slot_id)`:** قيد فريد يمنع تكرار حجز نفس الفترة الزمنية نهائياً.
@@ -213,11 +224,11 @@ erDiagram
 
 ## 5. 🛡️ تطبيق قواعد العمل في قاعدة البيانات (Business Rules Enforcement)
 
-| قاعدة العمل | نص القاعدة في `SRS.md` | كيفية تطبيقها هندسياً في قاعدة البيانات |
-|:---:|---|---|
-| **BR-01** | لا يمكن حجز فترة زمنية سابقة لتاريخ ووقت اللحظة الحالية. | تصفية واستعلام الفترات بحيث يكون `date > CURRENT_DATE OR (date = CURRENT_DATE AND start_time > CURRENT_TIME)`. ويتم التحقق من ذلك في طبقة `BookingRequest` قبل الحفظ. |
-| **BR-02** | الساعة المحجوزة تصبح غير متاحة فوراً لأي مستخدم آخر بمجرد تأكيد الحجز. | 1. تحديث `time_slots.status = 'booked'` داخل نفس `DB::transaction()` الخاصة بإنشاء الحجز.<br>2. قيد `UNIQUE(time_slot_id)` في جدول `bookings` يضمن رفض أي حجز ثانٍ لنفس الساعة على مستوى المحرك حتى لو حدث سباق متزامن. |
-| **BR-03** | لا يحق للاعب إلغاء الحجز إذا تبقى أقل من ساعتين على بداية الفترة. | تقوم طبقة `CancellationService` بفحص الفارق الزمني `(time_slots.date + start_time) - NOW() >= 2 Hours`. عند استيفاء الشرط: يتم تحديث `bookings.status = 'cancelled'` وإعادة `time_slots.status = 'available'`. |
+| قاعدة العمل | نص القاعدة في`SRS.md`                                                                                               | كيفية تطبيقها هندسياً في قاعدة البيانات                                                                                                                                                                                                                                                  |
+| :-------------------: | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    **BR-01**    | لا يمكن حجز فترة زمنية سابقة لتاريخ ووقت اللحظة الحالية.                           | تصفية واستعلام الفترات بحيث يكون`date > CURRENT_DATE OR (date = CURRENT_DATE AND start_time > CURRENT_TIME)`. ويتم التحقق من ذلك في طبقة `BookingRequest` قبل الحفظ.                                                                                          |
+|    **BR-02**    | الساعة المحجوزة تصبح غير متاحة فوراً لأي مستخدم آخر بمجرد تأكيد الحجز. | 1. تحديث`time_slots.status = 'booked'` داخل نفس `DB::transaction()` الخاصة بإنشاء الحجز.2. قيد `UNIQUE(time_slot_id)` في جدول `bookings` يضمن رفض أي حجز ثانٍ لنفس الساعة على مستوى المحرك حتى لو حدث سباق متزامن. |
+|    **BR-03**    | لا يحق للاعب إلغاء الحجز إذا تبقى أقل من ساعتين على بداية الفترة.            | تقوم طبقة`CancellationService` بفحص الفارق الزمني `(time_slots.date + start_time) - NOW() >= 2 Hours`. عند استيفاء الشرط: يتم تحديث `bookings.status = 'cancelled'` وإعادة `time_slots.status = 'available'`.                                                 |
 
 ---
 
@@ -225,6 +236,7 @@ erDiagram
 
 1. **دعم المفاتيح الأجنبية (Foreign Key Constraints):**
    - في SQLite تكون المفاتيح الأجنبية معطلة افتراضياً، لذلك يتم تفعيلها رسمياً في إعدادات Laravel (`config/database.php`):
+
    ```php
    'sqlite' => [
        'driver' => 'sqlite',
@@ -248,6 +260,7 @@ erDiagram
 تم تجهيز الأكواد البرمجية لملفات الـ Migrations ليسهل على الفريق نسخها إلى مجلد `database/migrations/` عند بدء مرحلة التطوير:
 
 ### 1. ترحيل جدول المستخدمين (`create_users_table.php`)
+
 ```php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -278,6 +291,7 @@ return new class extends Migration {
 ---
 
 ### 2. ترحيل جدول الملاعب (`create_pitches_table.php`)
+
 ```php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -313,6 +327,7 @@ return new class extends Migration {
 ---
 
 ### 3. ترحيل جدول الفترات الزمنية (`create_time_slots_table.php`)
+
 ```php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -344,6 +359,7 @@ return new class extends Migration {
 ---
 
 ### 4. ترحيل جدول الحجوزات (`create_bookings_table.php`)
+
 ```php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -401,17 +417,17 @@ INSERT INTO bookings (id, booking_reference, user_id, time_slot_id, total_price,
 
 ## 9. ✅ قائمة التحقق (Database Design Checklist)
 
-- [x] تم تحديد الكيانات الأساسية الأربعة (`users`, `pitches`, `time_slots`, `bookings`).
-- [x] تم رسم مخطط العلاقات (ERD) باستخدام Mermaid.
-- [x] تم إعداد قاموس البيانات بالكامل وتحديد الأنواع والمفاتيح الأساسية والأجنبية.
-- [x] تم تطبيق قواعد الأمان وتشفير كلمات المرور (NFR-02).
-- [x] تم وضع قيد فريد `UNIQUE(time_slot_id)` لمنع الحجز المزدوج وحماية التزامن (BR-02 & NFR-04).
-- [x] تم دعم وتطبيق القواعد المنطقية (BR-01, BR-02, BR-03).
-- [x] تم توثيق خصوصية محرك SQLite والقيود `CHECK` والفهارس الفائقة للسرعة.
-- [x] تم تجهيز سكربتات ترحيل Laravel (Migrations) الأربعة بلغة PHP.
+- [X] تم تحديد الكيانات الأساسية الأربعة (`users`, `pitches`, `time_slots`, `bookings`).
+- [X] تم رسم مخطط العلاقات (ERD) باستخدام Mermaid.
+- [X] تم إعداد قاموس البيانات بالكامل وتحديد الأنواع والمفاتيح الأساسية والأجنبية.
+- [X] تم تطبيق قواعد الأمان وتشفير كلمات المرور (NFR-02).
+- [X] تم وضع قيد فريد `UNIQUE(time_slot_id)` لمنع الحجز المزدوج وحماية التزامن (BR-02 & NFR-04).
+- [X] تم دعم وتطبيق القواعد المنطقية (BR-01, BR-02, BR-03).
+- [X] تم توثيق خصوصية محرك SQLite والقيود `CHECK` والفهارس الفائقة للسرعة.
+- [X] تم تجهيز سكربتات ترحيل Laravel (Migrations) الأربعة بلغة PHP.
 - [ ] بانتظار مراجعة واعتماد Team Coordinator (`OsamaShomis`) عبر الـ Pull Request.
 
 ---
 
-*تم إعداد هذا التوثيق بواسطة: محمد الإدريسي (`Mo-ra778` — Repository Maintainer & Developer)*  
+*تم إعداد هذا التوثيق بواسطة: محمد الإدريسي (`Mo-ra778` — Repository Maintainer & Developer)*
 *الخطوة المرتبطة: الخطوة رقم 9 من وثيقة توزيع المهام [`docs/WORK_DISTRIBUTION.md`](./WORK_DISTRIBUTION.md)*
