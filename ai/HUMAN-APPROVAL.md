@@ -43,6 +43,10 @@ The AI agent must seek explicit human confirmation before taking any action fall
 - [ ] Pushing directly to the protected `main` branch.
 - [ ] Bypassing team code review and merging Pull Requests without maintainer sign-off.
 
+### H. Team Ownership & Member Boundaries
+- [ ] Modifying another team member's assigned features, branches, or documentation as defined in [`docs/WORK_DISTRIBUTION.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/docs/WORK_DISTRIBUTION.md).
+- [ ] Committing or executing cross-boundary edits without explicit delegation confirmation ([`ai/rules/team-boundaries.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/team-boundaries.md)).
+
 ---
 
 ## 2. Standard Protocol for Seeking Human Approval

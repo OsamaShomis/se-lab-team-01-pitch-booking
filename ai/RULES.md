@@ -66,6 +66,7 @@ For deep technical directives, consult the respective specialized rule files:
 | **Testing** | Verification requirements, edge cases, truthfulness | [`ai/rules/testing.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/testing.md) |
 | **Git** | Branch naming, commit hygiene, Pull Request rules | [`ai/rules/git.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/git.md) |
 | **Documentation** | Keeping documentation synchronized and accurate | [`ai/rules/documentation.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/documentation.md) |
+| **Team Boundaries** | Member permissions, collision prevention & branch isolation | [`ai/rules/team-boundaries.md`](file:///e:/level_4/Software%20Engineering/Practical/Lab%201/ai/rules/team-boundaries.md) |
 
 ---
 
