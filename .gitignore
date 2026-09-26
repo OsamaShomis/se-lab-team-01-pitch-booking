@@ -12,6 +12,10 @@
 /storage/framework/views/*
 /storage/logs/*
 
+# SQLite
+*.sqlite
+*.sqlite-journal
+
 # Build
 /public/build/
 /public/mix-manifest.json

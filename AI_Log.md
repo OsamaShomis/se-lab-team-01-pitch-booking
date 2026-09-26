@@ -199,3 +199,60 @@ Establish clear rules for ethical, transparent, and rigorous use of AI coding as
 
 ### Final Result
 `docs/AI_GUIDELINES.md` and updated `AI_Log.md` ready for pull request review by Team Coordinator.
+
+---
+
+### Entry 04: Laravel 11 Project Baseline Setup & Core Data Layer
+
+### Date
+`2026-09-26`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Repository Maintainer & Developer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Initialize Laravel 11 Baseline with SQLite, Database Migrations, Eloquent Models, and Automated Test Suite (`setup/laravel-baseline`).
+
+### Purpose
+Establish a robust, shared technical baseline for the Development Phase so all team members can build their assigned features (FR-01 through FR-06) on top of an identical, tested architecture without merge conflicts.
+
+### Files Affected
+- `.env.example`, `.gitignore`, `composer.json`, `composer.lock`
+- `database/migrations/0001_01_01_000000_create_users_table.php`
+- `database/migrations/2026_09_26_000001_create_pitches_table.php`
+- `database/migrations/2026_09_26_000002_create_time_slots_table.php`
+- `database/migrations/2026_09_26_000003_create_bookings_table.php`
+- `app/Models/User.php`, `app/Models/Pitch.php`, `app/Models/TimeSlot.php`, `app/Models/Booking.php`
+- `database/factories/UserFactory.php`, `database/factories/PitchFactory.php`, `database/factories/TimeSlotFactory.php`, `database/factories/BookingFactory.php`
+- `tests/Unit/ModelsTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Position Laravel 11 directly at repository root alongside `docs/` and `ai/` for standard development ergonomics.
+- Configure SQLite (`DB_CONNECTION=sqlite`) as the universal local database to eliminate environment discrepancies and XAMPP/MySQL dependencies.
+- Map the schema defined in `docs/Database.md` into 4 core migrations with database-level constraints (`uq_pitch_date_start`, unique `time_slot_id`).
+- Implement Eloquent relationships (`hasMany`, `belongsTo`, `hasOne`) and domain helper methods (`canBeCancelled()` enforcing BR-03 2-hour window).
+- Author factory classes and an automated unit test suite (`tests/Unit/ModelsTest.php`) verifying all models and constraints.
+
+### Accepted Suggestions
+- All suggestions accepted and implemented with complete precision.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Confirmed SQLite setup and repository root layout.
+- Approved migration definitions and relationship mappings matching `docs/Database.md`.
+- Approved pull request workflow (`setup/laravel-baseline` -> `main`).
+
+### Testing & Verification
+- `php artisan migrate:fresh --seed` passed (100% success rate across all 6 tables).
+- `php artisan test` passed (6 tests, 16 assertions, zero failures).
+- Git repository cleanliness validated (`.env` and `database.sqlite` properly git-ignored).
+
+### Final Result
+Baseline branch `setup/laravel-baseline` fully implemented, verified, committed, and ready for PR merge into `main`.
+
