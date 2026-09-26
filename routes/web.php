@@ -51,3 +51,8 @@ Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name
 
 // API endpoint matching docs/API.md Endpoint 7
 Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
+
+// FR-06: Reservation Cancellation & Player Bookings
+Route::get('/my-bookings', [\App\Http\Controllers\BookingCancellationController::class, 'index'])->name('bookings.my');
+Route::delete('/bookings/{booking}/cancel', [\App\Http\Controllers\BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
+Route::delete('/api/bookings/{booking}', [\App\Http\Controllers\BookingCancellationController::class, 'cancel']);
