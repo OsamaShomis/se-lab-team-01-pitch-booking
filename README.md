@@ -1,51 +1,51 @@
-# [اسم المشروع]
+# منصة كورة بلص لحجز الملاعب الرياضية (KooraPlus)
 
 ## وصف المشروع
 
-[اكتب فقرة قصيرة تشرح المشكلة والحل المقترح.]
+منصة إلكترونية متكاملة تهدف إلى تسهيل وتنظيم عملية حجز ملاعب كرة القدم الرياضية الخاصة، وتوفير جدول تفاعلي لحظي يعرض الفترات الزمنية المتاحة والمحجوزة، لمنع تضارب المواعيد والقضاء على عشوائية التسجيل اليدوي.
 
 ## المشكلة
 
-[ما المشكلة الحقيقية؟ من يعاني منها؟ وما أثرها؟]
+يعاني لاعبو كرة القدم وكباتن الفرق من صعوبة معرفة الساعات الشاغرة في الملاعب وتضارب الحجوزات اليدوية عبر الاتصالات الهاتفية المتكررة، مما يؤدي إلى ضياع أوقاتهم وتكرار حجز الملعب نفسه لأكثر من فريق في الوقت ذاته، في حين يعاني أصحاب الملاعب من صعوبة إدارة جدول الحجوزات ومتابعة الدخل اليومي.
 
 ## المستخدمون المستهدفون
 
-- [المستخدم الأول]
-- [المستخدم الثاني]
+- **اللاعبون وكباتن الفرق:** للبحث عن الملاعب القريبة، تصفح المواعيد المتاحة، وحجز الفترة المناسبة بنقرة واحدة.
+- **أصحاب ومسؤولو الملاعب:** لتنظيم مواعيد وفترات عمل الملعب، تحديد الأسعار، وإدارة ومتابعة الحجوزات اليومية.
 
 ## أعضاء الفريق
 
-| الاسم | الرقم الجامعي | الدور | GitHub Username |
-|---|---|---|---|
-| [الاسم] | [الرقم] | Team Coordinator | [username] |
-| [الاسم] | [الرقم] | Requirements Owner | [username] |
-| [الاسم] | [الرقم] | Repository Maintainer | [username] |
-| [الاسم] | [الرقم] | Developer / Reviewer | [username] |
+| الاسم | الدور في الفريق | حساب GitHub |
+|---|---|---|
+| **أسامة الشميس** | Team Coordinator & Requirements Owner | [`OsamaShomis`](https://github.com/OsamaShomis) |
+| **محمد الإدريسي** | Repository Maintainer & Developer | [`Mo-ra778`](https://github.com/Mo-ra778) |
+| **أسامة العقاب** | Developer & Quality Reviewer | [`osalokab`](https://github.com/osalokab) |
 
-## التقنيات المتوقعة
+## التقنيات المستخدمة
 
-- Laravel
-- PHP
-- MySQL
-- Git
-- GitHub
+- **Backend:** Laravel (PHP) & RESTful APIs
+- **Database:** MySQL
+- **Frontend:** Blade / HTML5, CSS3, JavaScript
+- **Version Control & Management:** Git, GitHub, GitHub Projects (Kanban)
 
 ## وثائق المشروع
 
-- [Mini-SRS](docs/SRS.md)
-- [Project Brief](docs/PROJECT_BRIEF.md)
-- [Team Roles](docs/TEAM_ROLES.md)
-- [AI Usage Log](AI_Log.md)
+- [Project Brief (ملخص المشروع)](docs/PROJECT_BRIEF.md)
+- [Team Roles (توزيع أدوار الفريق)](docs/TEAM_ROLES.md)
+- [Mini-SRS (وثيقة المتطلبات)](docs/SRS.md)
+- [AI Usage Log (سجل الذكاء الاصطناعي)](AI_Log.md)
 - [Deliverables Checklist](DELIVERABLES_CHECKLIST.md)
 
 ## طريقة العمل
 
-يستخدم الفريق GitHub Issues وBranches وPull Requests وCode Review وGitHub Projects لإدارة العمل.
+يستخدم الفريق دورة عمل Git الاحترافية عبر الفروع المستقلة (Feature Branches)، وطلبات السحب (Pull Requests)، ومراجعة الأكواد (Code Review)، وإدارة المهام عبر لوحة Kanban على GitHub Projects.
 
 ## حالة المشروع
 
-- [ ] تم اختيار الفكرة.
-- [ ] تم توثيق المتطلبات.
-- [ ] تم إنشاء Project Board.
-- [ ] تم إنشاء خمس Issues.
-- [ ] تم تنفيذ أول Pull Request ومراجعتها.
+- [x] تم اختيار فكرة المشروع ونطاق العمل.
+- [x] تم إعداد ملخص المشروع (Project Brief) وتوزيع الأدوار.
+- [ ] تم توثيق المتطلبات وحالات الحافة في Mini-SRS.
+- [ ] تم إنشاء لوحة المهام (Project Board).
+- [ ] تم إنشاء خمس Issues تفصيلية.
+- [ ] تم تنفيذ أول Pull Request ومراجعتها ودمجها.
+
