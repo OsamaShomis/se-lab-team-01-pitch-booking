@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingCancellationController;
 use App\Http\Controllers\OwnerDashboardController;
+use App\Http\Controllers\PitchController;
 use App\Http\Controllers\TimeSlotController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +15,17 @@ use Illuminate\Support\Facades\Route;
 
 // الصفحة الرئيسية (Landing Page)
 Route::get('/', function () {
-    return view('welcome');
+    $featuredPitches = \Illuminate\Support\Facades\Schema::hasTable('pitches')
+        ? \App\Models\Pitch::where('is_active', true)->take(3)->get()
+        : collect();
+    return view('welcome', compact('featuredPitches'));
 })->name('home');
 
-// استعراض الملاعب (FR-02)
-Route::get('/pitches', function () {
-    return view('pitches.index');
-})->name('pitches.index');
+// استعراض وتفاصيل الملاعب (FR-02: Pitch Catalog & Details)
+Route::get('/pitches', [PitchController::class, 'index'])->name('pitches.index');
+Route::get('/pitches/{pitch}', [PitchController::class, 'show'])->name('pitches.show');
+Route::get('/api/pitches', [PitchController::class, 'index']);
+Route::get('/api/pitches/{pitch}', [PitchController::class, 'show']);
 
 // FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid)
 Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');

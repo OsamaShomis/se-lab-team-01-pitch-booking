@@ -22,20 +22,27 @@ class DatabaseSeeder extends Seeder
             ['email' => 'owner@kooraplus.com'],
             [
                 'name' => 'الكابتن علي الأهدل',
-                'phone' => '0501234567',
-                'name' => 'الكابتن صالح الشميري',
                 'phone' => '777123456',
                 'password' => Hash::make('password123'),
                 'role' => 'owner',
             ]
         );
-        $owner = $owner1;
 
         $owner2 = User::firstOrCreate(
             ['email' => 'owner2@kooraplus.com'],
             [
                 'name' => 'الكابتن فهد المقطري',
-                'phone' => '0509876543',
+                'phone' => '777987654',
+                'password' => Hash::make('password123'),
+                'role' => 'owner',
+            ]
+        );
+
+        $owner3 = User::firstOrCreate(
+            ['email' => 'owner3@kooraplus.com'],
+            [
+                'name' => 'الكابتن وضاح الحضرمي',
+                'phone' => '777456789',
                 'password' => Hash::make('password123'),
                 'role' => 'owner',
             ]
@@ -46,7 +53,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'player@kooraplus.com'],
             [
                 'name' => 'محمد الإدريسي',
-                'phone' => '0507654321',
+                'phone' => '771234567',
                 'password' => Hash::make('password123'),
                 'role' => 'player',
             ]
@@ -56,7 +63,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'player2@kooraplus.com'],
             [
                 'name' => 'عمر صانع الألعاب',
-                'phone' => '0505445566',
+                'phone' => '772345678',
                 'password' => Hash::make('password123'),
                 'role' => 'player',
             ]
@@ -65,130 +72,84 @@ class DatabaseSeeder extends Seeder
         $player3 = User::firstOrCreate(
             ['email' => 'player3@kooraplus.com'],
             [
-                'name' => 'ياسر الكابتن',
-                'phone' => '0507988990',
+                'name' => 'ياسر الهداف',
+                'phone' => '773456789',
                 'password' => Hash::make('password123'),
                 'role' => 'player',
             ]
         );
 
-        // 3. Create Pitches
+        // 3. Create Pitches (6 diverse pitches across cities and turf types)
         $pitchesData = [
             [
+                'owner_id' => $owner1->id,
                 'name' => 'ملعب الأساطير الدولي',
-                'owner_id' => $owner1->id,
-        $pitch1 = Pitch::firstOrCreate(
-            ['name' => 'ملعب الأساطير الدولي'],
-            [
-                'owner_id' => $owner1->id,
                 'location' => 'صنعاء — حي حدة خلف مجمع الكميم',
                 'turf_type' => 'artificial',
                 'hourly_rate' => 12000.00,
                 'contact_phone' => '777123456',
-                'description' => 'ملعب سباعي مجهز بأحدث كشافات الإنارة الليلية، مواقف سيارات خاصة، وغرف تبديل ملابس واستراحة مكيفة.',
+                'image_url' => 'pitches/legends_pitch.jpg',
+                'description' => 'ملعب سباعي فاخر معشب بأحدث عشب صناعي من الجيل الرابع (FIFA Standard). مجهز بكشافات LED ليلية فائقة الإضاءة، مدرج للجماهير، غرف تبديل ملابس واستراحة مكيفة، ومواقف سيارات آمنة.',
                 'is_active' => true,
-            ]
-        );
-
-        $pitch2 = Pitch::firstOrCreate(
-            ['name' => 'ملعب قمة النجوم'],
+            ],
             [
                 'owner_id' => $owner1->id,
+                'name' => 'ملعب قمة النجوم',
                 'location' => 'صنعاء — شارع الستين الغربي جوار جسر مذبح',
                 'turf_type' => 'artificial',
-                'hourly_rate' => 10000.00,
+                'hourly_rate' => 9500.00,
                 'contact_phone' => '777123456',
-                'description' => 'ملعب خماسي متميز، كافيه ومشروبات، أرضية معشبة حديثة وشباك حماية.',
-                'is_active' => true,
-            ]
-        );
-
-        // 4. Create Today's Time Slots for Pitch 1
-        $today = Carbon::today()->format('Y-m-d');
-
-        $slotsData = [
-            ['start' => '16:00:00', 'end' => '17:00:00', 'status' => 'booked', 'booked_by' => $player1, 'b_status' => 'completed'],
-            ['start' => '17:00:00', 'end' => '18:00:00', 'status' => 'booked', 'booked_by' => $player2, 'b_status' => 'confirmed'],
-            ['start' => '18:00:00', 'end' => '19:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '19:00:00', 'end' => '20:00:00', 'status' => 'booked', 'booked_by' => $player3, 'b_status' => 'confirmed'],
-            ['start' => '20:00:00', 'end' => '21:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '21:00:00', 'end' => '22:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-            ['start' => '22:00:00', 'end' => '23:00:00', 'status' => 'available', 'booked_by' => null, 'b_status' => null],
-        ];
-
-        foreach ($slotsData as $index => $slotInfo) {
-            $slot = TimeSlot::firstOrCreate(
-                [
-                    'pitch_id' => $pitch1->id,
-                    'date' => $today,
-                    'start_time' => $slotInfo['start'],
-                ],
-                [
-                    'end_time' => $slotInfo['end'],
-                    'price' => $pitch1->hourly_rate,
-                    'status' => $slotInfo['status'],
-                ]
-            );
-
-            if ($slotInfo['booked_by']) {
-                Booking::firstOrCreate(
-                    ['time_slot_id' => $slot->id],
-                    [
-                        'booking_reference' => 'KP-' . strtoupper(substr(md5(uniqid()), 0, 6)),
-                        'user_id' => $slotInfo['booked_by']->id,
-                        'total_price' => $pitch1->hourly_rate,
-                        'status' => $slotInfo['b_status'],
-                        'notes' => 'حجز تجريبي مباشر من منصة كورة بلص',
-                    ]
-                );
-            }
-        }
-
-        // 2. Create a Player User
-        $player = User::firstOrCreate(
-            ['email' => 'player@kooraplus.com'],
-            [
-                'name' => 'محمد الإدريسي',
-                'phone' => '0507654321',
-                'password' => Hash::make('password123'),
-                'role' => 'player',
-            ]
-        );
-
-        // 3. Create Additional Sample Pitches
-        $pitchesData = [
-            [
-                'name' => 'ملعب النخبة الأولمبي',
-                'location' => 'صنعاء - حدة - بالقرب من جولة الرويشان',
-                'turf_type' => 'artificial',
-                'hourly_rate' => 150.00,
-                'contact_phone' => '0501112233',
-                'description' => 'عشب صناعي من الجيل الرابع، إضاءة ليلية عالية الكفاءة (LED)، كافتيريا، غرف تبديل ومواقف سيارات واسعة.',
+                'image_url' => 'pitches/stars_pitch.jpg',
+                'description' => 'ملعب خماسي عصري ذو أرضية عشبية ممتازة وشباك حماية كاملة. يحتوي على كافتيريا متكاملة لتقديم المشروبات ومعدات رياضية وتأجير سترات تدريب.',
                 'is_active' => true,
             ],
             [
-                'name' => 'ملعب قمة النجوم الملكي',
-                'owner_id' => $owner1->id,
-                'location' => 'عدن - خور مكسر - ساحل أبين',
-                'turf_type' => 'natural',
-                'hourly_rate' => 200.00,
-                'contact_phone' => '0502223344',
-                'description' => 'عشب طبيعي فاخر بمقاسات سباعية، مدرجات للجماهير، مياه شرب ومشروبات طاقة مجانية.',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'ملعب الكلاسيكو الخماسي',
                 'owner_id' => $owner2->id,
-                'location' => 'تعز - المسبح - الشارع العام',
+                'name' => 'ملعب الكلاسيكو الملكي',
+                'location' => 'عدن — خور مكسر بالقرب من ساحل أبين',
+                'turf_type' => 'natural',
+                'hourly_rate' => 15000.00,
+                'contact_phone' => '777987654',
+                'image_url' => 'pitches/clasico_pitch.jpg',
+                'description' => 'ملعب ثماني مميز بأرضية عشب طبيعي معتنى بها بعناية فائقة. إطلالة بحرية نقية، كشافات احترافية، مياه شرب ومشروبات طاقة مجانية للفرق.',
+                'is_active' => true,
+            ],
+            [
+                'owner_id' => $owner2->id,
+                'name' => 'صالة المسبح الرياضية المغطاة',
+                'location' => 'تعز — المسبح شارع جمال',
                 'turf_type' => 'hybrid',
-                'hourly_rate' => 120.00,
-                'contact_phone' => '0503334455',
-                'description' => 'ملعب هجين مغلق ومجهز لكافة الظروف الجوية، كرات جديدة ومساعدات إسعافية.',
+                'hourly_rate' => 11000.00,
+                'contact_phone' => '777987654',
+                'image_url' => 'pitches/taiz_indoor.jpg',
+                'description' => 'صالة هجينة مغلقة ومكيفة تتسع لـ 6 ضد 6، أرضية باركيه رياضية احترافية، مناسبة لكافة الظروف الجوية واللعب المسائي، وخدمات إسعافية.',
+                'is_active' => true,
+            ],
+            [
+                'owner_id' => $owner3->id,
+                'name' => 'ملعب اللواء الأولمبي',
+                'location' => 'إب — الدائري الغربي جوار منتزه مشورة',
+                'turf_type' => 'natural',
+                'hourly_rate' => 10500.00,
+                'contact_phone' => '777456789',
+                'image_url' => 'pitches/ibb_olympic.jpg',
+                'description' => 'ملعب طبيعي خلاب بين أحضان الطبيعة في إب الخضراء. مقاسات واسعة لـ 7 ضد 7، حكام ومراقبين معتمدين، ومواقف شاسعة للحافلات والسيارات.',
+                'is_active' => true,
+            ],
+            [
+                'owner_id' => $owner3->id,
+                'name' => 'ملعب شاطئ المكلا الساحلي',
+                'location' => 'حضرموت — المكلا حي الشرج',
+                'turf_type' => 'artificial',
+                'hourly_rate' => 8500.00,
+                'contact_phone' => '777456789',
+                'image_url' => 'pitches/mukalla_beach.jpg',
+                'description' => 'ملعب حديث ومعشب صناعياً بمواصفات ممتازة، كرات جديدة مع كل مباراة، غرف استحمام، وقريب جداً من قلب مدينة المكلا والخدمات العامة.',
                 'is_active' => true,
             ],
         ];
 
-        // 90-minute match slot templates:
+        // Slot Templates
         $slotTemplates = [
             ['start' => '16:00:00', 'end' => '17:30:00'], // عصر
             ['start' => '17:30:00', 'end' => '19:00:00'], // مغرب
@@ -197,22 +158,24 @@ class DatabaseSeeder extends Seeder
             ['start' => '22:00:00', 'end' => '23:30:00'], // سهرة 2
         ];
 
-        foreach ($pitchesData as $data) {
+        $today = Carbon::today()->toDateString();
+
+        foreach ($pitchesData as $pIndex => $pData) {
             $pitch = Pitch::firstOrCreate(
-                ['name' => $data['name']],
-                $data
+                ['name' => $pData['name']],
+                $pData
             );
 
             // Generate slots for Today + next 6 days
             for ($dayOffset = 0; $dayOffset <= 6; $dayOffset++) {
                 $currentDate = Carbon::today()->addDays($dayOffset)->toDateString();
 
-                foreach ($slotTemplates as $index => $slot) {
-                    // For demonstration: simulate booked slots
-                    $isBooked = ($dayOffset === 0 && in_array($index, [1, 3])) || ($dayOffset === 1 && $index === 2);
+                foreach ($slotTemplates as $sIndex => $slot) {
+                    // Simulate booked slots for realistic interactive experience
+                    $isBooked = ($dayOffset === 0 && in_array($sIndex, [1, 3])) || ($dayOffset === 1 && $sIndex === 2);
                     $status = $isBooked ? 'booked' : 'available';
 
-                    // 90 minutes price = 1.5 * hourly_rate
+                    // 90 minutes slot price
                     $slotPrice = $pitch->hourly_rate * 1.5;
 
                     $timeSlot = TimeSlot::firstOrCreate(
@@ -228,9 +191,9 @@ class DatabaseSeeder extends Seeder
                         ]
                     );
 
-                    // Create real booking records for booked slots to support My Bookings (FR-06) and Dashboard (FR-05)
+                    // Create real bookings for booked slots
                     if ($isBooked) {
-                        $bookedPlayer = match($index) {
+                        $bookedPlayer = match($sIndex) {
                             1 => $player1,
                             2 => $player2,
                             default => $player3,
@@ -239,11 +202,11 @@ class DatabaseSeeder extends Seeder
                         Booking::firstOrCreate(
                             ['time_slot_id' => $timeSlot->id],
                             [
-                                'booking_reference' => 'KP-' . strtoupper(substr(md5(uniqid()), 0, 6)),
+                                'booking_reference' => 'KP-' . strtoupper(substr(md5($timeSlot->id . $currentDate), 0, 6)),
                                 'user_id' => $bookedPlayer->id,
                                 'total_price' => $slotPrice,
                                 'status' => 'confirmed',
-                                'notes' => 'حجز تجريبي مؤكد من منصة كورة بلص',
+                                'notes' => 'حجز تجريبي مباشر من منصة كورة بلص',
                             ]
                         );
                     }
