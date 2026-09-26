@@ -16,9 +16,9 @@ class AuthTest extends TestCase
         $response = $this->get(route('register'));
 
         $response->assertStatus(200);
-        $response->assertSee('إنشاء حساب في كورة بلص');
+        $response->assertSee('إنشاء حساب جديد');
         $response->assertSee('حساب لاعب');
-        $response->assertSee('صاحب ملعب');
+        $response->assertSee('صاحب منشأة');
     }
 
     public function test_player_can_register_and_is_redirected_to_pitches(): void
@@ -45,7 +45,7 @@ class AuthTest extends TestCase
     public function test_owner_can_register_and_is_redirected_to_owner_dashboard(): void
     {
         $response = $this->post(route('register'), [
-            'name' => 'صاحب ملعب النجوم',
+            'name' => 'صاحب منشأة النجوم',
             'email' => 'owner@example.com',
             'phone' => '0509876543',
             'password' => 'password123',
@@ -76,6 +76,23 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['email']);
+        $this->assertGuest();
+    }
+
+    public function test_registration_fails_with_duplicate_phone(): void
+    {
+        User::factory()->create(['phone' => '0501111111']);
+
+        $response = $this->post(route('register'), [
+            'name' => 'مستخدم برقم مكرر',
+            'email' => 'unique@example.com',
+            'phone' => '0501111111',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'role' => 'owner',
+        ]);
+
+        $response->assertSessionHasErrors(['phone']);
         $this->assertGuest();
     }
 

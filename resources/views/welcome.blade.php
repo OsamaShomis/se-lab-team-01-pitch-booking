@@ -8,52 +8,54 @@
         background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
         border-radius: var(--radius-lg);
         color: #FFFFFF;
-        padding: 4rem 2.5rem;
+        padding: 3.5rem 2.5rem;
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
         box-shadow: var(--shadow-lg);
         position: relative;
         overflow: hidden;
     }
 
     .hero-badge {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
         background-color: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 0.35rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 0.3rem 0.85rem;
         border-radius: 30px;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         font-weight: 700;
         margin-bottom: 1.25rem;
         color: #FEF08A;
     }
 
     .hero h1 {
-        font-size: 2.8rem;
+        font-size: 2.4rem;
         font-weight: 900;
-        line-height: 1.25;
-        margin-bottom: 1rem;
-        letter-spacing: -1px;
+        line-height: 1.3;
+        margin-bottom: 0.85rem;
+        letter-spacing: -0.5px;
     }
 
     .hero p {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
         color: #E2E8F0;
-        max-width: 680px;
-        margin: 0 auto 2.25rem auto;
+        max-width: 650px;
+        margin: 0 auto 2rem auto;
     }
 
     .hero-actions {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 1.25rem;
+        gap: 1rem;
         flex-wrap: wrap;
     }
 
     .hero-btn {
-        padding: 0.85rem 1.85rem;
-        font-size: 1.05rem;
+        padding: 0.75rem 1.65rem;
+        font-size: 0.98rem;
         border-radius: var(--radius-md);
     }
 
@@ -61,41 +63,47 @@
     .features-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.75rem;
-        margin-bottom: 3rem;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
     }
 
     .feature-card {
         background-color: var(--color-card-bg);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
-        padding: 2rem 1.75rem;
+        padding: 1.75rem 1.5rem;
         text-align: center;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .feature-card:hover {
-        transform: translateY(-4px);
+        transform: translateY(-3px);
         box-shadow: var(--shadow-md);
         border-color: var(--color-secondary);
     }
 
-    .feature-icon {
-        font-size: 2.5rem;
+    .feature-icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: var(--radius-md);
+        background-color: #F1F6EE;
+        color: var(--color-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 1rem;
-        display: inline-block;
     }
 
     .feature-card h3 {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         font-weight: 800;
         color: var(--color-primary);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .feature-card p {
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         color: var(--color-text-muted);
         line-height: 1.6;
     }
@@ -105,7 +113,7 @@
             padding: 2.5rem 1.5rem;
         }
         .hero h1 {
-            font-size: 2rem;
+            font-size: 1.85rem;
         }
         .hero-actions {
             flex-direction: column;
@@ -121,16 +129,21 @@
 @section('content')
 <!-- Hero Section -->
 <section class="hero">
-    <span class="hero-badge">⚽ المنصة الأولى لإدارة وحجز الملاعب الرياضية</span>
-    <h1>ملعبك المفضل بانتظارك.. احجز مباراتك الآن بضغطة زر!</h1>
-    <p>تربط منصة كورة بلص بين عشاق كرة القدم وأصحاب الملاعب الرياضية في تجربة حجز رقمية فورية وسلسة وموثوقة.</p>
+    <span class="hero-badge">
+        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>المنصة الرياضية الذكية لحجز وإدارة الملاعب</span>
+    </span>
+    <h1>ملعبك المفضل بانتظارك.. احجز مباراتك الآن بضغطة زر</h1>
+    <p>تربط منصة كورة بلص بين عشاق كرة القدم وأصحاب الملاعب في تجربة رقمية فورية وسلسة وموثوقة.</p>
 
     <div class="hero-actions">
         <a href="{{ route('register', ['role' => 'player']) }}" class="btn btn-accent hero-btn">
-            <span>انضم كلاعب واحجز مباراتك ⚽</span>
+            <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>انضم كلاعب واحجز مباراتك</span>
         </a>
         <a href="{{ route('register', ['role' => 'owner']) }}" class="btn btn-outline-light hero-btn">
-            <span>سجّل ملعبك معنا كصاحب منشأة 🏟️</span>
+            <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+            <span>سجّل منشأتك الرياضية معنا</span>
         </a>
     </div>
 </section>
@@ -138,20 +151,26 @@
 <!-- Features Highlights -->
 <section class="features-grid">
     <div class="feature-card">
-        <span class="feature-icon">🔍</span>
+        <div class="feature-icon-box">
+            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        </div>
         <h3>استكشف أفضل الملاعب</h3>
         <p>تصفح قائمة الملاعب المعتمدة، واطلع على الأسعار، ونوع العشب، والموقع الجغرافي والخدمات المتاحة.</p>
     </div>
 
     <div class="feature-card">
-        <span class="feature-icon">⚡</span>
+        <div class="feature-icon-box">
+            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
         <h3>حجز لحظي وتأكيد فوري</h3>
         <p>اختر التاريخ والساعة الشاغرة وأكد حجزك فوراً دون الحاجة للمكالمات الهاتفية أو انتظار الرد.</p>
     </div>
 
     <div class="feature-card">
-        <span class="feature-icon">📊</span>
-        <h3>لوحة تحكم لأصحاب الملاعب</h3>
+        <div class="feature-icon-box">
+            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        </div>
+        <h3>لوحة تحكم لأصحاب المنشآت</h3>
         <p>إدارة متكاملة لجدول المواعيد وساعات العمل، وتتبع الحجوزات اليومية وإلغاء المواعيد بمرونة تامة.</p>
     </div>
 </section>

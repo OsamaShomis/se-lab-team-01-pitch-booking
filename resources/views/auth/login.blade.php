@@ -5,7 +5,7 @@
 @section('styles')
 <style>
     .auth-card {
-        max-width: 480px;
+        max-width: 440px;
         margin: 2.5rem auto 3.5rem auto;
         background-color: var(--color-card-bg);
         border-radius: var(--radius-lg);
@@ -17,43 +17,43 @@
     .auth-header {
         background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
         color: #FFFFFF;
-        padding: 2.25rem 2rem;
+        padding: 1.75rem 2rem;
         text-align: center;
     }
 
     .auth-header h1 {
-        font-size: 1.65rem;
+        font-size: 1.45rem;
         font-weight: 800;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.35rem;
     }
 
     .auth-header p {
         color: #E2E8F0;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
     }
 
     .auth-body {
-        padding: 2.25rem 2rem;
+        padding: 1.75rem 2rem 2.25rem 2rem;
     }
 
     .form-group {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.15rem;
     }
 
     .form-label {
         display: block;
         font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 0.4rem;
+        font-size: 0.85rem;
+        margin-bottom: 0.35rem;
         color: var(--color-text-main);
     }
 
     .form-input {
         width: 100%;
-        padding: 0.75rem 1rem;
+        padding: 0.7rem 0.9rem;
         border-radius: var(--radius-md);
         border: 1.5px solid var(--color-border);
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         outline: none;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
         background-color: #FFFFFF;
@@ -61,7 +61,7 @@
 
     .form-input:focus {
         border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px rgba(53, 76, 43, 0.15);
+        box-shadow: 0 0 0 3px rgba(53, 76, 43, 0.12);
     }
 
     .form-input.is-invalid {
@@ -71,9 +71,9 @@
 
     .field-error {
         color: var(--color-error);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        margin-top: 0.35rem;
+        margin-top: 0.3rem;
         display: block;
     }
 
@@ -81,7 +81,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         font-size: 0.85rem;
     }
 
@@ -96,39 +96,39 @@
 
     .btn-submit {
         width: 100%;
-        padding: 0.85rem;
-        font-size: 1.05rem;
+        padding: 0.75rem;
+        font-size: 1rem;
     }
 
     /* Role Quick Shortcuts */
     .register-shortcuts {
-        margin-top: 1.75rem;
-        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
         border-top: 1px solid var(--color-border);
         text-align: center;
     }
 
     .register-shortcuts-title {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         color: var(--color-text-muted);
         font-weight: 600;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.65rem;
     }
 
     .shortcuts-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
+        gap: 0.65rem;
     }
 
     .shortcut-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.35rem;
-        padding: 0.55rem 0.5rem;
+        gap: 0.4rem;
+        padding: 0.5rem 0.5rem;
         border-radius: var(--radius-md);
-        border: 1.5px solid var(--color-border);
+        border: 1px solid var(--color-border);
         background-color: #FAFAF9;
         color: var(--color-text-main);
         text-decoration: none;
@@ -141,7 +141,6 @@
         border-color: var(--color-primary);
         background-color: #F1F6EE;
         color: var(--color-primary);
-        transform: translateY(-1px);
     }
 </style>
 @endsection
@@ -149,8 +148,8 @@
 @section('content')
 <div class="auth-card">
     <div class="auth-header">
-        <h1>تسجيل الدخول ⚽</h1>
-        <p>مرحباً بك مجدداً في منصة كورة بلص الرياضية</p>
+        <h1>تسجيل الدخول</h1>
+        <p>مرحباً بك في منصة كورة بلص الرياضية</p>
     </div>
 
     <div class="auth-body">
@@ -160,7 +159,7 @@
             <!-- Email Field -->
             <div class="form-group">
                 <label for="email" class="form-label">البريد الإلكتروني</label>
-                <input type="email" name="email" id="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="name@example.com" required autofocus>
+                <input type="email" name="email" id="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="example@mail.com" required autofocus>
                 @error('email')
                     <span class="field-error">{{ $message }}</span>
                 @enderror
@@ -185,22 +184,22 @@
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary btn-submit">
-                <span>دخول إلى حسابي</span>
-                <span>←</span>
+                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                <span>دخول إلى الحساب</span>
             </button>
         </form>
 
         <!-- Quick Register Shortcuts for Players & Owners -->
         <div class="register-shortcuts">
-            <p class="register-shortcuts-title">ليس لديك حساب بعد في كورة بلص؟</p>
+            <p class="register-shortcuts-title">مستخدم جديد؟ اختر نوع الحساب للتسجيل:</p>
             <div class="shortcuts-grid">
                 <a href="{{ route('register', ['role' => 'player']) }}" class="shortcut-btn">
-                    <span>⚽</span>
-                    <span>سجّل كلاعب</span>
+                    <svg class="icon" style="width: 0.95rem; height: 0.95rem; color: var(--color-primary);" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>تسجيل كلاعب</span>
                 </a>
                 <a href="{{ route('register', ['role' => 'owner']) }}" class="shortcut-btn">
-                    <span>🏟️</span>
-                    <span>سجّل كصاحب ملعب</span>
+                    <svg class="icon" style="width: 0.95rem; height: 0.95rem; color: var(--color-primary);" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                    <span>تسجيل كصاحب منشأة</span>
                 </a>
             </div>
         </div>

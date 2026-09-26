@@ -31,7 +31,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:player,owner'],
         ], [
@@ -40,6 +40,7 @@ class AuthController extends Controller
             'email.email' => 'يرجى إدخال بريد إلكتروني صحيح.',
             'email.unique' => 'هذا البريد الإلكتروني مسجل مسبقاً لدينا.',
             'phone.required' => 'رقم الهاتف مطلوب للتواصل.',
+            'phone.unique' => 'رقم الهاتف هذا مسجل مسبقاً في المنصة.',
             'password.required' => 'كلمة المرور مطلوبة.',
             'password.min' => 'يجب ألا تقل كلمة المرور عن 8 أحرف.',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
