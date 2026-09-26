@@ -574,3 +574,46 @@ Synchronize the local development workspace with remote main (`eadc1a3`), ensure
 ### Final Result
 Latest GitHub updates adopted, database and frontend assets built cleanly, and local application is verified healthy on `http://127.0.0.1:8000`.
 
+---
+
+### Entry 10: Complete UI/UX Overhaul & Layout Consolidation for Owner Dashboard (FR-05) and Player Bookings (FR-06)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Responsible for FR-05 & FR-06)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Audit, redesign, and consolidate the visual interfaces for the Owner Dashboard (`/owner/dashboard`, FR-05) and Player Bookings & Cancellation (`/my-bookings`, FR-06) to strictly adhere to the Pitch Natural Olive design system, eliminate layout duplication, and provide modern, responsive aesthetics and client-side filtering.
+
+### Purpose
+Resolve user-reported visual defects and fragmented standalone layouts. Both views were previously rendering their own raw HTML documents with redundant `<nav>` bars, missing global header/footer components, unpolished KPI grids, and raw emoji icons instead of clean SVG vectors.
+
+### Files Affected
+- `resources/views/owner/dashboard.blade.php`
+- `resources/views/bookings/index.blade.php`
+- `AI_Log.md`
+
+### AI Actions & Suggestions
+- Refactored `resources/views/owner/dashboard.blade.php`:
+  - Extended unified `layouts.app` with `@section('content')` and scoped `@push('styles')`.
+  - Re-engineered the 5 KPI metric cards with custom SVG icons, structured typography, and an animated occupancy progress meter.
+  - Redesigned the pitch and date filter toolbar card with clean inputs and action buttons.
+  - Modernized the daily schedule table with responsive column styling, status tags, and action buttons (`✓ تم الحضور` and `✕ إلغاء`).
+- Refactored `resources/views/bookings/index.blade.php`:
+  - Extended unified `layouts.app` and integrated with global alerts and navigation.
+  - Implemented the BR-03 cancellation policy banner with clear rules and badge.
+  - Added interactive client-side filter tabs (All, Confirmed, Completed, Cancelled) for instantaneous UX.
+  - Replaced emoji placeholders with clean, accessible vector SVGs.
+  - Added smart action buttons: active cancellation with confirmation prompt when `canBeCancelled()` is true, and a lock badge with explanatory note when `< 2 hours` remains.
+- Verified test suite: 36 tests passed (100% green), including 6 Owner Dashboard tests and 7 Cancellation tests.
+- Visual browser verification: Audited both views and all navigation destinations via automated browser subagent with full visual proof captured.
+
+### Final Result
+Both Owner Dashboard and Player Bookings interfaces are pixel-perfect, fully consolidated with the platform layout, completely responsive, and 100% compliant with project governance and design guidelines.
+
+
