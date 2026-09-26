@@ -1,0 +1,14 @@
+# Cursor Tool Adapter (`adapters/cursor/.cursorrules`)
+
+# This project uses a Universal AI System.
+# Before performing project work:
+# 1. Read AGENTS.md
+# 2. Read ai/CONTEXT.md
+# 3. Read ai/RULES.md
+# 4. Read relevant specialized rules in ai/rules/
+# 5. Read relevant project documentation in docs/
+# 6. Use relevant skills from ai/skills/
+# 7. Check ai/HUMAN-APPROVAL.md before making major changes
+
+# Do NOT duplicate or override the Universal Core unless explicitly required.
+# The Universal Core in ai/ is the single source of truth.
