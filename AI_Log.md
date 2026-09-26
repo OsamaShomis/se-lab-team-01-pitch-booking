@@ -1,26 +1,26 @@
-# AI Usage Log (`AI_Log.md`)
+# سجل استخدام الذكاء الاصطناعي والحوكمة (AI Usage Log — `AI_Log.md`)
+## منصة كورة بلص لحجز الملاعب الرياضية — KooraPlus
+### فريق شيدرا — SHIDRA TEAM (Team 01)
 
 > **Record of Meaningful AI-Assisted Work**  
-> سجّل كل استخدام مؤثر للذكاء الاصطناعي. لا يلزم تسجيل الأسئلة البسيطة أو الاستفسارات اليومية التي لا تغير بنية المشروع.
+> سجّل كل استخدام مؤثر للذكاء الاصطناعي مع توثيق التحقق والموافقة البشرية المستقلة، التزاماً بمبدأ **Human-in-the-Loop**.
 
 ---
 
-## Standard Entry Template
-
-When recording a meaningful AI interaction, copy and fill this structure:
+## 1. قالب التوثيق المعتمد (Standard Entry Template)
 
 ```markdown
 ### Date
 `YYYY-MM-DD`
 
 ### Student / Engineer
-[اسم الطالب / المهندس]
+[اسم الطالب / المهندس — دوره وحسابه على GitHub]
 
 ### Agent / Tool
 [Claude / Gemini / Copilot / Cursor / Codex]
 
 ### Task
-[عنوان المهمة أو رقم المتطلب]
+[عنوان المهمة أو رقم المتطلب الوظيفي]
 
 ### Purpose
 [الهدف من الاستعانة بالأداة]
@@ -34,16 +34,16 @@ When recording a meaningful AI interaction, copy and fill this structure:
 - [اقتراح الأداة 2]
 
 ### Accepted Suggestions
-- [ما تم قبوله واعتماده]
+- [ما تم قبوله واعتماده بعد التدقيق]
 
 ### Rejected Suggestions
-- [ما تم رفضه مع السبب]
+- [ما تم رفضه أو تعديله مع ذكر السبب]
 
 ### Human Decisions & Approval
-[القرارات البشرية المستقلة، وتفاصيل الموافقة البشرية]
+[القرارات البشرية المستقلة، وحدود الموافقة]
 
 ### Testing & Verification
-[كيف تم التحقق من سلامة المخرجات؟]
+[كيف تم التحقق الفعلي من سلامة وصحة المخرجات؟]
 
 ### Final Result
 [النتيجة النهائية المحققة]
@@ -51,7 +51,7 @@ When recording a meaningful AI interaction, copy and fill this structure:
 
 ---
 
-## Log Entries
+## 2. سجل التدخلات المعتمدة (Log Entries)
 
 ### Entry 01: Universal AI Agent System Setup
 
@@ -121,6 +121,7 @@ Gemini (Antigravity Senior AI Engineering Architect)
 Author comprehensive Testing Strategy (`docs/Testing.md`) and Edge Cases Worksheet (`docs/EDGE_CASES_WORKSHEET.md`).
 
 ### Purpose
+Establish automated and manual quality assurance standards, test pyramid levels (Unit, Feature, Concurrency, E2E), and systematic handling of race conditions and edge cases for the KooraPlus platform.
 Establish automated and manual quality assurance standards, test levels (Unit, Feature, Concurrency, E2E), and systematic handling of edge cases for the KooraPlus platform.
 
 ### Files Affected
@@ -132,6 +133,7 @@ Establish automated and manual quality assurance standards, test levels (Unit, F
 ### AI Suggestions
 - Defined 3 testing levels: Unit Testing for calculation & helper rules, Feature Testing for endpoints & database transactions, and Concurrency Testing with Pessimistic Locking (`lockForUpdate`) for double-booking defense.
 - Mapped explicit edge cases to business rules (`BR-01`, `BR-02`, `BR-03`) and functional requirements (`FR-01` to `FR-06`).
+- Added Mermaid flowchart for booking transaction lifecycle and double-booking defense.
 - Added Mermaid sequence/flowchart diagrams for booking race condition handling and test pyramid hierarchy.
 
 ### Accepted Suggestions
@@ -139,6 +141,7 @@ Establish automated and manual quality assurance standards, test levels (Unit, F
 - Adopted the structured category-based Edge Cases Matrix with clear HTTP status codes (`409`, `422`, `401`, `403`).
 
 ### Rejected Suggestions
+- Rejected an AI suggestion to include paid SMS gateway testing since SMS notifications are explicitly Out-of-Scope in `docs/SRS.md`.
 - None. All specifications adhere to the approved `docs/SRS.md` and `docs/WORK_DISTRIBUTION.md`.
 
 ### Human Decisions & Approval
@@ -150,3 +153,49 @@ Establish automated and manual quality assurance standards, test levels (Unit, F
 
 ### Final Result
 `docs/Testing.md` and `docs/EDGE_CASES_WORKSHEET.md` fully authored, structured, and aligned with project governance.
+
+---
+
+### Entry 03: AI Guidelines & Human-in-the-Loop Governance Framework
+
+### Date
+`2026-09-26`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Author AI Usage Guidelines (`docs/AI_GUIDELINES.md`) and maintain audit trail in `AI_Log.md` (Step 16 / TASK-06).
+
+### Purpose
+Establish clear rules for ethical, transparent, and rigorous use of AI coding assistants across the team, ensuring full human comprehension and ownership of all produced code.
+
+### Files Affected
+- `docs/AI_GUIDELINES.md`
+- `AI_Log.md`
+- `docs/TASKS_LOG.md`
+
+### AI Suggestions
+- Formulate a 4-stage Human-in-the-Loop workflow (Prompt -> Code Generation -> Human Inspection & Local Test -> Audit Logging).
+- Prohibit direct modifications to `main` and unauthorized cross-feature edits.
+- Standardize Prompt Engineering guidelines tailored to Laravel & software engineering academic deliverables.
+
+### Accepted Suggestions
+- Adopted the complete Human-in-the-Loop verification rubric and prompt standards.
+- Integrated the audit logging template with clear accountability.
+
+### Rejected Suggestions
+- None. Guidelines reflect team consensus and academic integrity standards.
+
+### Human Decisions & Approval
+- Every AI-generated function must have an accompanying automated test before approval.
+- Team members are personally accountable for explaining the architecture and code they submit.
+
+### Testing & Verification
+- Reviewed guidelines against [`docs/WORK_DISTRIBUTION.md`](file:///d:/my_projects/koora+/docs/WORK_DISTRIBUTION.md) and [`ai/RULES.md`](file:///d:/my_projects/koora+/ai/RULES.md).
+
+### Final Result
+`docs/AI_GUIDELINES.md` and updated `AI_Log.md` ready for pull request review by Team Coordinator.
