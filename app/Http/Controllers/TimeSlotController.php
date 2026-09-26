@@ -65,8 +65,8 @@ class TimeSlotController extends Controller
             ];
         }
 
-        // Return JSON for API requests matching docs/API.md Endpoint 7
-        if ($request->wantsJson() || $request->is('api/*')) {
+        // Return JSON for API or AJAX requests matching docs/API.md Endpoint 7
+        if ($request->wantsJson() || $request->is('api/*') || $request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => 'تم جلب فترات الساعات بنجاح',
@@ -74,6 +74,8 @@ class TimeSlotController extends Controller
                     'pitch_id' => $pitch->id,
                     'pitch_name' => $pitch->name,
                     'date' => $selectedDate,
+                    'available_count' => $availableCount,
+                    'booked_count' => $bookedCount,
                     'slots' => $slots->map(function ($slot) {
                         return [
                             'id' => $slot->id,

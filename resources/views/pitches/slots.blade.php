@@ -449,16 +449,17 @@
         <form method="GET" action="{{ route('pitches.slots', $pitch->id) }}" id="customDateForm">
             <div class="custom-date-picker">
                 <span>اختر تاريخ آخر:</span>
-                <input type="date" name="date" value="{{ $selectedDate }}" min="{{ date('Y-m-d') }}" onchange="document.getElementById('customDateForm').submit();">
+                <input type="date" name="date" id="customDateInput" value="{{ $selectedDate }}" min="{{ date('Y-m-d') }}">
             </div>
         </form>
     </div>
 
     <!-- 7-Days Quick Tabs (Mobile-First Touch Friendly) -->
-    <div class="date-nav-wrapper">
+    <div class="date-nav-wrapper" id="dateTabsWrapper">
         @foreach($dateTabs as $tab)
             <a href="{{ route('pitches.slots', ['pitch' => $pitch->id, 'date' => $tab['date']]) }}" 
                class="date-pill {{ $tab['is_selected'] ? 'active' : '' }}"
+               data-date="{{ $tab['date'] }}"
                role="button"
                aria-pressed="{{ $tab['is_selected'] ? 'true' : 'false' }}">
                 <span class="pill-day">{{ $tab['is_today'] ? 'اليوم' : $tab['day_name'] }}</span>
@@ -474,7 +475,7 @@
                 <circle cx="12" cy="12" r="10"/>
                 <path d="m9 12 2 2 4-4"/>
             </svg>
-            فترات متاحة للحجز: <strong>{{ $availableCount }}</strong>
+            فترات متاحة للحجز: <strong id="availableCount">{{ $availableCount }}</strong>
         </div>
         <div class="counter-tag counter-booked">
             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -482,122 +483,338 @@
                 <line x1="15" x2="9" y1="9" y2="15"/>
                 <line x1="9" x2="15" y1="9" y2="15"/>
             </svg>
-            فترات محجوزة: <strong>{{ $bookedCount }}</strong>
+            فترات محجوزة: <strong id="bookedCount">{{ $bookedCount }}</strong>
         </div>
     </div>
 
-    <!-- Time Slots Grid per Design-System Section 2.B & 5.2 -->
-    @if($slots->count() > 0)
-        <div class="slots-grid">
-            @foreach($slots as $slot)
-                @php
-                    $isAvailable = $slot->isAvailable() && !$slot->isPast();
-                    $isBooked = $slot->status === 'booked';
-                    $isPast = $slot->isPast();
+    <!-- Time Slots Container with Dynamic AJAX Loading Support (US-03 Criteria 5) -->
+    <div id="slotsContainer" style="position: relative; min-height: 200px; transition: opacity 0.2s ease;">
+        @if($slots->count() > 0)
+            <div class="slots-grid">
+                @foreach($slots as $slot)
+                    @php
+                        $isAvailable = $slot->isAvailable() && !$slot->isPast();
+                        $isBooked = $slot->status === 'booked';
+                        $isPast = $slot->isPast();
 
-                    // Calculate duration
-                    $start = \Carbon\Carbon::parse($slot->start_time);
-                    $end = \Carbon\Carbon::parse($slot->end_time);
-                    $durationMinutes = $start->diffInMinutes($end);
-                    $durationText = $durationMinutes == 90 ? '90 دقيقة (ساعة ونصف)' : ($durationMinutes == 60 ? '60 دقيقة (ساعة)' : $durationMinutes . ' دقيقة');
-                @endphp
+                        // Calculate duration
+                        $start = \Carbon\Carbon::parse($slot->start_time);
+                        $end = \Carbon\Carbon::parse($slot->end_time);
+                        $durationMinutes = $start->diffInMinutes($end);
+                        $durationText = $durationMinutes == 90 ? '90 دقيقة (ساعة ونصف)' : ($durationMinutes == 60 ? '60 دقيقة (ساعة)' : $durationMinutes . ' دقيقة');
+                    @endphp
 
-                <div class="slot-card {{ $isAvailable ? 'available' : ($isBooked ? 'booked' : 'past') }}">
-                    <div class="slot-top-row">
-                        <span class="duration-tag">
-                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12 6 12 12 16 14"/>
-                            </svg>
-                            {{ $durationText }}
-                        </span>
+                    <div class="slot-card {{ $isAvailable ? 'available' : ($isBooked ? 'booked' : 'past') }}">
+                        <div class="slot-top-row">
+                            <span class="duration-tag">
+                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                {{ $durationText }}
+                            </span>
+
+                            @if($isAvailable)
+                                <span class="slot-status-pill pill-available">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <circle cx="12" cy="12" r="8"/>
+                                    </svg>
+                                    متاح للحجز
+                                </span>
+                            @elseif($isBooked)
+                                <span class="slot-status-pill pill-booked">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                    محجوز مسبقاً
+                                </span>
+                            @else
+                                <span class="slot-status-pill pill-past">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                    انتهى الوقت
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="time-range">
+                            {{ date('h:i', strtotime($slot->start_time)) }} {{ date('A', strtotime($slot->start_time)) == 'AM' ? 'صباحاً' : 'مساءً' }}
+                            -
+                            {{ date('h:i', strtotime($slot->end_time)) }} {{ date('A', strtotime($slot->end_time)) == 'AM' ? 'صباحاً' : 'مساءً' }}
+                        </div>
+
+                        <div class="slot-pricing-row">
+                            <span class="slot-price-label">المبلغ الإجمالي للفترة:</span>
+                            <span class="slot-price-value">{{ number_format($slot->price, 2) }} <small style="font-size: 0.85rem;">ريال</small></span>
+                        </div>
 
                         @if($isAvailable)
-                            <span class="slot-status-pill pill-available">
-                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                    <circle cx="12" cy="12" r="8"/>
-                                </svg>
-                                متاح للحجز
-                            </span>
+                            <form method="POST" action="/bookings" style="margin: 0;">
+                                @csrf
+                                <input type="hidden" name="time_slot_id" value="{{ $slot->id }}">
+                                <button type="submit" class="btn-book" aria-label="احجز هذه الفترة الآن">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                                        <path d="M13 5v2"/>
+                                        <path d="M13 17v2"/>
+                                        <path d="M13 11v2"/>
+                                    </svg>
+                                    احجز هذه الفترة
+                                </button>
+                            </form>
                         @elseif($isBooked)
-                            <span class="slot-status-pill pill-booked">
-                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <button type="button" class="btn-disabled booked-btn" disabled>
+                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
                                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                                 </svg>
                                 محجوز مسبقاً
-                            </span>
+                            </button>
                         @else
-                            <span class="slot-status-pill pill-past">
-                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <button type="button" class="btn-disabled" disabled>
+                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12 6 12 12 16 14"/>
+                                    <line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/>
                                 </svg>
                                 انتهى الوقت
-                            </span>
+                            </button>
                         @endif
                     </div>
-
-                    <div class="time-range">
-                        {{ date('h:i', strtotime($slot->start_time)) }} {{ date('A', strtotime($slot->start_time)) == 'AM' ? 'صباحاً' : 'مساءً' }}
-                        -
-                        {{ date('h:i', strtotime($slot->end_time)) }} {{ date('A', strtotime($slot->end_time)) == 'AM' ? 'صباحاً' : 'مساءً' }}
-                    </div>
-
-                    <div class="slot-pricing-row">
-                        <span class="slot-price-label">المبلغ الإجمالي للفترة:</span>
-                        <span class="slot-price-value">{{ number_format($slot->price, 2) }} <small style="font-size: 0.85rem;">ريال</small></span>
-                    </div>
-
-                    @if($isAvailable)
-                        <!-- Primary CTA Button per Section 5.3 -->
-                        <form method="POST" action="/bookings" style="margin: 0;">
-                            @csrf
-                            <input type="hidden" name="time_slot_id" value="{{ $slot->id }}">
-                            <button type="submit" class="btn-book" aria-label="احجز هذه الفترة الآن">
-                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
-                                    <path d="M13 5v2"/>
-                                    <path d="M13 17v2"/>
-                                    <path d="M13 11v2"/>
-                                </svg>
-                                احجز هذه الفترة
-                            </button>
-                        </form>
-                    @elseif($isBooked)
-                        <button type="button" class="btn-disabled booked-btn" disabled>
-                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                            </svg>
-                            محجوز مسبقاً
-                        </button>
-                    @else
-                        <button type="button" class="btn-disabled" disabled>
-                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/>
-                            </svg>
-                            انتهى الوقت
-                        </button>
-                    @endif
-                </div>
-            @endforeach
-        </div>
-    @else
-        <div class="empty-state">
-            <div class="empty-state-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-                    <line x1="16" x2="16" y1="2" y2="6"/>
-                    <line x1="8" x2="8" y1="2" y2="6"/>
-                    <line x1="3" x2="21" y1="10" y2="10"/>
-                    <line x1="10" x2="14" y1="14" y2="18"/>
-                    <line x1="14" x2="10" y1="14" y2="18"/>
-                </svg>
+                @endforeach
             </div>
-            <h3>لا توجد فترات مجدولة لهذا التاريخ</h3>
-            <p>لم يقم صاحب الملعب بإدراج أي فترات زمنية متاحة للحجز في تاريخ {{ $selectedDate }}.</p>
-        </div>
-    @endif
+        @else
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                        <line x1="16" x2="16" y1="2" y2="6"/>
+                        <line x1="8" x2="8" y1="2" y2="6"/>
+                        <line x1="3" x2="21" y1="10" y2="10"/>
+                        <line x1="10" x2="14" y1="14" y2="18"/>
+                        <line x1="14" x2="10" y1="14" y2="18"/>
+                    </svg>
+                </div>
+                <h3>لا توجد فترات مجدولة لهذا التاريخ</h3>
+                <p>لم يقم صاحب الملعب بإدراج أي فترات زمنية متاحة للحجز في تاريخ {{ $selectedDate }}.</p>
+            </div>
+        @endif
+    </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pitchId = {{ $pitch->id }};
+        const dateTabs = document.querySelectorAll('.date-pill');
+        const customDateInput = document.getElementById('customDateInput');
+        const slotsContainer = document.getElementById('slotsContainer');
+        const availableCountEl = document.getElementById('availableCount');
+        const bookedCountEl = document.getElementById('bookedCount');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        // Format 24h time to 12h Arabic
+        function formatArabicTime(timeStr) {
+            if (!timeStr) return '';
+            const parts = timeStr.split(':');
+            let hours = parseInt(parts[0], 10);
+            const minutes = parts[1];
+            const period = hours >= 12 ? 'مساءً' : 'صباحاً';
+            hours = hours % 12 || 12;
+            const formattedHours = hours < 10 ? '0' + hours : hours;
+            return `${formattedHours}:${minutes} ${period}`;
+        }
+
+        // Fetch slots dynamically via API/AJAX (US-03 Acceptance Criteria 5)
+        async function loadSlots(targetDate) {
+            slotsContainer.style.opacity = '0.5';
+
+            try {
+                const response = await fetch(`/api/pitches/${pitchId}/slots?date=${targetDate}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    alert(result.message || 'تعذر جلب فترات الساعات للتاريخ المحدد.');
+                    slotsContainer.style.opacity = '1';
+                    return;
+                }
+
+                const data = result.data;
+                const slots = data.slots || [];
+
+                // Update Counters
+                if (availableCountEl) availableCountEl.textContent = data.available_count ?? slots.filter(s => s.is_available).length;
+                if (bookedCountEl) bookedCountEl.textContent = data.booked_count ?? slots.filter(s => s.status === 'booked').length;
+
+                // Update Date Tabs active state
+                dateTabs.forEach(pill => {
+                    const pillDate = pill.getAttribute('data-date');
+                    const isSelected = pillDate === targetDate;
+                    pill.classList.toggle('active', isSelected);
+                    pill.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+                });
+
+                // Update custom date input
+                if (customDateInput) {
+                    customDateInput.value = targetDate;
+                }
+
+                // Render slots grid or empty state
+                if (slots.length > 0) {
+                    let html = '<div class="slots-grid">';
+                    slots.forEach(slot => {
+                        const isAvail = slot.is_available;
+                        const isBooked = slot.status === 'booked';
+                        const cardClass = isAvail ? 'available' : (isBooked ? 'booked' : 'past');
+
+                        let statusBadgeHtml = '';
+                        let buttonHtml = '';
+
+                        if (isAvail) {
+                            statusBadgeHtml = `
+                                <span class="slot-status-pill pill-available">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <circle cx="12" cy="12" r="8"/>
+                                    </svg>
+                                    متاح للحجز
+                                </span>`;
+                            buttonHtml = `
+                                <form method="POST" action="/bookings" style="margin: 0;">
+                                    <input type="hidden" name="_token" value="${csrfToken}">
+                                    <input type="hidden" name="time_slot_id" value="${slot.id}">
+                                    <button type="submit" class="btn-book" aria-label="احجز هذه الفترة الآن">
+                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                                            <path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>
+                                        </svg>
+                                        احجز هذه الفترة
+                                    </button>
+                                </form>`;
+                        } else if (isBooked) {
+                            statusBadgeHtml = `
+                                <span class="slot-status-pill pill-booked">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                    محجوز مسبقاً
+                                </span>`;
+                            buttonHtml = `
+                                <button type="button" class="btn-disabled booked-btn" disabled>
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                    محجوز مسبقاً
+                                </button>`;
+                        } else {
+                            statusBadgeHtml = `
+                                <span class="slot-status-pill pill-past">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                    انتهى الوقت
+                                </span>`;
+                            buttonHtml = `
+                                <button type="button" class="btn-disabled" disabled>
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/>
+                                    </svg>
+                                    انتهى الوقت
+                                </button>`;
+                        }
+
+                        const startFormatted = formatArabicTime(slot.start_time);
+                        const endFormatted = formatArabicTime(slot.end_time);
+
+                        html += `
+                            <div class="slot-card ${cardClass}">
+                                <div class="slot-top-row">
+                                    <span class="duration-tag">
+                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                        </svg>
+                                        فترة اللقاء
+                                    </span>
+                                    ${statusBadgeHtml}
+                                </div>
+                                <div class="time-range">
+                                    ${startFormatted} - ${endFormatted}
+                                </div>
+                                <div class="slot-pricing-row">
+                                    <span class="slot-price-label">المبلغ الإجمالي للفترة:</span>
+                                    <span class="slot-price-value">${Number(slot.price).toLocaleString('en-US', { minimumFractionDigits: 2 })} <small style="font-size: 0.85rem;">ريال</small></span>
+                                </div>
+                                ${buttonHtml}
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    slotsContainer.innerHTML = html;
+                } else {
+                    slotsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                                    <line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
+                                    <line x1="10" x2="14" y1="14" y2="18"/><line x1="14" x2="10" y1="14" y2="18"/>
+                                </svg>
+                            </div>
+                            <h3>لا توجد فترات مجدولة لهذا التاريخ</h3>
+                            <p>لم يقم صاحب الملعب بإدراج أي فترات زمنية متاحة للحجز في تاريخ ${targetDate}.</p>
+                        </div>
+                    `;
+                }
+
+                // Update Browser History without full page refresh
+                const newUrl = `/pitches/${pitchId}/slots?date=${targetDate}`;
+                window.history.pushState({ date: targetDate }, '', newUrl);
+
+            } catch (err) {
+                console.error('Failed to load slots asynchronously:', err);
+                // Fallback to standard HTTP navigation if fetch fails
+                window.location.href = `/pitches/${pitchId}/slots?date=${targetDate}`;
+            } finally {
+                slotsContainer.style.opacity = '1';
+            }
+        }
+
+        // Attach event listeners to date tabs
+        dateTabs.forEach(pill => {
+            pill.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetDate = this.getAttribute('data-date');
+                if (targetDate) {
+                    loadSlots(targetDate);
+                }
+            });
+        });
+
+        // Attach event listener to custom date input
+        if (customDateInput) {
+            customDateInput.addEventListener('change', function () {
+                const targetDate = this.value;
+                if (targetDate) {
+                    loadSlots(targetDate);
+                }
+            });
+        }
+
+        // Support Browser Back/Forward buttons
+        window.addEventListener('popstate', function (e) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetDate = urlParams.get('date') || new Date().toISOString().slice(0, 10);
+            loadSlots(targetDate);
+        });
+    });
+</script>
+@endpush

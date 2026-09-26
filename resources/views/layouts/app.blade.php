@@ -4,45 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'كورة بلص') — منصة حجز الملاعب الرياضية</title>
-
-    <!-- Google Fonts: Cairo -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --color-primary: #354C2B;
-            --color-primary-hover: #293B21;
-            --color-secondary: #4E653D;
-            --color-accent: #D4AF37;
-            --color-bg: #F8FAF6;
-            --color-card-bg: #FFFFFF;
-            --color-text-main: #1F2937;
-            --color-text-muted: #6B7280;
-            --color-border: #E5E7EB;
-            --color-success: #15803D;
-            --color-success-bg: #DCFCE7;
-            --color-error: #B91C1C;
-            --color-error-bg: #FEE2E2;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 14px rgba(53, 76, 43, 0.08);
-            --shadow-lg: 0 10px 25px rgba(53, 76, 43, 0.12);
-    <title>@yield('title', 'منصة كورة بلص - حجز الملاعب الرياضية')</title>
+    <title>@yield('title', 'منصة كورة بلص — حجز الملاعب الرياضية')</title>
 
     <!-- Google Fonts: Cairo (Arabic) & Inter (Numbers) per Design-System Section 3 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* KooraPlus Pitch Natural Olive Design Tokens (docs/Design-System.md) */
+        /* ==========================================================================
+           KooraPlus Pitch Natural Olive Design Tokens (docs/Design-System.md)
+           ========================================================================== */
         :root {
-            /* Brand Palette Tokens */
+            /* Brand Palette Tokens (Section 2.A) */
             --color-primary-dark: #354C2B;   /* الأخضر الغابي الداكن */
             --color-primary: #4E653D;        /* الأخضر العشبي الأساسي */
             --color-primary-medium: #697E50; /* الزيتوني المتوسط */
@@ -50,7 +24,7 @@
             --color-surface-mint: #A4B17B;   /* لون الميرمية */
             --color-surface-tint: #C3CA92;   /* العشبي الفاتح الباستيل */
 
-            /* Functional States Tokens */
+            /* Functional States Tokens (Section 2.B) */
             --color-slot-avail-bg: #FFFFFF;
             --color-slot-avail-border: #859864;
             --color-slot-avail-text: #354C2B;
@@ -63,40 +37,62 @@
             --color-slot-past-border: #E2E8F0;
             --color-slot-past-text: #94A3B8;
 
-            /* Surfaces & Neutrals */
+            /* Surfaces & Neutrals (Section 2.C) */
             --color-bg-main: #F8FAF6;        /* أوف وايت دافئ مريح للعين */
+            --color-bg: #F8FAF6;
             --color-card-bg: #FFFFFF;
             --color-text-dark: #1E291C;      /* داكن عميق بلمحة زيتية */
+            --color-text-main: #1E291C;
             --color-text-body: #475569;
+            --color-text-muted: #64748B;
             --color-border-light: #E2E8F0;
+            --color-border: #E2E8F0;
 
-            /* Radii */
+            /* Backward compatibility aliases */
+            --color-secondary: #697E50;
+            --color-accent: #C3CA92;
+            --color-success: #15803D;
+            --color-success-bg: #DCFCE7;
+            --color-error: #B91C1C;
+            --color-error-bg: #FEE2E2;
+
+            /* Radii (Section 4) */
             --radius-btn: 10px;
+            --radius-sm: 8px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
             --radius-card: 16px;
             --radius-pill: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 14px rgba(53, 76, 43, 0.08);
+            --shadow-lg: 0 10px 25px rgba(53, 76, 43, 0.12);
         }
 
-        * {
+        /* Reset & Base Typography */
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--color-bg);
-            color: var(--color-text-main);
+            background-color: var(--color-bg-main);
+            color: var(--color-text-body);
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .icon {
+        /* SVG Icon Standards (No emojis, clean vector lines) */
+        .icon, .svg-icon {
             display: inline-block;
             vertical-align: middle;
-            width: 1.25rem;
-            height: 1.25rem;
+            flex-shrink: 0;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
@@ -104,39 +100,9 @@
             stroke-linejoin: round;
         }
 
-        /* Navbar */
-        .navbar {
-            background-color: var(--color-primary);
-            color: #FFFFFF;
-            padding: 0.9rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar-container {
-            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--color-bg-main);
-            color: var(--color-text-body);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* SVG Icons Helper */
-        .svg-icon {
-            display: inline-block;
-            vertical-align: middle;
-            flex-shrink: 0;
-        }
-
-        /* Top Navigation with Forest Green Palette */
+        /* ==========================================================================
+           Navbar (Pitch Natural Olive Gradient)
+           ========================================================================== */
         .navbar {
             background: linear-gradient(135deg, var(--color-primary-dark) 0%, #24351d 100%);
             color: #ffffff;
@@ -148,7 +114,7 @@
             border-bottom: 2px solid var(--color-primary-medium);
         }
 
-        .nav-container {
+        .navbar-container {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
@@ -158,43 +124,33 @@
         }
 
         .brand-logo {
-        }
-
-        .brand {
             display: flex;
             align-items: center;
             gap: 0.65rem;
             text-decoration: none;
-            color: #FFFFFF;
             color: #ffffff;
             font-size: 1.35rem;
             font-weight: 800;
         }
 
         .brand-icon-box {
-            width: 34px;
-            height: 34px;
-            background-color: rgba(255, 255, 255, 0.15);
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--color-accent);
+            color: var(--color-surface-tint);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .brand-badge {
-            background-color: var(--color-accent);
-            color: #1F2937;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
         .brand-badge {
             background: var(--color-surface-mint);
             color: var(--color-primary-dark);
             padding: 0.2rem 0.6rem;
             border-radius: var(--radius-pill);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 800;
             letter-spacing: 0.5px;
         }
@@ -202,23 +158,26 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
+            gap: 0.75rem;
             list-style: none;
         }
 
         .nav-link {
-            color: #E2E8F0;
+            color: #e2e8f0;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.92rem;
-            transition: color 0.2s ease;
+            font-size: 0.95rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.45rem;
         }
 
-        .nav-link:hover {
-            color: var(--color-accent);
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.14);
         }
 
         .nav-auth {
@@ -227,47 +186,60 @@
             gap: 0.75rem;
         }
 
+        /* Buttons & Actions (Design-System Section 4 & 5.3) */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.45rem;
-            padding: 0.5rem 1.15rem;
-            border-radius: var(--radius-md);
+            padding: 0.55rem 1.25rem;
+            min-height: 44px;
+            border-radius: var(--radius-btn);
             font-weight: 700;
             font-size: 0.92rem;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.2s ease;
             border: none;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background-color: var(--color-primary);
+            background-color: var(--color-primary-dark);
             color: #FFFFFF;
         }
 
         .btn-primary:hover {
-            background-color: var(--color-primary-hover);
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-primary-medium);
+            color: #FFFFFF;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-primary);
         }
 
         .btn-accent {
-            background-color: var(--color-accent);
-            color: #1F2937;
+            background-color: var(--color-surface-tint);
+            color: var(--color-primary-dark);
         }
 
         .btn-accent:hover {
-            background-color: #C5A028;
+            background-color: var(--color-surface-mint);
         }
 
         .btn-outline-light {
             background-color: transparent;
             color: #FFFFFF;
-            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
         }
 
         .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.12);
             border-color: #FFFFFF;
         }
 
@@ -277,21 +249,23 @@
             gap: 0.5rem;
             background-color: rgba(255, 255, 255, 0.12);
             padding: 0.35rem 0.85rem;
-            border-radius: 30px;
+            border-radius: var(--radius-pill);
             font-size: 0.88rem;
             font-weight: 600;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .user-role-tag {
             font-size: 0.75rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 20px;
+            padding: 0.15rem 0.55rem;
+            border-radius: var(--radius-pill);
             font-weight: 700;
         }
 
         .role-player {
-            background-color: #DCFCE7;
-            color: #166534;
+            background-color: var(--color-surface-mint);
+            color: var(--color-primary-dark);
         }
 
         .role-owner {
@@ -299,7 +273,7 @@
             color: #92400E;
         }
 
-        /* Alerts */
+        /* Flash Alerts */
         .alerts-wrapper {
             max-width: 1200px;
             margin: 1.25rem auto 0 auto;
@@ -309,7 +283,7 @@
 
         .alert {
             padding: 0.9rem 1.25rem;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-btn);
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -319,56 +293,9 @@
         }
 
         .alert-success {
-            background-color: var(--color-success-bg);
-            color: var(--color-success);
-            border: 1px solid #BBF7D0;
-        }
-
-        .alert-error {
-            background-color: var(--color-error-bg);
-            color: var(--color-error);
-            border: 1px solid #FECACA;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-            color: #e2e8f0;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 0.4rem 0.75rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        /* Main Content Container */
-        .main-content {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            flex: 1;
-            width: 100%;
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 1rem 1.25rem;
-            border-radius: var(--radius-btn);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            background-color: #f0fdf4;
+            color: var(--color-primary-dark);
+            border: 1px solid var(--color-surface-mint);
         }
 
         .alert-error {
@@ -377,27 +304,35 @@
             border: 1px solid var(--color-slot-booked-border);
         }
 
-        .alert-success {
-            background-color: #f0fdf4;
-            color: var(--color-primary-dark);
-            border: 1px solid var(--color-surface-mint);
+        /* Main Content Container */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
         }
 
-        /* Footer */
+        /* Footer (Pitch Natural Dark) */
         .footer {
-            background-color: #1F2937;
-            color: #9CA3AF;
-            padding: 1.75rem 1.5rem;
+            background: var(--color-primary-dark);
+            color: #d1d5db;
             text-align: center;
+            padding: 1.75rem 1.5rem;
             font-size: 0.88rem;
             margin-top: auto;
-            border-top: 1px solid #374151;
+            border-top: 1px solid var(--color-primary);
+        }
+
+        .footer strong {
+            color: var(--color-surface-tint);
         }
 
         @media (max-width: 768px) {
             .navbar-container {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 0.85rem;
             }
             .nav-links {
                 justify-content: center;
@@ -405,10 +340,13 @@
             }
             .nav-auth {
                 justify-content: center;
+                flex-wrap: wrap;
             }
         }
     </style>
+
     @yield('styles')
+    @stack('styles')
 </head>
 <body>
 
@@ -417,26 +355,42 @@
         <div class="navbar-container">
             <a href="{{ url('/') }}" class="brand-logo">
                 <span class="brand-icon-box">
-                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                    <svg class="icon" style="width: 20px; height: 20px;" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m4.93 4.93 4.24 4.24"/>
+                        <path d="m14.83 9.17 4.24-4.24"/>
+                        <path d="m14.83 14.83 4.24 4.24"/>
+                        <path d="m9.17 14.83-4.24 4.24"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
                 </span>
                 <span>كورة بلص</span>
-                <span class="brand-badge">KOORAPLUS</span>
+                <span class="brand-badge">KooraPlus</span>
             </a>
 
             <nav class="nav-links">
-                <a href="{{ url('/') }}" class="nav-link">
+                <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                     <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     الرئيسية
                 </a>
-                <a href="{{ route('pitches.index') }}" class="nav-link">
+                <a href="{{ route('pitches.index') }}" class="nav-link {{ request()->routeIs('pitches.index') ? 'active' : '' }}">
                     <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
                     استعراض الملاعب
                 </a>
+                <a href="{{ route('pitches.slots', 1) }}" class="nav-link {{ request()->routeIs('pitches.slots') ? 'active' : '' }}">
+                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    جدول الساعات (FR-03)
+                </a>
                 @auth
                     @if(auth()->user()->isOwner())
-                        <a href="{{ route('owner.dashboard') }}" class="nav-link">
+                        <a href="{{ route('owner.dashboard') }}" class="nav-link {{ request()->routeIs('owner.*') ? 'active' : '' }}">
                             <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                             لوحة تحكم ملعبي
+                        </a>
+                    @else
+                        <a href="{{ route('bookings.my') }}" class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
+                            <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            حجوزاتي
                         </a>
                     @endif
                 @endauth
@@ -462,7 +416,7 @@
                     </div>
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                         @csrf
-                        <button type="submit" class="btn btn-outline-light" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+                        <button type="submit" class="btn btn-outline-light" style="min-height: 36px; padding: 0.35rem 0.85rem; font-size: 0.85rem;">
                             <svg class="icon" style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                             خروج
                         </button>
@@ -475,15 +429,22 @@
     <!-- Global Flash Messages -->
     <div class="alerts-wrapper">
         @if(session('success'))
-            <div class="alert alert-success">
-                <svg class="icon" style="color: var(--color-success);" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <div class="alert alert-success" role="alert">
+                <svg class="icon" style="width: 20px; height: 20px; color: var(--color-primary-dark);" viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
 
         @if(session('error'))
-            <div class="alert alert-error">
-                <svg class="icon" style="color: var(--color-error);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            <div class="alert alert-error" role="alert">
+                <svg class="icon" style="width: 20px; height: 20px; color: var(--color-slot-booked-text);" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" x2="12" y1="8" y2="12"/>
+                    <line x1="12" x2="12.01" y1="16" y2="16"/>
+                </svg>
                 <span>{{ session('error') }}</span>
             </div>
         @endif
@@ -496,84 +457,11 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 <strong>منصة كورة بلص لحجز الملاعب الرياضية</strong> — فريق شيدرا (SHIDRA TEAM - Team 01)</p>
-        <p style="margin-top: 0.3rem; font-size: 0.8rem; color: #6B7280;">مشروع عملي هندسة البرمجيات — بيئة تشغيل معتمدة.</p>
+        <p>© {{ date('Y') }} <strong>منصة كورة بلص لحجز الملاعب الرياضية</strong> — فريق شيدرا (SHIDRA TEAM - Team 01)</p>
+        <p style="margin-top: 0.35rem; font-size: 0.8rem; color: #9ca3af;">مشروع عملي هندسة البرمجيات — بيئة تشغيل موحدة ومعتمدة.</p>
     </footer>
 
     @yield('scripts')
-            background: var(--color-primary-dark);
-            color: #d1d5db;
-            text-align: center;
-            padding: 1.75rem 1rem;
-            font-size: 0.9rem;
-            margin-top: auto;
-            border-top: 1px solid var(--color-primary);
-        }
-
-        .footer strong {
-            color: var(--color-surface-tint);
-        }
-
-        @media (max-width: 640px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-        }
-    </style>
-    @stack('styles')
-</head>
-<body>
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="/" class="brand">
-                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="m4.93 4.93 4.24 4.24"/>
-                    <path d="m14.83 9.17 4.24-4.24"/>
-                    <path d="m14.83 14.83 4.24 4.24"/>
-                    <path d="m9.17 14.83-4.24 4.24"/>
-                    <circle cx="12" cy="12" r="4"/>
-                </svg>
-                <span>كورة بلص</span>
-                <span class="brand-badge">KooraPlus</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="/" class="nav-link">الرئيسية</a></li>
-                <li><a href="{{ route('pitches.slots', 1) }}" class="nav-link active">جدول الساعات (FR-03)</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <main class="main-content">
-        @if (session('error'))
-            <div class="alert alert-error" role="alert">
-                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-                    <line x1="12" x2="12" y1="9" y2="13"/>
-                    <line x1="12" x2="12.01" y1="17" y2="17"/>
-                </svg>
-                <span>{{ session('error') }}</span>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success" role="alert">
-                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                <span>{{ session('success') }}</span>
-            </div>
-        @endif
-
-        @yield('content')
-    </main>
-
-    <footer class="footer">
-        منصة <strong>كورة بلص</strong> لحجز الملاعب الرياضية &copy; {{ date('Y') }} — فريق شيدرا (Team 01)
-    </footer>
-
     @stack('scripts')
 </body>
 </html>
