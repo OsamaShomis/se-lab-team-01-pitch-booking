@@ -256,3 +256,52 @@ Establish a robust, shared technical baseline for the Development Phase so all t
 ### Final Result
 Baseline branch `setup/laravel-baseline` fully implemented, verified, committed, and ready for PR merge into `main`.
 
+---
+
+### Entry 05: Pitch Owner Dashboard Implementation (FR-05)
+
+### Date
+`2026-09-26`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement Pitch Owner Dashboard & Daily Schedule Management (`FR-05`) on branch `feature/owner-dashboard`.
+
+### Purpose
+Provide pitch owners with a dedicated, secure dashboard to monitor daily schedules, filter by pitch and date, track real-time revenue and occupancy KPIs, and manage booking attendance/cancellations.
+
+### Files Affected
+- `app/Http/Controllers/OwnerDashboardController.php`
+- `resources/views/owner/dashboard.blade.php`
+- `routes/web.php`
+- `tests/Feature/OwnerDashboardTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Implement strict authorization: non-owners and players receive `403 Forbidden`, and owners cannot view other owners' pitches.
+- Build interactive stats KPI cards (Total Slots, Confirmed Bookings, Completed Matches, Expected Daily Revenue in YER, Occupancy Rate).
+- Synchronize slot availability when status changes to cancelled (`status = 'available'`).
+- Author a dedicated Feature Test suite (`tests/Feature/OwnerDashboardTest.php`) covering authorization, scheduling, date filtering, and status updates.
+
+### Accepted Suggestions
+- Adopted the full Controller logic, Blade view matching `docs/Design-System.md` tokens, and test suite.
+
+### Rejected Suggestions
+- None. Design and implementation strictly follow `docs/SRS.md` and `docs/UI-Structure.md`.
+
+### Human Decisions & Approval
+- Approved the Blade view layout adhering to the Olive Green palette (`#354C2B`, `#4E653D`, `#F8FAF6`).
+- Approved feature tests with 100% pass rate.
+
+### Testing & Verification
+- Executed `php artisan test --filter OwnerDashboardTest` (6 tests, 15 assertions, 0 errors, 100% pass).
+- Executed full test suite `php artisan test` (12 tests, 31 assertions, 100% pass).
+
+### Final Result
+Feature `FR-05` fully implemented, tested, and ready for Pull Request and review by Maintainer (`Mo-ra778`).
+
