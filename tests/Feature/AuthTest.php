@@ -190,10 +190,10 @@ class AuthTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_cannot_access_owner_dashboard_redirected(): void
+    public function test_guest_cannot_access_owner_dashboard_forbidden(): void
     {
         $response = $this->get(route('owner.dashboard'));
 
-        $response->assertRedirect(route('login'));
+        $response->assertStatus(403);
     }
 }

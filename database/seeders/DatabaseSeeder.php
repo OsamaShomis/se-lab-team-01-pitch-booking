@@ -24,16 +24,11 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'الكابتن صالح الشميري',
                 'phone' => '777123456',
-        // 1. Create an Owner User
-        $owner = User::firstOrCreate(
-            ['email' => 'owner@kooraplus.com'],
-            [
-                'name' => 'الكابتن علي الأهدل',
-                'phone' => '0501234567',
                 'password' => Hash::make('password123'),
                 'role' => 'owner',
             ]
         );
+        $owner = $owner1;
 
         $owner2 = User::firstOrCreate(
             ['email' => 'owner2@kooraplus.com'],
@@ -141,6 +136,8 @@ class DatabaseSeeder extends Seeder
                         'notes' => 'حجز تجريبي مباشر من منصة كورة بلص',
                     ]
                 );
+            }
+        }
 
         // 2. Create a Player User
         $player = User::firstOrCreate(
@@ -153,10 +150,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Create Sample Pitches
+        // 3. Create Additional Sample Pitches
         $pitchesData = [
             [
-                'name' => 'ملعب الأساطير الدولي',
+                'name' => 'ملعب النخبة الأولمبي',
                 'location' => 'صنعاء - حدة - بالقرب من جولة الرويشان',
                 'turf_type' => 'artificial',
                 'hourly_rate' => 150.00,
