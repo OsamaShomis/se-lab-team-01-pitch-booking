@@ -45,8 +45,7 @@
 | **Composer**        | `2.7.8` ✅                | إدارة حزم PHP                                 |
 | **Node.js**         | `v24.18.1` ✅             | بيئة تشغيل JavaScript                        |
 | **npm**             | `11.16.0` ✅              | إدارة حزم JavaScript / CSS                    |
-| **XAMPP**           | موجود ✅               | بيئة التطوير المحلية (Apache + PHP) |
-| **Laravel Artisan** | مدمج                    | أوامر CLI لإدارة المشروع            |
+| **Laravel Artisan Serve** | `php artisan serve`     | سيرفر التطوير المحلي المدمج (بدون الحاجة لأي خادم خارجي مثل XAMPP) |
 | **Git + GitHub**    | —                          | إدارة الإصدارات والتعاون        |
 | **Postman**         | —                          | اختبار وتوثيق الـ API                  |
 
