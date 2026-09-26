@@ -265,12 +265,14 @@ Baseline branch `setup/laravel-baseline` fully implemented, verified, committed,
 
 ### Student / Engineer
 Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+### Entry 05: Authentication & Role-Based Access Control (FR-01 / US-01)
 ### Entry 05: Implementation of Time-Slot Availability Grid (FR-03 / Issue #3)
 
 ### Date
 `2026-09-27`
 
 ### Student / Engineer
+Osama Al-Shamis (`OsamaShomis` — Team Coordinator)
 Mohammed Al-Idrisi (`Mo-ra778` — Repository Maintainer & Developer)
 
 ### Agent / Tool
@@ -311,6 +313,48 @@ Provide pitch owners with a dedicated, secure dashboard to monitor daily schedul
 
 ### Final Result
 Feature `FR-05` fully implemented, tested, and ready for Pull Request and review by Maintainer (`Mo-ra778`).
+Implement Feature 1 (**FR-01 / US-01: Authentication & Role Management**) on branch `feature/auth`, including dual-role interactive registration (Player & Pitch Owner), unified smart login with automatic role-based redirection, Bcrypt password hashing, session management, route protection middleware, and automated test suite.
+
+### Purpose
+Fulfill requirements `FR-01`, `NFR-02` (Security), and `US-01` Acceptance Criteria, establishing the foundational identity layer for players and pitch owners.
+
+### Files Affected
+- `app/Http/Controllers/AuthController.php`
+- `app/Http/Middleware/RoleMiddleware.php`
+- `bootstrap/app.php`
+- `routes/web.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/auth/register.blade.php`
+- `resources/views/auth/login.blade.php`
+- `resources/views/welcome.blade.php`
+- `resources/views/pitches/index.blade.php`
+- `resources/views/owner/dashboard.blade.php`
+- `tests/Feature/AuthTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Implement an interactive role selector in the registration view allowing players and owners to select their persona with visual cards.
+- Support pre-selection of roles via query parameters (`?role=player` and `?role=owner`) linked directly from Landing Page CTAs.
+- Keep login unified with automatic server-side redirection based on the user's persisted role (Owner -> `/owner/dashboard`, Player -> `/pitches`).
+- Apply the Pitch Green visual design system (`#354C2B`, Cairo font, RTL layout) across all auth views and the base layout.
+- Write 12 comprehensive automated feature tests covering happy paths, edge cases (duplicate email, unconfirmed password), and role authorization.
+
+### Accepted Suggestions
+- All suggestions accepted and approved by Osama Al-Shamis.
+
+### Rejected Suggestions
+- Requiring role selection at login was rejected in favor of seamless automated role redirection based on authenticated database records.
+
+### Human Decisions & Approval
+- Explicit approval by Osama Al-Shamis to implement the unified smart login and dual-role registration architecture.
+
+### Testing & Verification
+- `php artisan test tests/Feature/AuthTest.php` executed with 12 passed tests and 46 assertions.
+- Overall test suite passed: 18 tests, 62 assertions, 0 failures.
+
+### Final Result
+`feature/auth` completely implemented, thoroughly tested, and ready for commit and pull request creation.
+
 Implement Time-Slot Availability Grid (FR-03 / Issue #3) with strict Design System adherence and 90-minute match slot intervals (`feature/time-slots`).
 
 ### Purpose
@@ -351,4 +395,56 @@ Provide players with an intuitive, mobile-friendly interface to browse available
 
 ### Final Result
 Feature branch `feature/time-slots` successfully built, tested, and ready for commit, push, and Pull Request review (Closes #3).
+
+---
+
+### Entry 06: Reservation Cancellation & 2-Hour Window Rule Implementation (FR-06)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement Reservation Cancellation with strict 2-hour policy enforcement (`FR-06` / `BR-03`) on branch `feature/cancellation`.
+
+### Purpose
+Enable registered players to cancel their bookings and automatically free up time slots for other users, while strictly enforcing the 2-hour pre-match cutoff deadline (`BR-03`).
+
+### Files Affected
+- `app/Http/Controllers/BookingCancellationController.php`
+- `resources/views/bookings/index.blade.php`
+- `routes/web.php`
+- `tests/Feature/CancellationTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Implement domain logic in `BookingCancellationController` with `DB::transaction` ensuring atomic updates of booking status (`cancelled`) and slot availability (`status = 'available'`).
+- Enforce strict `BR-03` rule: calculate real-time difference between current timestamp and match start time (`diffInMinutes >= 120`).
+- Return structured error response (`422 Unprocessable Content` with code `BR_03_CANCELLATION_DEADLINE_PASSED`) for API clients and user-friendly Arabic flash message for web.
+- Prevent cancellation of completed or already cancelled bookings.
+- Protect player bookings so users cannot cancel other players' reservations (`403 Forbidden`).
+- Build an interactive Blade view (`resources/views/bookings/index.blade.php`) displaying player bookings, reference codes, policy alert cards, and real-time eligibility status.
+- Write 6 automated Feature tests (`tests/Feature/CancellationTest.php`) verifying all positive and negative cancellation scenarios.
+
+### Accepted Suggestions
+- Adopted all suggestions with 100% test coverage.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Approved the 2-hour cutoff rule implementation (`diffInMinutes >= 120`).
+- Confirmed database transaction rollback behavior on failures.
+
+### Testing & Verification
+- `php artisan test --filter CancellationTest` executed (6 tests, 17 assertions, 100% pass).
+- Full test suite `php artisan test` executed (17 tests, 65 assertions, 0 errors, 100% pass).
+
+### Final Result
+Feature `FR-06` fully implemented, tested, and ready for Pull Request and review by Maintainer (`Mo-ra778`) closing Issue #22.
 
