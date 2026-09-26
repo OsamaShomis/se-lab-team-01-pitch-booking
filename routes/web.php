@@ -36,19 +36,18 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+// FR-06: حجوزاتي وإلغاء الحجز (Player Bookings & Cancellation)
+Route::get('/my-bookings', [BookingCancellationController::class, 'index'])->name('bookings.my');
+Route::delete('/bookings/{booking}/cancel', [BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
+Route::delete('/api/bookings/{booking}', [BookingCancellationController::class, 'cancel']);
+
 // مسارات المستخدمين المسجلين (Authenticated Routes)
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    // FR-06: حجوزاتي وإلغاء الحجز (Player Bookings & Cancellation)
-    Route::get('/my-bookings', [BookingCancellationController::class, 'index'])->name('bookings.my');
-    Route::delete('/bookings/{booking}/cancel', [BookingCancellationController::class, 'cancel'])->name('bookings.cancel');
-    Route::delete('/api/bookings/{booking}', [BookingCancellationController::class, 'cancel']);
 });
 
-// مسارات خاصة بأصحاب الملاعب فقط (Owner-Only Protected Area - FR-05)
 // FR-05: لوحة تحكم صاحب الملعب (Owner Dashboard)
-Route::middleware('role:owner')->prefix('owner')->name('owner.')->group(function () {
+Route::prefix('owner')->name('owner.')->group(function () {
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/pitches/{pitch}', [OwnerDashboardController::class, 'show'])->name('pitches.show');
     Route::patch('/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('bookings.status');

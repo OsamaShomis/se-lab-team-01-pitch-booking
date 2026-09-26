@@ -73,10 +73,6 @@ class DatabaseSeeder extends Seeder
         );
 
         // 3. Create Pitches
-        $pitchesData = [
-            [
-                'name' => 'ملعب الأساطير الدولي',
-                'owner_id' => $owner1->id,
         $pitch1 = Pitch::firstOrCreate(
             ['name' => 'ملعب الأساطير الدولي'],
             [
@@ -159,6 +155,7 @@ class DatabaseSeeder extends Seeder
         $pitchesData = [
             [
                 'name' => 'ملعب النخبة الأولمبي',
+                'owner_id' => $owner1->id,
                 'location' => 'صنعاء - حدة - بالقرب من جولة الرويشان',
                 'turf_type' => 'artificial',
                 'hourly_rate' => 150.00,
