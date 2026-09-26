@@ -256,3 +256,58 @@ Establish a robust, shared technical baseline for the Development Phase so all t
 ### Final Result
 Baseline branch `setup/laravel-baseline` fully implemented, verified, committed, and ready for PR merge into `main`.
 
+---
+
+### Entry 05: Implementation of Time-Slot Availability Grid (FR-03 / Issue #3)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Repository Maintainer & Developer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement Time-Slot Availability Grid (FR-03 / Issue #3) with strict Design System adherence and 90-minute match slot intervals (`feature/time-slots`).
+
+### Purpose
+Provide players with an intuitive, mobile-friendly interface to browse available and booked football time-slots for any pitch on a selected date, preventing past date queries (BR-01) and ensuring visual consistency with the approved Design System.
+
+### Files Affected
+- `app/Http/Controllers/TimeSlotController.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/pitches/slots.blade.php`
+- `routes/web.php`
+- `database/seeders/DatabaseSeeder.php`
+- `tests/Feature/TimeSlotGridTest.php`
+- `tests/Feature/ExampleTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Structure time slots in 90-minute match increments (e.g. 16:00-17:30, 17:30-19:00, 19:00-20:30, 20:30-22:00, 22:00-23:30) with proportional pricing.
+- Use `whereDate('date', $selectedDate)` in query logic to guarantee exact SQLite compatibility.
+- Adopt the Pitch Natural Olive Palette (`#354C2B`, `#4E653D`, `#859864`, `#A4B17B`, `#F8FAF6`) from `docs/Design-System.md`.
+- Enforce touch target accessibility minimum of 48px on all slot buttons and date pills.
+- Replace informal emojis with clean, corporate vector SVG icons.
+
+### Accepted Suggestions
+- All suggestions accepted and verified locally.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Approved 90-minute slot intervals as standard match duration.
+- Instructed strict compliance with `docs/Design-System.md` and complete elimination of emojis in favor of SVGs.
+- Approved Pull Request creation to merge into `main` closing Issue #3.
+
+### Testing & Verification
+- `php artisan test` passed (11 tests, 48 assertions, 0 failures).
+- Feature tests verify: date filtering, slot status rendering, past date rejection (BR-01), API JSON contract matching.
+- Visual inspection on local server `http://localhost:8000` confirmed responsive layout, RTL formatting, and theme alignment.
+
+### Final Result
+Feature branch `feature/time-slots` successfully built, tested, and ready for commit, push, and Pull Request review (Closes #3).
+
