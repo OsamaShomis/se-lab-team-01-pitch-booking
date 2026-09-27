@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 // الصفحة الرئيسية (Landing Page)
 Route::get('/', function () {
+    if (auth()->check() && auth()->user()->isOwner()) {
+        return redirect()->route('owner.dashboard');
+    }
     $featuredPitches = \Illuminate\Support\Facades\Schema::hasTable('pitches')
         ? \App\Models\Pitch::where('is_active', true)->take(3)->get()
         : collect();

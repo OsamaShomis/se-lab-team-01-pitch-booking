@@ -831,6 +831,73 @@ Fulfill owner requirements for complete venue administration beyond the daily da
 ### Final Result
 Pitch Owner Hub and Venue Control Room fully operational, tested, and integrated into the global navigation and owner workflow.
 
+---
 
+### Entry 09: Role-Segregation, Sleek Navbar, Pitch Image Upload & Sports Booking Cards
 
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Maintainer & Lead Developer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement the final quality, design, and role-segregation improvements requested by the team lead:
+1. Segregate navigation permissions and views strictly based on user role (Guest, Player, Pitch Owner).
+2. Remove the standalone "جدول الساعات" tab from global navigation.
+3. Support direct pitch image file uploads (with validation, live JS preview, and storage in `public/images/pitches`).
+4. Enforce logical routing: auto-redirect venue owners from `/` to `/owner/dashboard`, and redirect owners from `/my-bookings` to the dashboard.
+5. Tailor homepage hero buttons so logged-in players access their booking history directly rather than guest registration CTAs.
+6. Redesign "حجوزاتي" (`/my-bookings`) into interactive sports cards with a match-ticket popup details modal and BR-03 cancellation triggers.
+7. Refactor top navbar into a sleek, compact, modern bar with unified SVG icons and zero excessive padding.
+8. Unify all page color tokens strictly under `Pitch Natural Olive` (`#354C2B`, `#4E653D`, `#697E50`, `#859864`, `#F8FAF6`).
+
+### Files Affected
+- `app/Http/Controllers/OwnerPitchController.php`
+- `app/Http/Controllers/BookingCancellationController.php`
+- `routes/web.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/welcome.blade.php`
+- `resources/views/bookings/index.blade.php`
+- `resources/views/owner/pitches/create.blade.php`
+- `resources/views/owner/pitches/edit.blade.php`
+- `resources/views/pitches/index.blade.php`
+- `resources/views/pitches/show.blade.php`
+- `AI_Log.md`
+
+### Testing & Verification
+- Full automated test suite passed: 61 tests, 242 assertions (100% green).
+- Clean code architecture without regressions.
+
+---
+
+### Entry 10: Bugfix: Allow Re-Booking of Cancelled Time Slots (Partial Unique Index)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Maintainer & Lead Developer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Investigate and resolve the critical issue where cancelled time slots could not be re-booked by other players, resulting in false "already booked" conflicts (`QueryException: UNIQUE constraint failed: bookings.time_slot_id`).
+
+### Root Cause Analysis
+The initial migration (`2026_09_26_000003_create_bookings_table.php`) defined `$table->foreignId('time_slot_id')->unique()`. When a reservation was cancelled, the slot's status was reset to `available`, but the old booking row remained in `bookings` with `status = 'cancelled'`. Any subsequent booking attempt for that same slot triggered a unique constraint violation on `bookings.time_slot_id`, caught by `BookingController` as a double-booking conflict.
+
+### Solution Implemented
+1. Replaced the unconditional unique constraint on `bookings.time_slot_id` with a partial unique index (`WHERE status = 'confirmed'`) in `database/migrations/2026_09_26_000003_create_bookings_table.php`.
+2. Dropped the legacy unconditional unique index `bookings_time_slot_id_unique` from `database/database.sqlite` and established `bookings_active_slot_unique`.
+3. Added defense-in-depth verification in `BookingController@store` within the pessimistic locking transaction to ensure no other active confirmed booking exists.
+4. Added an automated feature test in `tests/Feature/CancellationTest.php` (`test_another_user_can_rebook_a_cancelled_time_slot`) asserting that User 2 can book a slot cancelled by User 1.
+
+### Testing & Verification
+- Test passed: `test_another_user_can_rebook_a_cancelled_time_slot` (OK).
+- Full test suite passed: 68 tests, 320 assertions (100% green).
 

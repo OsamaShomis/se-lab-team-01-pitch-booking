@@ -222,4 +222,63 @@ class CancellationTest extends TestCase
         $response->assertSee('KP-TEST99');
         $response->assertSee('حجز مؤكد');
     }
+
+    /**
+     * Test another user can successfully re-book a cancelled time slot.
+     */
+    public function test_another_user_can_rebook_a_cancelled_time_slot(): void
+    {
+        $player1 = User::factory()->create(['role' => 'player']);
+        $player2 = User::factory()->create(['role' => 'player']);
+        $owner = User::factory()->create(['role' => 'owner']);
+        $pitch = Pitch::factory()->create(['owner_id' => $owner->id]);
+
+        $slot = TimeSlot::factory()->create([
+            'pitch_id' => $pitch->id,
+            'date' => Carbon::tomorrow()->format('Y-m-d'),
+            'start_time' => '20:00:00',
+            'end_time' => '21:30:00',
+            'price' => 12000,
+            'status' => 'available',
+        ]);
+
+        // 1. Player 1 books the slot
+        $book1 = $this->actingAs($player1)->postJson('/api/bookings', [
+            'time_slot_id' => $slot->id,
+        ]);
+        $book1->assertStatus(201);
+        $this->assertEquals('booked', $slot->fresh()->status);
+
+        $booking1 = Booking::where('user_id', $player1->id)->where('time_slot_id', $slot->id)->first();
+        $this->assertNotNull($booking1);
+
+        // 2. Player 1 cancels the booking (> 2 hours before)
+        $cancel = $this->actingAs($player1)->deleteJson("/bookings/{$booking1->id}/cancel");
+        $cancel->assertStatus(200);
+        $this->assertEquals('cancelled', $booking1->fresh()->status);
+        $this->assertEquals('available', $slot->fresh()->status);
+
+        // 3. Player 2 books the EXACT SAME slot
+        $book2 = $this->actingAs($player2)->postJson('/api/bookings', [
+            'time_slot_id' => $slot->id,
+        ]);
+        $book2->assertStatus(201);
+
+        // 4. Assert both bookings exist: Player 1's cancelled, Player 2's confirmed
+        $this->assertDatabaseHas('bookings', [
+            'id' => $booking1->id,
+            'user_id' => $player1->id,
+            'time_slot_id' => $slot->id,
+            'status' => 'cancelled',
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'user_id' => $player2->id,
+            'time_slot_id' => $slot->id,
+            'status' => 'confirmed',
+        ]);
+
+        $this->assertEquals('booked', $slot->fresh()->status);
+    }
 }
+

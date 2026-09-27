@@ -124,7 +124,7 @@
             <p>أدخل مواصفات الملعب، موقعه، وسعر المباراة. سيقوم النظام تلقائياً بتجهيز جدول المواعيد للـ 4 أيام القادمة فور الإنشاء.</p>
         </div>
 
-        <form action="{{ route('owner.pitches.store') }}" method="POST">
+        <form action="{{ route('owner.pitches.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">
@@ -170,9 +170,21 @@
             </div>
 
             <div class="form-group">
-                <label for="image_url">رابط صورة الملعب (URL)</label>
-                <input type="url" id="image_url" name="image_url" class="form-control" value="{{ old('image_url', 'https://images.unsplash.com/photo-1529900240041-52c3ad58b021?auto=format&fit=crop&w=800&q=80') }}" placeholder="https://example.com/pitch.jpg">
-                <div class="helper-text">يمكنك ترك الرابط الافتراضي أو وضع رابط صورة خاصة بملعبك.</div>
+                <label for="image">صورة الملعب (رفع ملف من جهازك أو إدخال رابط)</label>
+                <div class="form-grid-2">
+                    <div>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewPitchImage(event)">
+                        <div class="helper-text">اختر صورة حقيقية للملعب من جهازك (JPG, PNG, WebP حتى 5MB).</div>
+                    </div>
+                    <div>
+                        <input type="text" id="image_url" name="image_url" class="form-control" value="{{ old('image_url') }}" placeholder="أو أدخل رابط صورة خارجية مباشرة...">
+                        <div class="helper-text">اختياري: إذا لم ترفع صورة سيتم استخدام الصورة الافتراضية.</div>
+                    </div>
+                </div>
+                <div id="image_preview_box" style="margin-top: 0.85rem; display: none;">
+                    <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 0.35rem;">معاينة الصورة المختارة:</div>
+                    <img id="image_preview" src="#" alt="معاينة صورة الملعب" style="max-height: 150px; border-radius: var(--radius-sm); border: 2px solid var(--color-surface-mint); object-fit: cover;">
+                </div>
             </div>
 
             <div class="form-group">
@@ -202,3 +214,23 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function previewPitchImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image_preview');
+                const box = document.getElementById('image_preview_box');
+                if (preview && box) {
+                    preview.src = e.target.result;
+                    box.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+@endpush

@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <form action="{{ route('owner.pitches.update', $pitch) }}" method="POST">
+        <form action="{{ route('owner.pitches.update', $pitch) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -191,8 +191,36 @@
             </div>
 
             <div class="form-group">
-                <label for="image_url">رابط صورة الملعب (URL)</label>
-                <input type="url" id="image_url" name="image_url" class="form-control" value="{{ old('image_url', $pitch->image_url) }}" placeholder="https://example.com/pitch.jpg">
+                <label for="image">صورة الملعب (رفع ملف جديد أو تحديث الرابط)</label>
+                <div class="form-grid-2">
+                    <div>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewPitchImage(event)">
+                        <div class="helper-text">اختر صورة جديدة إذا كنت ترغب بتغيير الصورة الحالية.</div>
+                    </div>
+                    <div>
+                        <input type="text" id="image_url" name="image_url" class="form-control" value="{{ old('image_url', $pitch->image_url) }}" placeholder="أو رابط صورة خارجية...">
+                        <div class="helper-text">يمكنك ترك الرابط أو إدخال مسار جديد.</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 0.85rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+                    @if($pitch->image_url)
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); margin-bottom: 0.25rem;">الصورة الحالية للملعب:</div>
+                            @if(file_exists(public_path($pitch->image_url)))
+                                <img src="{{ asset($pitch->image_url) }}" alt="الحالية" style="max-height: 90px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: cover;">
+                            @elseif(str_starts_with($pitch->image_url, 'http'))
+                                <img src="{{ $pitch->image_url }}" alt="الحالية" style="max-height: 90px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: cover;">
+                            @else
+                                <img src="{{ asset('images/hero-pitch.jpg') }}" alt="افتراضية" style="max-height: 90px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: cover;">
+                            @endif
+                        </div>
+                    @endif
+                    <div id="image_preview_box" style="display: none;">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 0.25rem;">معاينة الصورة الجديدة:</div>
+                        <img id="image_preview" src="#" alt="معاينة جديدة" style="max-height: 90px; border-radius: var(--radius-sm); border: 2px solid var(--color-surface-mint); object-fit: cover;">
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -238,3 +266,23 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function previewPitchImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image_preview');
+                const box = document.getElementById('image_preview_box');
+                if (preview && box) {
+                    preview.src = e.target.result;
+                    box.style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+@endpush

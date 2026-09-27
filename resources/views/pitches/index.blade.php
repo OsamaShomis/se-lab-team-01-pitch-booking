@@ -223,6 +223,8 @@
                     <div class="pitch-card-visual">
                         @if($pitch->image_url && file_exists(public_path($pitch->image_url)))
                             <img src="{{ asset($pitch->image_url) }}" alt="{{ $pitch->name }}">
+                        @elseif($pitch->image_url && (str_starts_with($pitch->image_url, 'http://') || str_starts_with($pitch->image_url, 'https://')))
+                            <img src="{{ $pitch->image_url }}" alt="{{ $pitch->name }}">
                         @else
                             <img src="{{ asset('images/hero-pitch.jpg') }}" alt="{{ $pitch->name }}">
                         @endif

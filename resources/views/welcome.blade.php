@@ -151,14 +151,23 @@
             </svg>
             <span>استعراض وحجز الملاعب المتاحة</span>
         </a>
-        <a href="{{ route('register', ['role' => 'player']) }}" class="btn btn-outline-light hero-btn">
-            <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>إنشاء حساب لاعب</span>
-        </a>
-        <a href="{{ route('register', ['role' => 'owner']) }}" class="btn btn-outline-light hero-btn" style="border-style: dashed; opacity: 0.9;">
-            <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
-            <span>تسجيل منشأة رياضية</span>
-        </a>
+        @guest
+            <a href="{{ route('register', ['role' => 'player']) }}" class="btn btn-outline-light hero-btn">
+                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>إنشاء حساب لاعب</span>
+            </a>
+            <a href="{{ route('register', ['role' => 'owner']) }}" class="btn btn-outline-light hero-btn" style="border-style: dashed; opacity: 0.9;">
+                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                <span>تسجيل منشأة رياضية</span>
+            </a>
+        @else
+            @if(auth()->user()->isPlayer())
+                <a href="{{ route('bookings.my') }}" class="btn btn-outline-light hero-btn">
+                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>سجل حجوزاتي المؤكدة</span>
+                </a>
+            @endif
+        @endguest
     </div>
 </section>
 
