@@ -536,3 +536,55 @@ Global layout consolidated and cleaned; US-03 acceptance criteria 100% verified 
 
 ### Final Result
 All 4 merged features fully integrated, database cleanly seeded, and all 36 tests pass with 100% green status on `main`.
+
+---
+
+### Entry 08: Slot Reservation with Concurrency Handling & Cash Policy Modal (FR-04 / US-04)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Mohammed Al-Idrisi (`Mo-ra778` — Repository Maintainer & Developer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Implement Slot Reservation with Concurrency Handling (`FR-04`), Confirmation Modal with Cash Payment Policy Notice (`US-04`), and Comprehensive Automated Testing.
+
+### Purpose
+Enable authenticated players to reserve available pitch time slots safely under concurrent traffic using pessimistic database locking (`lockForUpdate`), enforce business rules (`BR-01`, `BR-02`), display cash payment terms, and generate unique booking reference codes (`KP-YYYY-XXXX`).
+
+### Files Affected
+- `app/Http/Controllers/BookingController.php`
+- `routes/web.php`
+- `resources/views/pitches/slots.blade.php`
+- `tests/Feature/BookingTest.php`
+- `AI_Log.md`
+
+### AI Suggestions
+- Implement `DB::transaction()` wrapping `TimeSlot::lockForUpdate()` in `BookingController.php` to prevent race conditions when multiple players attempt booking the same slot simultaneously (`NFR-04`).
+- Validate player authentication and player role (`isPlayer()`), redirecting guests to `/login` for Web or returning `401 Unauthorized` for API.
+- Enforce business rules `BR-01` (reject past slots with 400 Bad Request) and `BR-02` (reject non-available slots with 409 Conflict).
+- Generate a unique booking reference formatted as `KP-YYYY-XXXX` (e.g. `KP-2026-X781`) using collision-checked random alphanumeric generation.
+- Build a confirmation modal in `resources/views/pitches/slots.blade.php` following the Pitch Natural Olive design system (`#354C2B`), displaying pitch name, location, date, time range, total price, and the mandatory cash payment notice: *"الدفع يتم نقداً كاش في مقر الملعب عند الحضور قبل انطلاق موعد المباراة."*
+- Write 8 automated tests in `tests/Feature/BookingTest.php` validating Web redirects, API contracts (`docs/API.md` Endpoint 8), guest guardrails, owner restrictions, past slot rejections, double-booking rejections, and database unique constraints.
+
+### Accepted Suggestions
+- All architectural suggestions, modal styles, transaction boundaries, and test assertions accepted and implemented.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Human developer confirmed starting FR-04 implementation.
+- Preserved cash-only payment policy and ensured non-duplication of existing routes.
+
+### Testing & Verification
+- Automated tests: Full test suite `php artisan test` passed with 44 tests, 44 passed, 180 assertions (100% pass rate).
+- Browser verification: Executed interactive browser subagent session, verified registration, slot selection, modal presentation, cash policy notice, and modal cancellation.
+
+### Final Result
+FR-04 / US-04 fully implemented with concurrency locking, cash policy modal, 100% test coverage, compact SaaS modal redesign, and aesthetic Pitch Natural Olive design. All commits (`f012d9a`) pushed to `origin/feature/booking` and ready for Pull Request review and merge into `main`.
+
