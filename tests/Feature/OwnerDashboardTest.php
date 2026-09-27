@@ -157,4 +157,37 @@ class OwnerDashboardTest extends TestCase
             'status' => 'available',
         ]);
     }
+
+    /**
+     * Test owner can create a manual walk-in booking for an available slot (US-05 AC-3).
+     */
+    public function test_owner_can_create_manual_walkin_booking(): void
+    {
+        $owner = User::factory()->create(['role' => 'owner']);
+        $pitch = Pitch::factory()->create(['owner_id' => $owner->id]);
+        $slot = TimeSlot::factory()->create([
+            'pitch_id' => $pitch->id,
+            'status' => 'available',
+            'price' => 15000,
+        ]);
+
+        $response = $this->actingAs($owner)->post("/owner/slots/{$slot->id}/manual-book", [
+            'captain_name' => 'الكابتن مروان',
+            'captain_phone' => '771234567',
+            'notes' => 'حجز حضوري واستلم نقداً',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('bookings', [
+            'time_slot_id' => $slot->id,
+            'status' => 'confirmed',
+        ]);
+
+        $this->assertDatabaseHas('time_slots', [
+            'id' => $slot->id,
+            'status' => 'booked',
+        ]);
+    }
 }
+

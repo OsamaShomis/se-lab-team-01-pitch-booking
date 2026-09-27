@@ -697,9 +697,10 @@
                                                 تم الإلغاء
                                             </span>
                                         @else
-                                            <span style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 600;">
-                                                جاهزة للحجز
-                                            </span>
+                                            <button type="button" class="btn btn-secondary" onclick="openWalkinModal({{ $slot->id }}, '{{ substr($slot->start_time, 0, 5) }} — {{ substr($slot->end_time, 0, 5) }}', {{ (int)$slot->price }})" style="min-height: 32px; padding: 0.35rem 0.85rem; font-size: 0.82rem; width: 100%;">
+                                                <svg class="icon" style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                                                <span>حجز حضوري مباشر</span>
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -711,5 +712,61 @@
         </div>
     @endif
 
+    <!-- Walk-in Booking Modal -->
+    <div id="walkinModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--color-card-bg); width: 90%; max-width: 480px; border-radius: var(--radius-card); padding: 2rem; box-shadow: var(--shadow-lg); border: 1px solid var(--color-border-light);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border-light); padding-bottom: 0.75rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-primary-dark); display: flex; align-items: center; gap: 0.5rem;">
+                    <svg class="icon" style="width: 1.2rem; height: 1.2rem;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                    حجز يدوي مباشر (Walk-in)
+                </h3>
+                <button type="button" onclick="closeWalkinModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-text-muted);">&times;</button>
+            </div>
+
+            <form id="walkinForm" method="POST" action="">
+                @csrf
+                <div style="background: var(--color-bg-main); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
+                    الفترة: <strong id="modalSlotTime" style="color: var(--color-primary-dark);"></strong> | المبلغ: <strong id="modalSlotPrice" style="color: var(--color-primary-dark);"></strong> ريال
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; color: var(--color-primary-dark);">اسم الكابتن / الفريق *</label>
+                    <input type="text" name="captain_name" class="form-control" placeholder="مثال: الكابتن أحمد الشامي" required style="width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--color-border-light); border-radius: 8px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; color: var(--color-primary-dark);">رقم هاتف الكابتن (اختياري)</label>
+                    <input type="text" name="captain_phone" class="form-control" placeholder="77XXXXXXX" style="width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--color-border-light); border-radius: 8px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; color: var(--color-primary-dark);">ملاحظات إضافية</label>
+                    <input type="text" name="notes" class="form-control" placeholder="مثال: تم استلام المبلغ نقداً في الملعب" style="width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--color-border-light); border-radius: 8px;">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" onclick="closeWalkinModal()" class="btn btn-outline-light" style="color: var(--color-text-body); border-color: var(--color-border); padding: 0.5rem 1.25rem;">إلغاء</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">تثبيت الحجز اليدوي</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
+
+<script>
+    function openWalkinModal(slotId, timeStr, price) {
+        const modal = document.getElementById('walkinModal');
+        const form = document.getElementById('walkinForm');
+        form.action = '/owner/slots/' + slotId + '/manual-book';
+        document.getElementById('modalSlotTime').innerText = timeStr;
+        document.getElementById('modalSlotPrice').innerText = Number(price).toLocaleString();
+        modal.style.display = 'flex';
+    }
+
+    function closeWalkinModal() {
+        document.getElementById('walkinModal').style.display = 'none';
+    }
+</script>
 @endsection
+

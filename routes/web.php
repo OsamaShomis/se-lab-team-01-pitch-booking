@@ -56,6 +56,8 @@ Route::prefix('owner')->name('owner.')->group(function () {
     // Dashboard & Schedule Management
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
     Route::patch('/bookings/{booking}/status', [OwnerDashboardController::class, 'updateStatus'])->name('bookings.status');
+    Route::post('/slots/{timeSlot}/manual-book', [OwnerDashboardController::class, 'manualBooking'])->name('slots.manual-book');
+
 
     // Pitch Management (إدارة ملاعبي)
     Route::get('/pitches', [OwnerPitchController::class, 'index'])->name('pitches.index');
