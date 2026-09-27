@@ -32,6 +32,17 @@ class BookingCancellationController extends Controller
             abort(401, 'يجب تسجيل الدخول لاستعراض حجوزاتك.');
         }
 
+        if ($user->isOwner()) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'هذه الصفحة مخصصة لحجوزات اللاعبين فقط. يمكن لمسؤول الملعب متابعة الحجوزات من لوحة التحكم.',
+                ], 403);
+            }
+            return redirect()->route('owner.dashboard')
+                ->with('error', 'صفحة حجوزاتي مخصصة للاعبين فقط. تم توجيهك إلى لوحة تحكم منشأتك الرياضية.');
+        }
+
         // Fetch bookings for the authenticated player with time slot and pitch relations
         $bookings = Booking::where('user_id', $user->id)
             ->with(['timeSlot.pitch'])

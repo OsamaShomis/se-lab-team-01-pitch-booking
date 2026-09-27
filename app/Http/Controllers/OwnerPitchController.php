@@ -69,12 +69,28 @@ class OwnerPitchController extends Controller
             'turf_type' => 'required|in:artificial,natural,hybrid,عشب صناعي,عشب طبيعي,عشب هجين,صالة مغطاة,ترتان',
             'hourly_rate' => 'required|numeric|min:1000|max:200000',
             'contact_phone' => 'required|string|max:20',
-            'image_url' => 'nullable|url|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+            'image_url' => 'nullable|string|max:500',
             'description' => 'nullable|string|max:1000',
             'is_active' => 'nullable|boolean',
         ]);
 
         $turfType = $this->normalizeTurfType($validated['turf_type']);
+
+        $imageUrl = 'images/hero-pitch.jpg';
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = 'pitch_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $dest = public_path('images/pitches');
+            if (!file_exists($dest)) {
+                mkdir($dest, 0755, true);
+            }
+            $file->move($dest, $filename);
+            $imageUrl = 'images/pitches/' . $filename;
+        } elseif (!empty($validated['image_url'])) {
+            $imageUrl = $validated['image_url'];
+        }
 
         $pitch = Pitch::create([
             'owner_id' => $user->id,
@@ -83,7 +99,7 @@ class OwnerPitchController extends Controller
             'turf_type' => $turfType,
             'hourly_rate' => $validated['hourly_rate'],
             'contact_phone' => $validated['contact_phone'],
-            'image_url' => $validated['image_url'] ?? 'https://images.unsplash.com/photo-1529900240041-52c3ad58b021?auto=format&fit=crop&w=800&q=80',
+            'image_url' => $imageUrl,
             'description' => $validated['description'] ?? null,
             'is_active' => $request->has('is_active') ? (bool) $request->input('is_active') : true,
         ]);
@@ -164,12 +180,28 @@ class OwnerPitchController extends Controller
             'turf_type' => 'required|in:artificial,natural,hybrid,عشب صناعي,عشب طبيعي,عشب هجين,صالة مغطاة,ترتان',
             'hourly_rate' => 'required|numeric|min:1000|max:200000',
             'contact_phone' => 'required|string|max:20',
-            'image_url' => 'nullable|url|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+            'image_url' => 'nullable|string|max:500',
             'description' => 'nullable|string|max:1000',
             'is_active' => 'nullable|boolean',
         ]);
 
         $turfType = $this->normalizeTurfType($validated['turf_type']);
+
+        $imageUrl = $pitch->image_url;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = 'pitch_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $dest = public_path('images/pitches');
+            if (!file_exists($dest)) {
+                mkdir($dest, 0755, true);
+            }
+            $file->move($dest, $filename);
+            $imageUrl = 'images/pitches/' . $filename;
+        } elseif ($request->filled('image_url')) {
+            $imageUrl = $validated['image_url'];
+        }
 
         $pitch->update([
             'name' => $validated['name'],
@@ -177,7 +209,7 @@ class OwnerPitchController extends Controller
             'turf_type' => $turfType,
             'hourly_rate' => $validated['hourly_rate'],
             'contact_phone' => $validated['contact_phone'],
-            'image_url' => $validated['image_url'] ?? $pitch->image_url,
+            'image_url' => $imageUrl,
             'description' => $validated['description'] ?? null,
             'is_active' => $request->has('is_active') ? (bool) $request->input('is_active') : false,
         ]);

@@ -69,7 +69,16 @@ class BookingController extends Controller
                     throw new \DomainException('SLOT_NOT_AVAILABLE');
                 }
 
-                // 4. Generate unique platform reference code (e.g., KP-2026-X781)
+                // 4. Double-check that no other confirmed booking exists for this slot
+                $hasActiveBooking = Booking::where('time_slot_id', $slot->id)
+                    ->where('status', 'confirmed')
+                    ->exists();
+
+                if ($hasActiveBooking) {
+                    throw new \DomainException('SLOT_NOT_AVAILABLE');
+                }
+
+                // 5. Generate unique platform reference code (e.g., KP-2026-X781)
                 $reference = $this->generateBookingReference();
 
                 // 5. Create the booking record

@@ -23,6 +23,8 @@
             <div style="height: 240px; border-radius: var(--radius-card); padding: 1.75rem; color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); background-color: #17321F;">
                 @if($pitch->image_url && file_exists(public_path($pitch->image_url)))
                     <img src="{{ asset($pitch->image_url) }}" alt="{{ $pitch->name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+                @elseif($pitch->image_url && (str_starts_with($pitch->image_url, 'http://') || str_starts_with($pitch->image_url, 'https://')))
+                    <img src="{{ $pitch->image_url }}" alt="{{ $pitch->name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
                 @else
                     <img src="{{ asset('images/hero-pitch.jpg') }}" alt="{{ $pitch->name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
                 @endif

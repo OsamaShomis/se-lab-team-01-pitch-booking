@@ -90,6 +90,8 @@
 
         /* SVG Icon Standards (No emojis, clean vector lines) */
         .icon, .svg-icon {
+            width: 1.25rem;
+            height: 1.25rem;
             display: inline-block;
             vertical-align: middle;
             flex-shrink: 0;
@@ -101,13 +103,13 @@
         }
 
         /* ==========================================================================
-           Navbar (Pitch Natural Olive Gradient)
+           Navbar (Pitch Natural Olive Gradient — Compact & Sleek)
            ========================================================================== */
         .navbar {
             background: linear-gradient(135deg, var(--color-primary-dark) 0%, #24351d 100%);
             color: #ffffff;
-            padding: 0.85rem 1.5rem;
-            box-shadow: 0 4px 15px rgba(53, 76, 43, 0.2);
+            padding: 0.55rem 1.5rem;
+            box-shadow: 0 2px 12px rgba(53, 76, 43, 0.16);
             position: sticky;
             top: 0;
             z-index: 50;
@@ -120,22 +122,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
 
         .brand-logo {
             display: flex;
             align-items: center;
-            gap: 0.65rem;
+            gap: 0.55rem;
             text-decoration: none;
             color: #ffffff;
-            font-size: 1.35rem;
+            font-size: 1.2rem;
             font-weight: 800;
         }
 
         .brand-icon-box {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background-color: rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-sm);
             display: flex;
@@ -353,9 +355,9 @@
     <!-- Header / Navbar -->
     <header class="navbar">
         <div class="navbar-container">
-            <a href="{{ url('/') }}" class="brand-logo">
+            <a href="{{ auth()->check() && auth()->user()->isOwner() ? route('owner.dashboard') : url('/') }}" class="brand-logo">
                 <span class="brand-icon-box">
-                    <svg class="icon" style="width: 20px; height: 20px;" viewBox="0 0 24 24">
+                    <svg class="icon" style="width: 18px; height: 18px;" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="m4.93 4.93 4.24 4.24"/>
                         <path d="m14.83 9.17 4.24-4.24"/>
@@ -369,54 +371,66 @@
             </a>
 
             <nav class="nav-links">
-                <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    الرئيسية
-                </a>
-                <a href="{{ route('pitches.index') }}" class="nav-link {{ request()->routeIs('pitches.index') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
-                    استعراض الملاعب
-                </a>
-                <a href="{{ route('pitches.slots', 1) }}" class="nav-link {{ request()->routeIs('pitches.slots') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    جدول الساعات (FR-03)
-                </a>
-                <a href="{{ route('bookings.my') }}" class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    حجوزاتي (FR-06)
-                </a>
-                <a href="{{ route('owner.dashboard') }}" class="nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-                    لوحة المنشأة (FR-05)
-                </a>
-                <a href="{{ route('owner.pitches.index') }}" class="nav-link {{ request()->routeIs('owner.pitches.*') ? 'active' : '' }}">
-                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
-                    إدارة ملاعبي
-                </a>
+                @guest
+                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        الرئيسية
+                    </a>
+                    <a href="{{ route('pitches.index') }}" class="nav-link {{ request()->routeIs('pitches.*') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                        استعراض الملاعب
+                    </a>
+                @elseif(auth()->user()->isPlayer())
+                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        الرئيسية
+                    </a>
+                    <a href="{{ route('pitches.index') }}" class="nav-link {{ request()->routeIs('pitches.*') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                        استعراض الملاعب
+                    </a>
+                    <a href="{{ route('bookings.my') }}" class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        حجوزاتي
+                    </a>
+                @elseif(auth()->user()->isOwner())
+                    <a href="{{ route('owner.dashboard') }}" class="nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                        لوحة التحكم
+                    </a>
+                    <a href="{{ route('owner.pitches.index') }}" class="nav-link {{ request()->routeIs('owner.pitches.index') || request()->routeIs('owner.pitches.show') || request()->routeIs('owner.pitches.edit') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                        إدارة ملاعبي
+                    </a>
+                    <a href="{{ route('owner.pitches.create') }}" class="nav-link {{ request()->routeIs('owner.pitches.create') ? 'active' : '' }}">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                        إضافة ملعب جديد
+                    </a>
+                @endif
             </nav>
 
             <div class="nav-auth">
                 @guest
-                    <a href="{{ route('login') }}" class="btn btn-outline-light">
-                        <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+                    <a href="{{ route('login') }}" class="btn btn-outline-light" style="min-height: 38px; padding: 0.35rem 0.9rem; font-size: 0.88rem;">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
                         تسجيل الدخول
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-accent">
-                        <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                        إنشاء حساب جديد
+                    <a href="{{ route('register') }}" class="btn btn-accent" style="min-height: 38px; padding: 0.35rem 0.9rem; font-size: 0.88rem;">
+                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                        إنشاء حساب
                     </a>
                 @else
                     <div class="user-pill">
-                        <svg class="icon" style="width: 0.95rem; height: 0.95rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <svg class="icon" style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <span>{{ auth()->user()->name }}</span>
                         <span class="user-role-tag {{ auth()->user()->isOwner() ? 'role-owner' : 'role-player' }}">
-                            {{ auth()->user()->isOwner() ? 'صاحب ملعب' : 'لاعب' }}
+                            {{ auth()->user()->isOwner() ? 'صاحب منشأة' : 'لاعب' }}
                         </span>
                     </div>
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                         @csrf
-                        <button type="submit" class="btn btn-outline-light" style="min-height: 36px; padding: 0.35rem 0.85rem; font-size: 0.85rem;">
-                            <svg class="icon" style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                        <button type="submit" class="btn btn-outline-light" style="min-height: 36px; padding: 0.3rem 0.8rem; font-size: 0.84rem;">
+                            <svg class="icon" style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                             خروج
                         </button>
                     </form>
