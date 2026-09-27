@@ -98,7 +98,8 @@ Authorization: Bearer <personal_access_token>
 | **9** | `GET` | `/api/bookings/my` | **FR-04** | Sanctum Token | `player` | استعراض سجل حجوزات اللاعب |
 | **10** | `GET` | `/api/owner/pitches/{id}/schedule` | **FR-05** | Sanctum Token | `owner` | جدول مواعيد الحجوزات اليومي للملعب |
 | **11** | `PATCH` | `/api/owner/bookings/{id}/status` | **FR-05** | Sanctum Token | `owner` | تحديث حالة الحجز (مؤكد/مكتمل/ملغي) |
-| **12** | `POST` | `/api/bookings/{id}/cancel` | **FR-06** | Sanctum Token | `player` | إلغاء الحجز (مع مراعاة شرط الساعتين) |
+| **12** | `POST` | `/api/owner/pitches` | **FR-05** | Sanctum Token | `owner` | تسجيل وإضافة ملعب جديد مع رفع الصورة والمواصفات |
+| **13** | `POST` | `/api/bookings/{id}/cancel` | **FR-06** | Sanctum Token | `player` | إلغاء الحجز (مع مراعاة شرط الساعتين) |
 
 ---
 
@@ -492,9 +493,54 @@ Authorization: Bearer <personal_access_token>
 
 ---
 
+#### 12. تسجيل وإضافة ملعب جديد (`POST /api/owner/pitches`)
+- **الوصف:** تمكين صاحب المنشأة الرياضية من إضافة ملعب جديد ورفع صوره ومواصفاته وأسعاره ونشره في المنصة.
+- **المصادقة:** مطلوب `Bearer Token` (صلاحية: `owner`).
+- **نوع المحتوى:** `multipart/form-data`
+- **معاملات الطلب (Form-Data Parameters):**
+  - `name` (إلزامي): اسم الملعب (حتى 150 حرفاً).
+  - `location` (إلزامي): المدينة والحي والعنوان.
+  - `turf_type` (إلزامي): نوع العشب (`artificial` أو `natural` أو `hybrid`).
+  - `hourly_rate` (إلزامي): سعر الساعة بالريال اليمني (رقم موجب).
+  - `contact_phone` (إلزامي): رقم هاتف الحجز والتواصل.
+  - `description` (اختياري): نبذة وتجهيزات الملعب.
+  - `image` (اختياري): ملف صورة الملعب (`jpeg, png, jpg, webp`، حتى 3MB).
+- **استجابة النجاح (`201 Created`):**
+```json
+{
+  "success": true,
+  "message": "تمت إضافة الملعب بنجاح وجاهز لاستقبال الحجوزات",
+  "data": {
+    "id": 7,
+    "name": "ملعب النصر الأولمبي",
+    "location": "صنعاء — السبعين",
+    "turf_type": "artificial",
+    "hourly_rate": 11000.0,
+    "contact_phone": "777555444",
+    "image_url": "storage/pitches/pitch_abc123.jpg",
+    "description": "ملعب سباعي حديث مجهز بكشافات ليلية ومواقف سيارات واسعة.",
+    "is_active": true
+  }
+}
+```
+- **استجابة أخطاء التحقق (`422 Unprocessable Content`):**
+```json
+{
+  "success": false,
+  "message": "فشل في التحقق من البيانات المدخلة",
+  "errors": {
+    "name": ["اسم الملعب مطلوب ولا يجب أن يتجاوز 150 حرفاً."],
+    "hourly_rate": ["سعر الساعة يجب أن يكون قيمة عددية موجبة."],
+    "image": ["الملف المرفوع يجب أن يكون صورة من نوع (jpeg, png, jpg, webp) وبحد أقصى 3 ميجابايت."]
+  }
+}
+```
+
+---
+
 ### سادساً: إلغاء الحجز (Cancellation Module — FR-06)
 
-#### 12. إلغاء الحجز من اللاعب (`POST /api/bookings/{id}/cancel`)
+#### 13. إلغاء الحجز من اللاعب (`POST /api/bookings/{id}/cancel`)
 - **الوصف:** تمكين اللاعب من إلغاء حجزه شريطة ألا يتبقى أقل من ساعتين على بداية المباراة (تطبيق قاعدة العمل `BR-03`).
 - **المصادقة:** مطلوب `Bearer Token` (صلاحية: `player` صاحب الحجز).
 - **استجابة النجاح (`200 OK`):**
