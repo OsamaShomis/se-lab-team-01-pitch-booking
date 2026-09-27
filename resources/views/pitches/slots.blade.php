@@ -383,21 +383,23 @@
         color: var(--color-accent-soft);
     }
 
-    /* Booking Confirmation Modal Styles per Design System Section 5 */
+    /* ==========================================================================
+       Match Ticket Style Modal (بطاقة تذكرة حجز المباراة - US-04)
+       ========================================================================== */
     .modal-backdrop {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(15, 23, 14, 0.65);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        background: rgba(10, 20, 10, 0.72);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         display: none;
         align-items: center;
         justify-content: center;
         z-index: 1000;
-        padding: 1rem;
+        padding: 1.25rem;
         opacity: 0;
         transition: opacity 0.25s ease;
     }
@@ -406,113 +408,314 @@
         opacity: 1;
     }
 
-    .modal-card {
-        background: var(--color-card-bg);
-        border-radius: var(--radius-card);
+    /* Ticket Container with Authentic Stadium Perforation */
+    .ticket-card {
+        background: #ffffff;
+        border-radius: 20px;
         width: 100%;
-        max-width: 520px;
-        box-shadow: 0 20px 40px rgba(53, 76, 43, 0.25);
-        border: 1px solid var(--color-border-light);
+        max-width: 530px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
         overflow: hidden;
-        transform: translateY(20px) scale(0.97);
-        transition: transform 0.25s ease;
+        position: relative;
+        transform: translateY(24px) scale(0.96);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .modal-backdrop.active .modal-card {
+    .modal-backdrop.active .ticket-card {
         transform: translateY(0) scale(1);
     }
 
-    .modal-header {
-        background: linear-gradient(135deg, var(--color-bg-main) 0%, #eef4eb 100%);
-        padding: 1.25rem 1.5rem;
+    /* Ticket Header: Dark Stadium Olive with Pattern */
+    .ticket-header {
+        background: linear-gradient(135deg, #1b2a15 0%, #2f4325 50%, #3e5630 100%);
+        color: #ffffff;
+        padding: 1.4rem 1.6rem 1.2rem;
+        position: relative;
+        border-bottom: 2px dashed rgba(255, 255, 255, 0.18);
+    }
+
+    .ticket-header-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid var(--color-border-light);
+        margin-bottom: 0.85rem;
     }
 
-    .modal-icon-badge {
-        width: 36px;
-        height: 36px;
+    .ticket-brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 0.3rem 0.75rem;
         border-radius: var(--radius-pill);
-        background: var(--color-surface-mint);
-        color: var(--color-primary-dark);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        color: var(--color-surface-mint);
+    }
+
+    .ticket-close-btn {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .modal-close-btn {
-        background: transparent;
-        border: none;
-        font-size: 1.75rem;
-        line-height: 1;
-        color: var(--color-text-body);
+        color: #ffffff;
         cursor: pointer;
-        padding: 0 0.5rem;
-        border-radius: 6px;
-        transition: color 0.15s ease;
+        transition: background-color 0.2s ease, transform 0.1s ease;
     }
 
-    .modal-close-btn:hover {
-        color: #b91c1c;
+    .ticket-close-btn:hover {
+        background: rgba(239, 68, 68, 0.85);
+        border-color: rgba(239, 68, 68, 1);
+        transform: rotate(90deg);
     }
 
-    .modal-body {
-        padding: 1.5rem;
+    .ticket-pitch-title {
+        font-size: 1.45rem;
+        font-weight: 900;
+        margin: 0 0 0.4rem;
+        line-height: 1.25;
+        letter-spacing: -0.3px;
+        color: #ffffff;
     }
 
-    .booking-summary-box {
-        background: var(--color-bg-main);
-        border: 1px solid var(--color-border-light);
-        border-radius: var(--radius-card);
-        padding: 1.15rem;
+    .ticket-pitch-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.85);
+        flex-wrap: wrap;
+    }
+
+    .ticket-pitch-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    /* Ticket Body */
+    .ticket-body {
+        padding: 1.4rem 1.6rem 1.2rem;
+        background: #ffffff;
+    }
+
+    /* Match Info Grid */
+    .ticket-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .ticket-info-chip {
+        background: #f8faf6;
+        border: 1.5px solid #e2e8da;
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.65rem;
+        gap: 0.25rem;
     }
 
-    .summary-item {
+    .ticket-chip-label {
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--color-primary-medium);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .ticket-chip-value {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--color-text-dark);
+        font-family: 'Inter', 'Cairo', sans-serif;
+    }
+
+    /* Ticket Perforation Notches / Stub Divider */
+    .ticket-perforation-divider {
+        position: relative;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        margin: 0.25rem -1.6rem 1rem;
+    }
+
+    .perforation-line {
+        width: 100%;
+        border-top: 2px dashed #cbd5e1;
+    }
+
+    .perforation-notch-left,
+    .perforation-notch-right {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: #111a0f;
+        border-radius: 50%;
+        top: 0px;
+    }
+
+    .perforation-notch-right {
+        right: -12px;
+    }
+
+    .perforation-notch-left {
+        left: -12px;
+    }
+
+    /* Ticket Price & Barcode Stub */
+    .ticket-stub {
+        background: linear-gradient(135deg, #fbfcf9 0%, #f4f7f1 100%);
+        border: 1.5px solid #e1e7da;
+        border-radius: 14px;
+        padding: 1rem 1.25rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 0.92rem;
+        gap: 1rem;
+        margin-bottom: 1.15rem;
     }
 
-    .summary-label {
+    .ticket-price-box {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ticket-price-label {
+        font-size: 0.8rem;
+        font-weight: 700;
         color: var(--color-text-body);
     }
 
-    .summary-value {
-        color: var(--color-text-dark);
+    .ticket-price-amount {
+        font-size: 1.65rem;
+        font-weight: 900;
+        color: var(--color-primary-dark);
+        font-family: 'Inter', 'Cairo', sans-serif;
+        line-height: 1.1;
+    }
+
+    .ticket-barcode-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+        opacity: 0.85;
+    }
+
+    .ticket-barcode-serial {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.72rem;
         font-weight: 700;
+        letter-spacing: 1px;
+        color: #64748b;
     }
 
-    .summary-item-total {
-        margin-top: 0.5rem;
-        padding-top: 0.75rem;
-        border-top: 1px dashed var(--color-border-light);
-    }
-
-    .payment-policy-box {
-        margin-top: 1rem;
+    /* Cash Payment Badge */
+    .ticket-cash-policy {
         background: #fefce8;
-        border: 1px solid #fef08a;
-        border-radius: var(--radius-btn);
+        border: 1.5px solid #fef08a;
+        border-radius: 12px;
         padding: 0.85rem 1rem;
         display: flex;
         align-items: flex-start;
         gap: 0.75rem;
+        margin-bottom: 1.15rem;
     }
 
-    .modal-footer {
-        padding: 1rem 1.5rem;
-        background: #f8fafc;
-        border-top: 1px solid var(--color-border-light);
+    /* Form Notes */
+    .ticket-notes-box {
+        margin-bottom: 0.5rem;
+    }
+
+    .ticket-notes-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--color-text-dark);
+        margin-bottom: 0.35rem;
+    }
+
+    .ticket-notes-input {
+        width: 100%;
+        border: 1.5px solid var(--color-border-light);
+        border-radius: 10px;
+        padding: 0.6rem 0.85rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: var(--color-text-dark);
+        background: #ffffff;
+        resize: vertical;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ticket-notes-input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(78, 101, 61, 0.15);
+    }
+
+    /* Ticket Footer Actions */
+    .ticket-footer {
+        padding: 1.1rem 1.6rem 1.4rem;
+        background: #f8faf6;
+        border-top: 1px solid #e8ede3;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 0.75rem;
+        gap: 0.85rem;
+    }
+
+    .btn-ticket-cancel {
+        min-height: 48px;
+        padding: 0.7rem 1.25rem;
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        border-radius: var(--radius-btn);
+        color: #475569;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-ticket-cancel:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+        border-color: #94a3b8;
+    }
+
+    .btn-ticket-confirm {
+        min-height: 48px;
+        padding: 0.7rem 1.5rem;
+        background: var(--color-primary-dark);
+        color: #ffffff;
+        border: none;
+        border-radius: var(--radius-btn);
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 14px rgba(53, 76, 43, 0.3);
+        transition: all 0.2s ease;
+    }
+
+    .btn-ticket-confirm:hover {
+        background: var(--color-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(53, 76, 43, 0.4);
     }
 </style>
 @endpush
@@ -740,81 +943,161 @@
         @endif
     </div>
 
-    <!-- Booking Confirmation Modal (US-04 Acceptance Criteria 2 & 3) -->
+    <!-- Booking Confirmation Modal: Match Ticket Style (US-04 Acceptance Criteria 2 & 3) -->
     <div id="bookingModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-card">
-            <div class="modal-header">
-                <div style="display: flex; align-items: center; gap: 0.65rem;">
-                    <div class="modal-icon-badge">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
-                            <path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>
+        <div class="ticket-card">
+            <!-- Ticket Top Header (Dark Olive Stadium Header) -->
+            <div class="ticket-header">
+                <div class="ticket-header-top">
+                    <span class="ticket-brand-badge">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="m4.93 4.93 4.24 4.24"/>
+                            <path d="m14.83 9.17 4.24-4.24"/>
+                            <path d="m14.83 14.83 4.24 4.24"/>
+                            <path d="m9.17 14.83-4.24 4.24"/>
+                            <circle cx="12" cy="12" r="4"/>
                         </svg>
-                    </div>
-                    <h3 id="modalTitle" style="font-size: 1.25rem; font-weight: 800; color: var(--color-primary-dark); margin: 0;">
-                        تأكيد حجز الفترة الرياضية
-                    </h3>
+                        تذكرة حجز مباراة معتمدة • MATCH PASS
+                    </span>
+                    <button type="button" class="ticket-close-btn" id="closeModalBtn" aria-label="إغلاق التذكرة">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
                 </div>
-                <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="إغلاق النافذة">&times;</button>
+
+                <h3 id="modalTitle" class="ticket-pitch-title">{{ $pitch->name }}</h3>
+                <div class="ticket-pitch-meta">
+                    <span>
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        {{ $pitch->location }}
+                    </span>
+                    <span>
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        </svg>
+                        {{ match($pitch->turf_type) {
+                            'artificial' => 'عشب صناعي معتمد',
+                            'natural' => 'عشب طبيعي فاخر',
+                            'hybrid' => 'عشب هجين متطور',
+                            default => $pitch->turf_type
+                        } }}
+                    </span>
+                </div>
             </div>
 
-            <form method="POST" action="{{ route('bookings.store') }}" id="bookingForm">
+            <!-- Booking Form -->
+            <form method="POST" action="{{ route('bookings.store') }}" id="bookingForm" style="margin: 0;">
                 @csrf
                 <input type="hidden" name="time_slot_id" id="modalSlotId" value="">
 
-                <div class="modal-body">
-                    <!-- Summary Card per Section 5 -->
-                    <div class="booking-summary-box">
-                        <div class="summary-item">
-                            <span class="summary-label">اسم الملعب:</span>
-                            <strong class="summary-value">{{ $pitch->name }}</strong>
+                <!-- Ticket Body -->
+                <div class="ticket-body">
+                    <!-- Match Information Grid -->
+                    <div class="ticket-info-grid">
+                        <div class="ticket-info-chip">
+                            <span class="ticket-chip-label">
+                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                                    <line x1="16" x2="16" y1="2" y2="6"/>
+                                    <line x1="8" x2="8" y1="2" y2="6"/>
+                                    <line x1="3" x2="21" y1="10" y2="10"/>
+                                </svg>
+                                تاريخ المباراة
+                            </span>
+                            <span class="ticket-chip-value" id="modalDateText">{{ $selectedDate }}</span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">الموقع:</span>
-                            <span class="summary-value">{{ $pitch->location }}</span>
+
+                        <div class="ticket-info-chip">
+                            <span class="ticket-chip-label">
+                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                توقيت الفترة
+                            </span>
+                            <span class="ticket-chip-value" id="modalTimeText">--</span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">تاريخ المباراة:</span>
-                            <strong class="summary-value" id="modalDateText">{{ $selectedDate }}</strong>
+                    </div>
+
+                    <!-- Perforation Line with Stub Notches -->
+                    <div class="ticket-perforation-divider">
+                        <div class="perforation-notch-right"></div>
+                        <div class="perforation-line"></div>
+                        <div class="perforation-notch-left"></div>
+                    </div>
+
+                    <!-- Ticket Price & Barcode Stub -->
+                    <div class="ticket-stub">
+                        <div class="ticket-price-box">
+                            <span class="ticket-price-label">إجمالي المبلغ المستحق:</span>
+                            <span class="ticket-price-amount" id="modalPriceText">--</span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">توقيت الفترة:</span>
-                            <strong class="summary-value" id="modalTimeText" style="color: var(--color-primary-dark); font-family: 'Inter', 'Cairo', sans-serif;">--</strong>
-                        </div>
-                        <div class="summary-item summary-item-total">
-                            <span class="summary-label">إجمالي المبلغ المستحق:</span>
-                            <strong class="summary-value" id="modalPriceText" style="font-size: 1.35rem; color: var(--color-primary-dark); font-family: 'Inter', 'Cairo', sans-serif;">--</strong>
+                        <div class="ticket-barcode-area">
+                            <svg width="120" height="28" viewBox="0 0 120 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="8" y="2" width="1.5" height="24" fill="#354C2B"/>
+                                <rect x="12" y="2" width="4" height="24" fill="#354C2B"/>
+                                <rect x="19" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="24" y="2" width="1.5" height="24" fill="#354C2B"/>
+                                <rect x="28" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="34" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="39" y="2" width="4" height="24" fill="#354C2B"/>
+                                <rect x="46" y="2" width="1.5" height="24" fill="#354C2B"/>
+                                <rect x="50" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="56" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="61" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="67" y="2" width="1.5" height="24" fill="#354C2B"/>
+                                <rect x="71" y="2" width="4" height="24" fill="#354C2B"/>
+                                <rect x="78" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="83" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="89" y="2" width="1.5" height="24" fill="#354C2B"/>
+                                <rect x="93" y="2" width="4" height="24" fill="#354C2B"/>
+                                <rect x="100" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="105" y="2" width="3" height="24" fill="#354C2B"/>
+                                <rect x="111" y="2" width="2" height="24" fill="#354C2B"/>
+                                <rect x="116" y="2" width="2" height="24" fill="#354C2B"/>
+                            </svg>
+                            <span class="ticket-barcode-serial">KP-MATCH-PASS-{{ date('Y') }}</span>
                         </div>
                     </div>
 
                     <!-- Cash Payment Policy Notice (US-04 Criteria 3) -->
-                    <div class="payment-policy-box">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #92400e; flex-shrink: 0;">
+                    <div class="ticket-cash-policy">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #92400e; flex-shrink: 0; margin-top: 2px;">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 6v6l4 2"/>
                         </svg>
                         <div>
-                            <strong style="display: block; color: #92400e; font-size: 0.9rem; margin-bottom: 0.15rem;">طريقة الدفع المعتمدة:</strong>
-                            <span style="font-size: 0.85rem; color: #78350f; line-height: 1.5;">
+                            <strong style="display: block; color: #92400e; font-size: 0.9rem; margin-bottom: 0.2rem;">
+                                طريقة الدفع المعتمدة (شرط التذكرة):
+                            </strong>
+                            <span style="font-size: 0.85rem; color: #78350f; line-height: 1.5; display: block;">
                                 الدفع يتم نقداً كاش في مقر الملعب عند الحضور قبل انطلاق موعد المباراة.
                             </span>
                         </div>
                     </div>
 
-                    <!-- Optional Notes -->
-                    <div style="margin-top: 1.15rem;">
-                        <label for="modalNotes" style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--color-text-dark); margin-bottom: 0.4rem;">
+                    <!-- Captain's Optional Notes -->
+                    <div class="ticket-notes-box">
+                        <label for="modalNotes" class="ticket-notes-label">
                             ملاحظات إضافية للكابتن (اختياري):
                         </label>
-                        <textarea name="notes" id="modalNotes" rows="2" class="form-input" style="width: 100%; border: 1.5px solid var(--color-border-light); border-radius: var(--radius-btn); padding: 0.6rem 0.85rem; font-family: inherit; font-size: 0.9rem; resize: vertical;" placeholder="مثلاً: اسم الفريق، لون القمصان، أو طلب كرات إضافية..."></textarea>
+                        <textarea name="notes" id="modalNotes" rows="2" class="ticket-notes-input" placeholder="مثلاً: اسم الفريق، لون القمصان، أو طلب كرات إضافية..."></textarea>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelModalBtn" style="background: #f1f5f9; color: #475569; border: 1px solid var(--color-border-light);">
+                <!-- Ticket Actions Footer -->
+                <div class="ticket-footer">
+                    <button type="button" class="btn-ticket-cancel" id="cancelModalBtn">
                         تراجع
                     </button>
-                    <button type="submit" class="btn btn-primary" id="confirmBookingBtn" style="min-width: 175px;">
+                    <button type="submit" class="btn-ticket-confirm" id="confirmBookingBtn">
                         <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"/>
                         </svg>
