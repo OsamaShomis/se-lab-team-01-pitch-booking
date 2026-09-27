@@ -383,11 +383,136 @@
         color: var(--color-accent-soft);
     }
 
-    .empty-state h3 {
-        font-size: 1.35rem;
-        font-weight: 800;
+    /* Booking Confirmation Modal Styles per Design System Section 5 */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 14, 0.65);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.active {
+        opacity: 1;
+    }
+
+    .modal-card {
+        background: var(--color-card-bg);
+        border-radius: var(--radius-card);
+        width: 100%;
+        max-width: 520px;
+        box-shadow: 0 20px 40px rgba(53, 76, 43, 0.25);
+        border: 1px solid var(--color-border-light);
+        overflow: hidden;
+        transform: translateY(20px) scale(0.97);
+        transition: transform 0.25s ease;
+    }
+
+    .modal-backdrop.active .modal-card {
+        transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--color-bg-main) 0%, #eef4eb 100%);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .modal-icon-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-pill);
+        background: var(--color-surface-mint);
         color: var(--color-primary-dark);
-        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-close-btn {
+        background: transparent;
+        border: none;
+        font-size: 1.75rem;
+        line-height: 1;
+        color: var(--color-text-body);
+        cursor: pointer;
+        padding: 0 0.5rem;
+        border-radius: 6px;
+        transition: color 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+        color: #b91c1c;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .booking-summary-box {
+        background: var(--color-bg-main);
+        border: 1px solid var(--color-border-light);
+        border-radius: var(--radius-card);
+        padding: 1.15rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.92rem;
+    }
+
+    .summary-label {
+        color: var(--color-text-body);
+    }
+
+    .summary-value {
+        color: var(--color-text-dark);
+        font-weight: 700;
+    }
+
+    .summary-item-total {
+        margin-top: 0.5rem;
+        padding-top: 0.75rem;
+        border-top: 1px dashed var(--color-border-light);
+    }
+
+    .payment-policy-box {
+        margin-top: 1rem;
+        background: #fefce8;
+        border: 1px solid #fef08a;
+        border-radius: var(--radius-btn);
+        padding: 0.85rem 1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid var(--color-border-light);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
     }
 </style>
 @endpush
@@ -552,10 +677,22 @@
                         </div>
 
                         @if($isAvailable)
-                            <form method="POST" action="/bookings" style="margin: 0;">
-                                @csrf
-                                <input type="hidden" name="time_slot_id" value="{{ $slot->id }}">
-                                <button type="submit" class="btn-book" aria-label="احجز هذه الفترة الآن">
+                            @guest
+                                <a href="{{ route('login') }}" class="btn-book" style="text-decoration: none;" aria-label="تسجيل الدخول لحجز هذه الفترة">
+                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>
+                                    </svg>
+                                    تسجيل الدخول للحجز
+                                </a>
+                            @else
+                                <button type="button" 
+                                        class="btn-book open-booking-modal" 
+                                        data-slot-id="{{ $slot->id }}"
+                                        data-time-range="{{ date('h:i', strtotime($slot->start_time)) }} {{ date('A', strtotime($slot->start_time)) == 'AM' ? 'صباحاً' : 'مساءً' }} - {{ date('h:i', strtotime($slot->end_time)) }} {{ date('A', strtotime($slot->end_time)) == 'AM' ? 'صباحاً' : 'مساءً' }}"
+                                        data-duration="{{ $durationText }}"
+                                        data-price="{{ number_format($slot->price, 2) }}"
+                                        data-date="{{ $selectedDate }}"
+                                        aria-label="احجز هذه الفترة الآن">
                                     <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
                                         <path d="M13 5v2"/>
@@ -564,7 +701,7 @@
                                     </svg>
                                     احجز هذه الفترة
                                 </button>
-                            </form>
+                            @endguest
                         @elseif($isBooked)
                             <button type="button" class="btn-disabled booked-btn" disabled>
                                 <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -602,18 +739,182 @@
             </div>
         @endif
     </div>
+
+    <!-- Booking Confirmation Modal (US-04 Acceptance Criteria 2 & 3) -->
+    <div id="bookingModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div class="modal-icon-badge">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                            <path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>
+                        </svg>
+                    </div>
+                    <h3 id="modalTitle" style="font-size: 1.25rem; font-weight: 800; color: var(--color-primary-dark); margin: 0;">
+                        تأكيد حجز الفترة الرياضية
+                    </h3>
+                </div>
+                <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="إغلاق النافذة">&times;</button>
+            </div>
+
+            <form method="POST" action="{{ route('bookings.store') }}" id="bookingForm">
+                @csrf
+                <input type="hidden" name="time_slot_id" id="modalSlotId" value="">
+
+                <div class="modal-body">
+                    <!-- Summary Card per Section 5 -->
+                    <div class="booking-summary-box">
+                        <div class="summary-item">
+                            <span class="summary-label">اسم الملعب:</span>
+                            <strong class="summary-value">{{ $pitch->name }}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">الموقع:</span>
+                            <span class="summary-value">{{ $pitch->location }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">تاريخ المباراة:</span>
+                            <strong class="summary-value" id="modalDateText">{{ $selectedDate }}</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">توقيت الفترة:</span>
+                            <strong class="summary-value" id="modalTimeText" style="color: var(--color-primary-dark); font-family: 'Inter', 'Cairo', sans-serif;">--</strong>
+                        </div>
+                        <div class="summary-item summary-item-total">
+                            <span class="summary-label">إجمالي المبلغ المستحق:</span>
+                            <strong class="summary-value" id="modalPriceText" style="font-size: 1.35rem; color: var(--color-primary-dark); font-family: 'Inter', 'Cairo', sans-serif;">--</strong>
+                        </div>
+                    </div>
+
+                    <!-- Cash Payment Policy Notice (US-04 Criteria 3) -->
+                    <div class="payment-policy-box">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #92400e; flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <div>
+                            <strong style="display: block; color: #92400e; font-size: 0.9rem; margin-bottom: 0.15rem;">طريقة الدفع المعتمدة:</strong>
+                            <span style="font-size: 0.85rem; color: #78350f; line-height: 1.5;">
+                                الدفع يتم نقداً كاش في مقر الملعب عند الحضور قبل انطلاق موعد المباراة.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Optional Notes -->
+                    <div style="margin-top: 1.15rem;">
+                        <label for="modalNotes" style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--color-text-dark); margin-bottom: 0.4rem;">
+                            ملاحظات إضافية للكابتن (اختياري):
+                        </label>
+                        <textarea name="notes" id="modalNotes" rows="2" class="form-input" style="width: 100%; border: 1.5px solid var(--color-border-light); border-radius: var(--radius-btn); padding: 0.6rem 0.85rem; font-family: inherit; font-size: 0.9rem; resize: vertical;" placeholder="مثلاً: اسم الفريق، لون القمصان، أو طلب كرات إضافية..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn" style="background: #f1f5f9; color: #475569; border: 1px solid var(--color-border-light);">
+                        تراجع
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="confirmBookingBtn" style="min-width: 175px;">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        تثبيت وتأكيد الحجز
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const pitchId = {{ $pitch->id }};
+        const isGuest = {{ auth()->guest() ? 'true' : 'false' }};
         const dateTabs = document.querySelectorAll('.date-pill');
         const customDateInput = document.getElementById('customDateInput');
         const slotsContainer = document.getElementById('slotsContainer');
         const availableCountEl = document.getElementById('availableCount');
         const bookedCountEl = document.getElementById('bookedCount');
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        // Modal Elements
+        const bookingModal = document.getElementById('bookingModal');
+        const modalSlotId = document.getElementById('modalSlotId');
+        const modalDateText = document.getElementById('modalDateText');
+        const modalTimeText = document.getElementById('modalTimeText');
+        const modalPriceText = document.getElementById('modalPriceText');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const bookingForm = document.getElementById('bookingForm');
+        const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+
+        // Modal Open / Close Logic
+        function openModal(data) {
+            if (!bookingModal) return;
+            if (modalSlotId) modalSlotId.value = data.slotId;
+            if (modalDateText) modalDateText.textContent = data.date;
+            if (modalTimeText) modalTimeText.textContent = data.timeRange;
+            if (modalPriceText) modalPriceText.textContent = data.price + ' ريال';
+            bookingModal.style.display = 'flex';
+            requestAnimationFrame(() => {
+                bookingModal.classList.add('active');
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (!bookingModal) return;
+            bookingModal.classList.remove('active');
+            setTimeout(() => {
+                bookingModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 250);
+        }
+
+        // Global Event Delegation for Booking Modal Open (SSR + AJAX dynamic cards)
+        document.addEventListener('click', function (e) {
+            const bookBtn = e.target.closest('.open-booking-modal');
+            if (!bookBtn) return;
+            e.preventDefault();
+            openModal({
+                slotId: bookBtn.dataset.slotId,
+                timeRange: bookBtn.dataset.timeRange,
+                price: bookBtn.dataset.price,
+                date: bookBtn.dataset.date || (customDateInput ? customDateInput.value : '')
+            });
+        });
+
+        if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+        if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeModal);
+
+        if (bookingModal) {
+            bookingModal.addEventListener('click', function (e) {
+                if (e.target === bookingModal) {
+                    closeModal();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && bookingModal && bookingModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Prevent double submit on confirmation
+        if (bookingForm && confirmBookingBtn) {
+            bookingForm.addEventListener('submit', function () {
+                confirmBookingBtn.disabled = true;
+                confirmBookingBtn.innerHTML = `
+                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+                        <path d="M12 2a10 10 0 0 1 10 10"/>
+                    </svg>
+                    جاري تأكيد الحجز...
+                `;
+            });
+        }
 
         // Format 24h time to 12h Arabic
         function formatArabicTime(timeStr) {
@@ -678,6 +979,10 @@
                         let statusBadgeHtml = '';
                         let buttonHtml = '';
 
+                        const startFormatted = formatArabicTime(slot.start_time);
+                        const endFormatted = formatArabicTime(slot.end_time);
+                        const formattedPrice = Number(slot.price).toLocaleString('en-US', { minimumFractionDigits: 2 });
+
                         if (isAvail) {
                             statusBadgeHtml = `
                                 <span class="slot-status-pill pill-available">
@@ -686,18 +991,31 @@
                                     </svg>
                                     متاح للحجز
                                 </span>`;
-                            buttonHtml = `
-                                <form method="POST" action="/bookings" style="margin: 0;">
-                                    <input type="hidden" name="_token" value="${csrfToken}">
-                                    <input type="hidden" name="time_slot_id" value="${slot.id}">
-                                    <button type="submit" class="btn-book" aria-label="احجز هذه الفترة الآن">
+
+                            if (isGuest) {
+                                buttonHtml = `
+                                    <a href="{{ route('login') }}" class="btn-book" style="text-decoration: none;" aria-label="تسجيل الدخول لحجز هذه الفترة">
+                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>
+                                        </svg>
+                                        تسجيل الدخول للحجز
+                                    </a>`;
+                            } else {
+                                buttonHtml = `
+                                    <button type="button" 
+                                            class="btn-book open-booking-modal" 
+                                            data-slot-id="${slot.id}"
+                                            data-time-range="${startFormatted} - ${endFormatted}"
+                                            data-price="${formattedPrice}"
+                                            data-date="${targetDate}"
+                                            aria-label="احجز هذه الفترة الآن">
                                         <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
                                             <path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>
                                         </svg>
                                         احجز هذه الفترة
-                                    </button>
-                                </form>`;
+                                    </button>`;
+                            }
                         } else if (isBooked) {
                             statusBadgeHtml = `
                                 <span class="slot-status-pill pill-booked">
@@ -732,9 +1050,6 @@
                                 </button>`;
                         }
 
-                        const startFormatted = formatArabicTime(slot.start_time);
-                        const endFormatted = formatArabicTime(slot.end_time);
-
                         html += `
                             <div class="slot-card ${cardClass}">
                                 <div class="slot-top-row">
@@ -751,7 +1066,7 @@
                                 </div>
                                 <div class="slot-pricing-row">
                                     <span class="slot-price-label">المبلغ الإجمالي للفترة:</span>
-                                    <span class="slot-price-value">${Number(slot.price).toLocaleString('en-US', { minimumFractionDigits: 2 })} <small style="font-size: 0.85rem;">ريال</small></span>
+                                    <span class="slot-price-value">${formattedPrice} <small style="font-size: 0.85rem;">ريال</small></span>
                                 </div>
                                 ${buttonHtml}
                             </div>

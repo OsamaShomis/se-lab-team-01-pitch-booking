@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingCancellationController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\TimeSlotController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,6 @@ Route::get('/pitches', function () {
 })->name('pitches.index');
 
 // FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid - Publicly accessible)
-// FR-03: جدول الساعات المتاحة (Time-Slot Availability Grid)
 Route::get('/pitches/{pitch}/slots', [TimeSlotController::class, 'index'])->name('pitches.slots');
 Route::get('/api/pitches/{pitch}/slots', [TimeSlotController::class, 'index']);
 
@@ -39,6 +39,10 @@ Route::middleware('guest')->group(function () {
 // مسارات المستخدمين المسجلين (Authenticated Routes)
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // FR-04: حجز فترة زمنية وتأكيد الحجز (Slot Reservation & Locking)
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::post('/api/bookings', [BookingController::class, 'store']);
 
     // FR-06: حجوزاتي وإلغاء الحجز (Player Bookings & Cancellation)
     Route::get('/my-bookings', [BookingCancellationController::class, 'index'])->name('bookings.my');
