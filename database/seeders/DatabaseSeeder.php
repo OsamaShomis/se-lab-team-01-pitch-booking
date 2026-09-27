@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Create Pitches (6 diverse pitches across cities and turf types)
+        // 3. Create Pitches (8 diverse pitches mapped to real images)
         $pitchesData = [
             [
                 'owner_id' => $owner1->id,
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'artificial',
                 'hourly_rate' => 12000.00,
                 'contact_phone' => '777123456',
-                'image_url' => 'pitches/legends_pitch.jpg',
+                'image_url' => 'images/pitch1.jpg',
                 'description' => 'ملعب سباعي فاخر معشب بأحدث عشب صناعي من الجيل الرابع (FIFA Standard). مجهز بكشافات LED ليلية فائقة الإضاءة، مدرج للجماهير، غرف تبديل ملابس واستراحة مكيفة، ومواقف سيارات آمنة.',
                 'is_active' => true,
             ],
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'artificial',
                 'hourly_rate' => 9500.00,
                 'contact_phone' => '777123456',
-                'image_url' => 'pitches/stars_pitch.jpg',
+                'image_url' => 'images/pitch2.jpg',
                 'description' => 'ملعب خماسي عصري ذو أرضية عشبية ممتازة وشباك حماية كاملة. يحتوي على كافتيريا متكاملة لتقديم المشروبات ومعدات رياضية وتأجير سترات تدريب.',
                 'is_active' => true,
             ],
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'natural',
                 'hourly_rate' => 15000.00,
                 'contact_phone' => '777987654',
-                'image_url' => 'pitches/clasico_pitch.jpg',
+                'image_url' => 'images/pitch3.jpg',
                 'description' => 'ملعب ثماني مميز بأرضية عشب طبيعي معتنى بها بعناية فائقة. إطلالة بحرية نقية، كشافات احترافية، مياه شرب ومشروبات طاقة مجانية للفرق.',
                 'is_active' => true,
             ],
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'hybrid',
                 'hourly_rate' => 11000.00,
                 'contact_phone' => '777987654',
-                'image_url' => 'pitches/taiz_indoor.jpg',
+                'image_url' => 'images/pitch4.jpg',
                 'description' => 'صالة هجينة مغلقة ومكيفة تتسع لـ 6 ضد 6، أرضية باركيه رياضية احترافية، مناسبة لكافة الظروف الجوية واللعب المسائي، وخدمات إسعافية.',
                 'is_active' => true,
             ],
@@ -132,7 +132,7 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'natural',
                 'hourly_rate' => 10500.00,
                 'contact_phone' => '777456789',
-                'image_url' => 'pitches/ibb_olympic.jpg',
+                'image_url' => 'images/pitch5.jpg',
                 'description' => 'ملعب طبيعي خلاب بين أحضان الطبيعة في إب الخضراء. مقاسات واسعة لـ 7 ضد 7، حكام ومراقبين معتمدين، ومواقف شاسعة للحافلات والسيارات.',
                 'is_active' => true,
             ],
@@ -143,8 +143,30 @@ class DatabaseSeeder extends Seeder
                 'turf_type' => 'artificial',
                 'hourly_rate' => 8500.00,
                 'contact_phone' => '777456789',
-                'image_url' => 'pitches/mukalla_beach.jpg',
+                'image_url' => 'images/pitch6.jpg',
                 'description' => 'ملعب حديث ومعشب صناعياً بمواصفات ممتازة، كرات جديدة مع كل مباراة، غرف استحمام، وقريب جداً من قلب مدينة المكلا والخدمات العامة.',
+                'is_active' => true,
+            ],
+            [
+                'owner_id' => $owner1->id,
+                'name' => 'ملعب السبعين الدولي',
+                'location' => 'صنعاء — ميدان السبعين',
+                'turf_type' => 'artificial',
+                'hourly_rate' => 13500.00,
+                'contact_phone' => '777123456',
+                'image_url' => 'images/pitch7.jpg',
+                'description' => 'ملعب متكامل بمقاسات دولية عشب صناعي جيل رابع، مدرجات، إنارة ليلية وتصوير مباريات.',
+                'is_active' => true,
+            ],
+            [
+                'owner_id' => $owner2->id,
+                'name' => 'ملعب الفرسان الرياضي',
+                'location' => 'عدن — المعلا الشارع الرئيسي',
+                'turf_type' => 'hybrid',
+                'hourly_rate' => 12500.00,
+                'contact_phone' => '777987654',
+                'image_url' => 'images/pitch8.jpg',
+                'description' => 'أرضية ممتازة هجينة، تهوية ممتازة، كافتيريا وغرف تبديل واستراحة مجهزة بالكامل.',
                 'is_active' => true,
             ],
         ];

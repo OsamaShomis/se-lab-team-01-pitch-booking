@@ -2,50 +2,116 @@
 
 @section('title', 'دليل واستعراض الملاعب الرياضية — كورة بلص')
 
+@section('styles')
+<style>
+    .hero-split-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 2rem;
+        align-items: center;
+    }
+    .pitch-card-visual {
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #17321F;
+    }
+    .pitch-card-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.35s ease;
+    }
+    .pitch-card:hover .pitch-card-visual img {
+        transform: scale(1.06);
+    }
+    .hero-media-box {
+        position: relative;
+        height: 220px;
+        border-radius: var(--radius-card);
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .hero-media-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    @media (max-width: 860px) {
+        .hero-split-grid {
+            grid-template-columns: 1fr;
+        }
+        .hero-media-box {
+            height: 180px;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0.5rem 0 3rem 0;">
 
-    {{-- Hero Section --}}
+    {{-- Split Hero Section --}}
     <div style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, #15803D 100%); border-radius: var(--radius-card); padding: 2.25rem 2rem; color: #FFFFFF; margin-bottom: 2rem; box-shadow: var(--shadow-md); position: relative; overflow: hidden;">
         <div style="position: absolute; left: -40px; top: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); pointer-events: none;"></div>
-        <div style="position: absolute; left: 120px; bottom: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255, 255, 255, 0.04); pointer-events: none;"></div>
         
-        <div style="position: relative; z-index: 1; max-width: 760px;">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.825rem; font-weight: 700; margin-bottom: 0.85rem;">
-                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="m4.93 4.93 4.24 4.24"/>
-                    <path d="m14.83 9.17 4.24-4.24"/>
-                    <path d="m14.83 14.83 4.24 4.24"/>
-                    <path d="m9.17 14.83-4.24 4.24"/>
-                    <circle cx="12" cy="12" r="4"/>
-                </svg>
-                <span>دليل الملاعب المعتمدة الرسمية</span>
+        <div class="hero-split-grid" style="position: relative; z-index: 1;">
+            {{-- Right Info Side (RTL) --}}
+            <div>
+                <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.825rem; font-weight: 700; margin-bottom: 0.85rem;">
+                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m4.93 4.93 4.24 4.24"/>
+                        <path d="m14.83 9.17 4.24-4.24"/>
+                        <path d="m14.83 14.83 4.24 4.24"/>
+                        <path d="m9.17 14.83-4.24 4.24"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                    <span>دليل الملاعب المعتمدة الرسمية</span>
+                </div>
+
+                <h1 style="font-size: 2.1rem; font-weight: 900; margin-bottom: 0.6rem; line-height: 1.3; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                    اختر ملعبك، حدد موعدك، وانطلق للمباراة
+                </h1>
+                
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                    تصفح أفضل الملاعب المعشبة والصالات المغطاة في مختلف المدن، اطلع على التقييمات والمرافق، وتأكد من الساعات الشاغرة فورياً وبدون أي وساطة.
+                </p>
+
+                <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600;">
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>{{ $pitches->count() }} ملاعب نشطة ومجهزة</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>عشب صناعي وطبيعي وهجين</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>تأكيد لحظي للحجز (BR-02)</span>
+                    </div>
+                </div>
             </div>
-            <h1 style="font-size: 2.1rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.3;">
-                اختر ملعبك، حدد موعدك، وانطلق للمباراة
-            </h1>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem;">
-                تصفح أفضل الملاعب المعشبة والصالات المغطاة في مختلف المدن، اطلع على التقييمات والمرافق، وتأكد من الساعات الشاغرة فورياً وبدون أي وساطة.
-            </p>
-            <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; font-weight: 600;">
-                <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    <span>{{ $pitches->count() }} ملاعب نشطة ومجهزة</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    <span>عشب صناعي وطبيعي وهجين</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <svg class="icon" style="width: 1.1rem; height: 1.1rem; color: #86EFAC;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    <span>تأكيد لحظي للحجز (BR-02)</span>
+
+            {{-- Left Visual Side: Featured Stadium Frame --}}
+            <div class="hero-media-box">
+                <img src="{{ asset('images/hero-pitch.jpg') }}" alt="ملاعب كرة القدم في كورة بلص">
+                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(13,45,25,0.7) 100%);"></div>
+                <div style="position: absolute; bottom: 12px; right: 14px; left: 14px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.775rem; font-weight: 700; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); padding: 0.3rem 0.65rem; border-radius: var(--radius-pill); border: 1px solid rgba(255, 255, 255, 0.25);">
+                        ملاعب بمعايير دولية معتمدة
+                    </span>
+                    <span style="font-size: 0.75rem; color: #FEF08A; font-weight: 700; background: rgba(21, 128, 61, 0.85); padding: 0.25rem 0.6rem; border-radius: var(--radius-pill);">
+                        تحديث مباشر
+                    </span>
                 </div>
             </div>
         </div>
@@ -58,10 +124,10 @@
             {{-- Search Input --}}
             <div>
                 <label style="display: block; font-size: 0.825rem; font-weight: 700; color: var(--color-text-title); margin-bottom: 0.35rem;">
-                    البحث بالاسم أو الحي
+                    البحث بالاسم أو الحي أو المحافظة
                 </label>
                 <div style="position: relative;">
-                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="مثال: الأساطير، حدة، المكلا..." style="width: 100%; padding: 0.65rem 0.85rem 0.65rem 2.25rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background-color: var(--color-bg-main); color: var(--color-text-title); outline: none;">
+                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="اكتب اسم الملعب أو الحي أو المحافظة..." style="width: 100%; padding: 0.65rem 0.85rem 0.65rem 2.25rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background-color: var(--color-bg-main); color: var(--color-text-title); outline: none;">
                     <svg class="icon" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 1.1rem; height: 1.1rem; color: var(--color-text-muted); pointer-events: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -151,17 +217,23 @@
     @else
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem;">
             @foreach($pitches as $pitch)
-                <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                <div class="pitch-card" style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: var(--shadow-sm);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                     
-                    {{-- Card Visual Header --}}
-                    <div style="height: 150px; background: linear-gradient(135deg, #134E4A 0%, var(--color-primary-dark) 50%, #15803D 100%); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; color: #FFFFFF;">
-                        {{-- Decorative Stadium Field Lines --}}
-                        <div style="position: absolute; right: 15px; top: 15px; width: 80px; height: 80px; border-radius: 50%; border: 2px dashed rgba(255, 255, 255, 0.15); pointer-events: none;"></div>
-                        <div style="position: absolute; left: -20px; bottom: -20px; width: 100px; height: 100px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 50%; pointer-events: none;"></div>
+                    {{-- Card Visual Header with Real Image --}}
+                    <div class="pitch-card-visual">
+                        @if($pitch->image_url && file_exists(public_path($pitch->image_url)))
+                            <img src="{{ asset($pitch->image_url) }}" alt="{{ $pitch->name }}">
+                        @else
+                            <img src="{{ asset('images/hero-pitch.jpg') }}" alt="{{ $pitch->name }}">
+                        @endif
 
-                        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
+                        {{-- Dark Scrim Overlay for crisp text and badges --}}
+                        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 45%, rgba(13,38,22,0.9) 100%);"></div>
+
+                        {{-- Top Badges --}}
+                        <div style="position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; z-index: 2;">
                             {{-- Turf Badge --}}
-                            <span style="font-size: 0.775rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: var(--radius-pill); background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.2); display: inline-flex; align-items: center; gap: 0.35rem;">
+                            <span style="font-size: 0.775rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: var(--radius-pill); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.25); color: #FFFFFF; display: inline-flex; align-items: center; gap: 0.35rem;">
                                 @if($pitch->turf_type === 'natural')
                                     <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #4ADE80;"></span>
                                     <span>عشب طبيعي</span>
@@ -175,15 +247,15 @@
                             </span>
 
                             {{-- Price Badge --}}
-                            <div style="background: rgba(255, 255, 255, 0.95); color: var(--color-primary-dark); font-weight: 800; font-size: 0.95rem; padding: 0.3rem 0.75rem; border-radius: var(--radius-pill); box-shadow: var(--shadow-sm);">
+                            <div style="background: rgba(255, 255, 255, 0.95); color: var(--color-primary-dark); font-weight: 800; font-size: 0.95rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-pill); box-shadow: var(--shadow-sm);">
                                 <span>{{ number_format($pitch->hourly_rate) }}</span>
                                 <span style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted);">ر.ي/ساعة</span>
                             </div>
                         </div>
 
-                        {{-- Pitch Name on Visual --}}
-                        <div style="position: relative; z-index: 1;">
-                            <h2 style="font-size: 1.35rem; font-weight: 800; color: #FFFFFF; margin: 0; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">
+                        {{-- Pitch Name on Image --}}
+                        <div style="position: absolute; bottom: 12px; right: 14px; left: 14px; z-index: 2;">
+                            <h2 style="font-size: 1.35rem; font-weight: 900; color: #FFFFFF; margin: 0; text-shadow: 0 2px 6px rgba(0,0,0,0.8);">
                                 {{ $pitch->name }}
                             </h2>
                         </div>
@@ -212,7 +284,7 @@
                         <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem;">
                             <span style="font-size: 0.75rem; background-color: var(--color-surface-mint); color: var(--color-primary-dark); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem;">
                                 <svg class="icon" style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+                                    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2"/>
                                 </svg>
                                 كشافات LED ليلية
                             </span>

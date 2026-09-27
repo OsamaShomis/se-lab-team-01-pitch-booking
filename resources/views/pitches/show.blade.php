@@ -19,9 +19,14 @@
         
         {{-- Main Column --}}
         <div>
-            {{-- Pitch Banner --}}
-            <div style="height: 220px; background: linear-gradient(135deg, #134E4A 0%, var(--color-primary-dark) 45%, #15803D 100%); border-radius: var(--radius-card); padding: 1.75rem; color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-                <div style="position: absolute; right: -20px; bottom: -30px; width: 160px; height: 160px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.1); pointer-events: none;"></div>
+            {{-- Pitch Banner with Real Photo --}}
+            <div style="height: 240px; border-radius: var(--radius-card); padding: 1.75rem; color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); background-color: #17321F;">
+                @if($pitch->image_url && file_exists(public_path($pitch->image_url)))
+                    <img src="{{ asset($pitch->image_url) }}" alt="{{ $pitch->name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+                @else
+                    <img src="{{ asset('images/hero-pitch.jpg') }}" alt="{{ $pitch->name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+                @endif
+                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(13,40,22,0.6) 45%, rgba(10,30,16,0.92) 100%);"></div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
                     <span style="font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: var(--radius-pill); background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.2); display: inline-flex; align-items: center; gap: 0.4rem;">
