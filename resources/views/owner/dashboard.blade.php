@@ -451,13 +451,24 @@
             <p>متابعة وتحديث فترات الملاعب، تسجيل حضور اللاعبين، والتحكم في إشغال المنشأة الرياضية.</p>
         </div>
 
-        @if($selectedPitch)
-            <div class="pitch-badge-info">
-                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>{{ $selectedPitch->name }} — {{ $selectedPitch->location }}</span>
-            </div>
-        @endif
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="{{ route('owner.pitches.index') }}" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                قائمة ملاعبي
+            </a>
+            <a href="{{ route('owner.pitches.create') }}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                إضافة ملعب جديد
+            </a>
+            @if($selectedPitch)
+                <a href="{{ route('owner.pitches.show', $selectedPitch) }}" class="btn btn-accent" style="font-size: 0.9rem; padding: 0.5rem 1rem;" title="التحكم في مواعيد وإعدادات هذا الملعب">
+                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    إعدادات الملعب
+                </a>
+            @endif
+        </div>
     </div>
+
 
     @if($pitches->isEmpty())
         <div class="schedule-card">

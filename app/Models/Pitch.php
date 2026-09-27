@@ -50,6 +50,18 @@ class Pitch extends Model
     }
 
     /**
+     * Get human-readable Arabic label for turf type.
+     */
+    public function getTurfLabelAttribute(): string
+    {
+        return match ($this->turf_type) {
+            'natural', 'عشب طبيعي' => 'عشب طبيعي',
+            'hybrid', 'عشب هجين' => 'عشب هجين',
+            default => 'عشب صناعي (5G)',
+        };
+    }
+
+    /**
      * Get all time slots for this pitch.
      */
     public function timeSlots(): HasMany
@@ -57,3 +69,4 @@ class Pitch extends Model
         return $this->hasMany(TimeSlot::class);
     }
 }
+

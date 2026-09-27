@@ -385,9 +385,13 @@
                     <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     حجوزاتي (FR-06)
                 </a>
-                <a href="{{ route('owner.dashboard') }}" class="nav-link {{ request()->routeIs('owner.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.dashboard') }}" class="nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
                     <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                     لوحة المنشأة (FR-05)
+                </a>
+                <a href="{{ route('owner.pitches.index') }}" class="nav-link {{ request()->routeIs('owner.pitches.*') ? 'active' : '' }}">
+                    <svg class="icon" style="width: 1rem; height: 1rem;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="3" x2="21" y1="12" y2="12"/></svg>
+                    إدارة ملاعبي
                 </a>
             </nav>
 
