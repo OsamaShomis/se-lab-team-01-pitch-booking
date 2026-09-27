@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        // Slot Templates
+        // Slot Templates (90 minutes match standard)
         $slotTemplates = [
             ['start' => '16:00:00', 'end' => '17:30:00'], // عصر
             ['start' => '17:30:00', 'end' => '19:00:00'], // مغرب

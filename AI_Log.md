@@ -671,3 +671,166 @@ Project documentation fully synchronized with the expanded Pitch Onboarding capa
 ### Final Result
 FR-04 / US-04 fully implemented with concurrency locking, cash policy modal, 100% test coverage, compact SaaS modal redesign, and aesthetic Pitch Natural Olive design. All commits (`f012d9a`) pushed to `origin/feature/booking` and ready for Pull Request review and merge into `main`.
 
+---
+
+### Entry 09: Adoption of Latest GitHub Commits (PRs #29 & #30) & Development Preview Verification
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Pull latest commits from GitHub `origin/main` (merges of PR #29 `fix/routes-seeder-integration` and PR #30 `fix/routes-cleanup`), resolve seeder parse/integrity bugs, and verify full local availability of all interfaces.
+
+### Purpose
+Synchronize the local development workspace with remote main (`eadc1a3`), ensure seeder reliability on fresh migrations, compile assets, and confirm that both FR-05 (Owner Dashboard) and FR-06 (Player Bookings & Cancellation) are directly accessible and functional.
+
+### Files Affected
+- `database/seeders/DatabaseSeeder.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/welcome.blade.php`
+- `routes/web.php`
+- `AI_Log.md`
+
+### AI Actions & Suggestions
+- Executed `git fetch --all --prune` and fast-forward pulled `origin/main` to commit `eadc1a3`.
+- Fixed seeder parse error at line 91 (removed dangling `$pitchesData = [` declaration) and added missing `'owner_id' => $owner1->id` for the Olympic Elite pitch to satisfy NOT NULL constraints.
+- Successfully executed `php artisan migrate:fresh --seed` with 100% completion.
+- Re-compiled Vite assets via `npm run build`.
+- Updated navigation bar and homepage feature cards so that all 4 features (FR-02, FR-03, FR-05, FR-06) are directly accessible from the browser.
+- Verified all endpoints (`/`, `/pitches`, `/pitches/1/slots`, `/my-bookings`, `/owner/dashboard`, `/login`, `/register`) return HTTP 200 OK.
+
+### Final Result
+Latest GitHub updates adopted, database and frontend assets built cleanly, and local application is verified healthy on `http://127.0.0.1:8000`.
+
+---
+
+### Entry 10: Complete UI/UX Overhaul & Layout Consolidation for Owner Dashboard (FR-05) and Player Bookings (FR-06)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Responsible for FR-05 & FR-06)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Audit, redesign, and consolidate the visual interfaces for the Owner Dashboard (`/owner/dashboard`, FR-05) and Player Bookings & Cancellation (`/my-bookings`, FR-06) to strictly adhere to the Pitch Natural Olive design system, eliminate layout duplication, and provide modern, responsive aesthetics and client-side filtering.
+
+### Purpose
+Resolve user-reported visual defects and fragmented standalone layouts. Both views were previously rendering their own raw HTML documents with redundant `<nav>` bars, missing global header/footer components, unpolished KPI grids, and raw emoji icons instead of clean SVG vectors.
+
+### Files Affected
+- `resources/views/owner/dashboard.blade.php`
+- `resources/views/bookings/index.blade.php`
+- `AI_Log.md`
+
+### AI Actions & Suggestions
+- Refactored `resources/views/owner/dashboard.blade.php`:
+  - Extended unified `layouts.app` with `@section('content')` and scoped `@push('styles')`.
+  - Re-engineered the 5 KPI metric cards with custom SVG icons, structured typography, and an animated occupancy progress meter.
+  - Redesigned the pitch and date filter toolbar card with clean inputs and action buttons.
+  - Modernized the daily schedule table with responsive column styling, status tags, and action buttons (`✓ تم الحضور` and `✕ إلغاء`).
+- Refactored `resources/views/bookings/index.blade.php`:
+  - Extended unified `layouts.app` and integrated with global alerts and navigation.
+  - Implemented the BR-03 cancellation policy banner with clear rules and badge.
+  - Added interactive client-side filter tabs (All, Confirmed, Completed, Cancelled) for instantaneous UX.
+  - Replaced emoji placeholders with clean, accessible vector SVGs.
+  - Added smart action buttons: active cancellation with confirmation prompt when `canBeCancelled()` is true, and a lock badge with explanatory note when `< 2 hours` remains.
+- Verified test suite: 36 tests passed (100% green), including 6 Owner Dashboard tests and 7 Cancellation tests.
+- Visual browser verification: Audited both views and all navigation destinations via automated browser subagent with full visual proof captured.
+
+### Final Result
+Both Owner Dashboard and Player Bookings interfaces are pixel-perfect, fully consolidated with the platform layout, completely responsive, and 100% compliant with project governance and design guidelines.
+
+---
+
+### Entry 11: End-to-End Integration of Booking Creation (FR-04 / US-04) with Cancellation (FR-06 / US-06)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Integrate the newly merged Booking feature (`FR-04` / `US-04`) created by Mohammed Al-Idrisi with the Player Bookings & Cancellation feature (`FR-06` / `US-06`) and Owner Dashboard (`FR-05` / `US-05`).
+
+### Purpose
+Ensure seamless end-to-end operational flow between slot selection, reservation modal with cash notice, instant database concurrency locking, redirection to `/my-bookings`, cancellation with 2-hour deadline enforcement (`BR-03`), and synchronized owner schedule updates.
+
+### Files Affected
+- `routes/web.php`
+- `AI_Log.md`
+- `database/seeders/DatabaseSeeder.php`
+
+### AI Actions & Suggestions
+- Merged and resolved route collisions in `routes/web.php` for authenticated booking endpoints (`POST /bookings` and `POST /api/bookings`) alongside `/my-bookings` and cancellation routes.
+- Executed `php artisan migrate:fresh --seed` establishing clean test state.
+- Ran automated test suite executing all 44 tests across all modules (`AuthTest`, `ExampleTest`, `TimeSlotGridTest`, `BookingTest`, `CancellationTest`, `OwnerDashboardTest`).
+- Verified 100% pass rate: 44 tests passed, 180 assertions, 0 errors.
+
+### Final Result
+Full integration completed and validated. The end-to-end player flow (browse slots -> book with concurrency locking -> view in `/my-bookings` -> cancel under BR-03) and owner flow (view scheduled match in dashboard) are completely aligned with `docs/USER_STORIES.md`.
+
+---
+
+### Entry 12: Comprehensive Multi-Pitch Hub, Venue Control Room & Schedule Editor (FR-05 Extension)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Oqab (`osalokab` — Developer & Quality Reviewer)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Design and implement a complete, dedicated Pitch Management Module (`/owner/pitches`) allowing venue owners to view all their facilities, configure pitch profiles, edit specifications, generate automated schedules, and manage time slots with full CRUD capabilities.
+
+### Purpose
+Fulfill owner requirements for complete venue administration beyond the daily dashboard, allowing pitch owners to manage multiple facilities, edit pricing, update descriptions, add custom time slots, and toggle operational availability.
+
+### Files Affected
+- `app/Http/Controllers/OwnerPitchController.php`
+- `app/Models/Pitch.php`
+- `routes/web.php`
+- `resources/views/layouts/app.blade.php`
+- `resources/views/owner/dashboard.blade.php`
+- `resources/views/owner/pitches/index.blade.php`
+- `resources/views/owner/pitches/show.blade.php`
+- `resources/views/owner/pitches/create.blade.php`
+- `resources/views/owner/pitches/edit.blade.php`
+- `tests/Feature/OwnerPitchManagementTest.php`
+- `AI_Log.md`
+
+### AI Actions & Suggestions
+- Created `OwnerPitchController.php` implementing standard RESTful CRUD and specialized slot management actions:
+  - `index()`: Overview cards of all owner pitches with KPI badges (total pitches, active, total slots, confirmed bookings).
+  - `create()` & `store()`: Add a new pitch with instant auto-generation of 90-minute standard slots for the next 4 days.
+  - `show()`: Control room for a specific pitch with date filter strip, live slots table, bulk generator, and single slot creator.
+  - `edit()` & `update()`: Form to modify pitch name, location, turf type, default rate, phone, description, and active status.
+  - `destroy()`: Protected deletion requiring zero active bookings.
+  - `generateSlots()`: Smart bulk generator creating 5 standard evening slots per day across custom date ranges.
+  - `storeSlot()` & `deleteSlot()`: Add custom slot and delete unbooked slots.
+- Authored 4 Blade views matching the Pitch Natural Olive design system with SVG icons, zero emojis, and responsive mobile-first layouts.
+- Added 7 comprehensive automated Feature tests in `tests/Feature/OwnerPitchManagementTest.php`.
+- Full test suite passed: 51 tests, 199 assertions, 0 errors (100% green).
+
+### Final Result
+Pitch Owner Hub and Venue Control Room fully operational, tested, and integrated into the global navigation and owner workflow.
+
+
+
+

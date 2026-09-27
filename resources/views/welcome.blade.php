@@ -218,28 +218,41 @@
 
 <!-- Features Highlights -->
 <section class="features-grid">
-    <div class="feature-card">
+    <a href="{{ route('pitches.index') }}" class="feature-card" style="text-decoration: none; color: inherit; display: block;">
         <div class="feature-icon-box">
             <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" x2="16.65"/></svg>
         </div>
-        <h3>استكشف أفضل الملاعب</h3>
+        <h3>استكشف أفضل الملاعب (FR-02)</h3>
         <p>تصفح قائمة الملاعب المعتمدة، واطلع على الأسعار، ونوع العشب، والموقع الجغرافي والخدمات المتاحة.</p>
-    </div>
+        <span style="display: inline-block; margin-top: 0.85rem; font-weight: 700; color: var(--color-primary-dark); font-size: 0.85rem;">استعراض الملاعب ←</span>
+    </a>
 
-    <div class="feature-card">
+    <a href="{{ route('pitches.slots', 1) }}" class="feature-card" style="text-decoration: none; color: inherit; display: block;">
         <div class="feature-icon-box">
             <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         </div>
-        <h3>حجز لحظي وتأكيد فوري</h3>
+        <h3>جدول الساعات المتاحة (FR-03)</h3>
         <p>اختر التاريخ والساعة الشاغرة وأكد حجزك فوراً دون الحاجة للمكالمات الهاتفية أو انتظار الرد.</p>
-    </div>
+        <span style="display: inline-block; margin-top: 0.85rem; font-weight: 700; color: var(--color-primary-dark); font-size: 0.85rem;">عرض جدول الساعات ←</span>
+    </a>
 
-    <div class="feature-card">
-        <div class="feature-icon-box">
-            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" x2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+    <a href="{{ route('owner.dashboard') }}" class="feature-card" style="text-decoration: none; color: inherit; display: block; border-right: 4px solid var(--color-accent-soft);">
+        <div class="feature-icon-box" style="background-color: #FEF3C7; color: #92400E;">
+            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
         </div>
-        <h3>لوحة تحكم لأصحاب المنشآت</h3>
-        <p>إدارة متكاملة لجدول المواعيد وساعات العمل، وتتبع الحجوزات اليومية وإلغاء المواعيد بمرونة تامة.</p>
-    </div>
+        <h3>لوحة تحكم صاحب الملعب (FR-05)</h3>
+        <p>إدارة متكاملة لجدول المواعيد وساعات العمل، وتتبع الحجوزات اليومية وتأكيد الحضور وإلغاء المواعيد.</p>
+        <span style="display: inline-block; margin-top: 0.85rem; font-weight: 700; color: #92400E; font-size: 0.85rem;">فتح لوحة التحكم ←</span>
+    </a>
+
+
+    <a href="{{ route('bookings.my') }}" class="feature-card" style="text-decoration: none; color: inherit; display: block; border-right: 4px solid var(--color-primary-medium);">
+        <div class="feature-icon-box" style="background-color: #DCFCE7; color: #166534;">
+            <svg class="icon" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>سجل حجوزاتي وإلغاء الحجز (FR-06)</h3>
+        <p>متابعة وتفاصيل الحجوزات المؤكدة، وتطبيق سياسة الإلغاء المرنة وإلغاء الحجز قبل ساعتين (قاعدة BR-03).</p>
+        <span style="display: inline-block; margin-top: 0.85rem; font-weight: 700; color: #166534; font-size: 0.85rem;">استعراض حجوزاتي ←</span>
+    </a>
 </section>
 @endsection
