@@ -5,10 +5,11 @@
 @section('styles')
 <style>
     .hero {
-        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        background: linear-gradient(180deg, rgba(13, 40, 22, 0.70) 0%, rgba(15, 60, 35, 0.68) 50%, rgba(10, 30, 18, 0.85) 100%),
+                    url('{{ asset("images/hero-pitch.jpg") }}') center center / cover no-repeat;
         border-radius: var(--radius-lg);
         color: #FFFFFF;
-        padding: 3.5rem 2.5rem;
+        padding: 4.5rem 2.5rem;
         text-align: center;
         margin-bottom: 2.5rem;
         box-shadow: var(--shadow-lg);
@@ -31,18 +32,20 @@
     }
 
     .hero h1 {
-        font-size: 2.4rem;
+        font-size: 2.5rem;
         font-weight: 900;
         line-height: 1.3;
         margin-bottom: 0.85rem;
         letter-spacing: -0.5px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
     }
 
     .hero p {
         font-size: 1.05rem;
-        color: #E2E8F0;
-        max-width: 650px;
+        color: #F1F5F9;
+        max-width: 680px;
         margin: 0 auto 2rem auto;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
     }
 
     .hero-actions {
