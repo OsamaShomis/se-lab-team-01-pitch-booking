@@ -591,3 +591,49 @@ Enable players to discover football pitches across Yemeni cities, filter by loca
 
 ### Final Result
 Feature `FR-02` fully implemented, tested, and ready for commit, push, and Pull Request.
+
+---
+
+### Entry 10: Requirements & Architecture Documentation Update for Pitch Self-Registration (FR-05)
+
+### Date
+`2026-09-27`
+
+### Student / Engineer
+Osama Al-Shamis (`OsamaShomis` — Lead Developer & Team Coordinator)
+
+### Agent / Tool
+Gemini (Antigravity Senior AI Engineering Architect)
+
+### Task
+Update formal software requirements and architectural specifications (`docs/SRS.md`, `docs/USER_STORIES.md`, `docs/API.md`) to integrate Owner Pitch Self-Registration & Onboarding into FR-05 / US-05.
+
+### Purpose
+Synchronize project documentation with the business requirement allowing sports pitch owners to self-register their venues, upload images, specify amenities and rates, and automatically publish to the public catalog.
+
+### Files Affected
+- `docs/SRS.md`
+- `docs/USER_STORIES.md`
+- `docs/API.md`
+- `AI_Log.md`
+
+### AI Suggestions
+- Update `docs/SRS.md` In-Scope section and expand `FR-05` to formally encompass pitch registration, image uploads, and venue management.
+- Expand `US-05` in `docs/USER_STORIES.md` with explicit Acceptance Criteria (input validation, max image size 3MB, automated slot generation) and Edge Cases (invalid mime types, oversized files, missing required fields).
+- Add Endpoint 12 (`POST /api/owner/pitches`) in `docs/API.md` defining `multipart/form-data` payload and `201 Created` / `422 Unprocessable Content` response envelopes.
+
+### Accepted Suggestions
+- All architectural and specification updates accepted and aligned with project standards.
+
+### Rejected Suggestions
+- None.
+
+### Human Decisions & Approval
+- Explicitly requested and approved by Team Coordinator Osama Al-Shamis.
+
+### Testing & Verification
+- Validated markdown formatting, table alignment, and schema consistency across updated documents.
+- Test suite executed: 45 passed, 168 assertions (100% green).
+
+### Final Result
+Project documentation fully synchronized with the expanded Pitch Onboarding capability.
